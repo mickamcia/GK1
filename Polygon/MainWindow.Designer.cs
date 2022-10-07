@@ -53,6 +53,8 @@
             this.BitMap.Size = new System.Drawing.Size(800, 800);
             this.BitMap.TabIndex = 1;
             this.BitMap.TabStop = false;
+            this.BitMap.Paint += new System.Windows.Forms.PaintEventHandler(this.BitMap_Paint);
+            this.BitMap.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseClick);
             // 
             // MainWindow
             // 

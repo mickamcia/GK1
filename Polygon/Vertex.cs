@@ -11,5 +11,15 @@ namespace Polygon
         private Point point;
 
         public const int radius = 10;
+
+        public Vertex(Point point)
+        {
+            this.point = point;
+        }
+        public Point Point
+        {
+            set { point = value; }
+            get { return point; }
+        }
     }
 }
