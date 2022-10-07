@@ -1,4 +1,4 @@
-namespace GK1
+namespace Polygon
 {
     internal static class Program
     {
