@@ -9,7 +9,6 @@ namespace Polygon
     internal class Vertex
     {
         private Point point;
-
         public const int radius = 10;
 
         public Vertex(Point point)
