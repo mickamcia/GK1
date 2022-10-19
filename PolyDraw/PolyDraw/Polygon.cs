@@ -42,6 +42,26 @@ namespace PolyDraw
                 edges.Add(new Edge(v, vertices[0]));
             }
         }
+        public void RemoveVertex(Vertex v)
+        {
+            if (!vertices.Contains(v))
+            {
+                return;
+            }
+            int index = vertices.IndexOf(v);
+            edges[(index + edges.Count - 1) % edges.Count].v2 = vertices[(index + 1) % vertices.Count];
+            vertices.RemoveAt(index);
+            edges.RemoveAt(index);
+        }
+        public void RemoveEdge(Edge e)
+        {
+            if (!edges.Contains(e))
+            {
+                return;
+            }
+            RemoveVertex(e.v1);
+            RemoveVertex(e.v2);
+        }
         public void Draw(Bitmap bitmap, Color color)
         {
             foreach(var v in vertices)

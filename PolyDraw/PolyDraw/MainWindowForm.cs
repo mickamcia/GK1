@@ -143,5 +143,85 @@ namespace PolyDraw
                 MainPictureBox.Invalidate();
             }
         }
+
+        private void RandomPolygonButton_Click(object sender, EventArgs e)
+        {
+            polygons.Add(new Polygon(random, random.Next(3, 8)));
+            MainPictureBox.Invalidate();
+        }
+
+        private void RemoveAllButton_Click(object sender, EventArgs e)
+        {
+            polygons.Clear();
+            selectedEdge = null;
+            selectedEdge = null;
+            selectedPolygon = null;
+            MainPictureBox.Invalidate();
+        }
+
+        private void RemoveEdgeButton_Click(object sender, EventArgs e)
+        {
+            if(selectedEdge == null)
+            {
+                return;
+            }
+            foreach(var p in polygons)
+            {
+                if (p.edges.Contains(selectedEdge))
+                {
+                    p.RemoveEdge(selectedEdge);
+                }
+            }
+            selectedEdge = null;
+            MainPictureBox.Invalidate();
+        }
+        private void RemoveVertexButton_Click(object sender, EventArgs e)
+        {
+            if(selectedVertex == null)
+            {
+                return;
+            }
+            foreach (var p in polygons)
+            {
+                if (p.vertices.Contains(selectedVertex))
+                {
+                    p.RemoveVertex(selectedVertex);
+                }
+            }
+            selectedVertex = null;
+            MainPictureBox.Invalidate();
+        }
+        private void RemovePolygonButton_Click(object sender, EventArgs e)
+        {
+            if(selectedPolygon == null)
+            {
+                return;
+            }
+            polygons.Remove(selectedPolygon);
+            selectedPolygon = null;
+            MainPictureBox.Invalidate();
+        }
+
+        private void DivideEdgeButton_Click(object sender, EventArgs e)
+        {
+            if(selectedEdge == null)
+            {
+                return;
+            }
+            foreach (var p in polygons)
+            {
+                if (p.edges.Contains(selectedEdge))
+                {
+                    var vert = new Vertex(new PointF((selectedEdge.v1.location.X + selectedEdge.v2.location.X) / 2, (selectedEdge.v1.location.Y + selectedEdge.v2.location.Y) / 2));
+                    var edge = new Edge(vert, selectedEdge.v2);
+                    int index = p.edges.IndexOf(selectedEdge);
+                    selectedEdge.v2 = vert;
+                    p.edges.Insert(index + 1, edge);
+                    p.vertices.Insert(index + 1, vert);
+                }
+            }
+            MainPictureBox.Invalidate();
+            return;
+        }
     }
 }
