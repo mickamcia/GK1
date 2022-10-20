@@ -32,7 +32,10 @@ namespace PolyDraw
             int numerator = longest >> 1;
             for (int i = 0; i <= longest; i++)
             {
-                bitmap.SetPixel(x, y, color);
+                if (x >= 0 && y >= 0 && x < 800 && y < 800)
+                {
+                    bitmap.SetPixel(x, y, color);
+                }
                 numerator += shortest;
                 if (!(numerator < longest))
                 {

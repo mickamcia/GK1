@@ -78,13 +78,13 @@ namespace PolyDraw
             if(selectedPolygon == null)
             {
                 var p = new Polygon();
-                p.AddVertex(new Vertex(point));
+                p.AddVertex(new Vertex(point, p));
                 selectedPolygon = p;
                 polygons.Add(p);
             }
             else
             {
-                selectedPolygon.AddVertex(new Vertex(point));
+                selectedPolygon.AddVertex(new Vertex(point, selectedPolygon));
             }
         }
         private void MouseDownRightCreate(PointF point)
@@ -191,13 +191,7 @@ namespace PolyDraw
             {
                 return;
             }
-            foreach(var p in polygons)
-            {
-                if (p.edges.Contains(selectedEdge))
-                {
-                    p.RemoveEdge(selectedEdge);
-                }
-            }
+            selectedEdge.parent.RemoveEdge(selectedEdge);
             selectedEdge = null;
             MainPictureBox.Invalidate();
         }
@@ -207,13 +201,7 @@ namespace PolyDraw
             {
                 return;
             }
-            foreach (var p in polygons)
-            {
-                if (p.vertices.Contains(selectedVertex))
-                {
-                    p.RemoveVertex(selectedVertex);
-                }
-            }
+            selectedVertex.parent.RemoveVertex(selectedVertex);
             selectedVertex = null;
             MainPictureBox.Invalidate();
         }
@@ -234,18 +222,13 @@ namespace PolyDraw
             {
                 return;
             }
-            foreach (var p in polygons)
-            {
-                if (p.edges.Contains(selectedEdge))
-                {
-                    var vert = new Vertex(new PointF((selectedEdge.v1.location.X + selectedEdge.v2.location.X) / 2, (selectedEdge.v1.location.Y + selectedEdge.v2.location.Y) / 2));
-                    var edge = new Edge(vert, selectedEdge.v2);
-                    int index = p.edges.IndexOf(selectedEdge);
-                    selectedEdge.v2 = vert;
-                    p.edges.Insert(index + 1, edge);
-                    p.vertices.Insert(index + 1, vert);
-                }
-            }
+            Polygon p = selectedEdge.parent;
+            var vert = new Vertex(Tools.EdgeMidPoint(selectedEdge), p);
+            var edge = new Edge(vert, selectedEdge.v2, p);
+            int index = p.edges.IndexOf(selectedEdge);
+            selectedEdge.v2 = vert;
+            p.edges.Insert(index + 1, edge);
+            p.vertices.Insert(index + 1, vert);
             MainPictureBox.Invalidate();
             return;
         }
@@ -257,12 +240,21 @@ namespace PolyDraw
         private void UpdateButtons()
         {
             ClearRelationsButton.Enabled = relations.Count > 0;
+            RemoveAllButton.Enabled = polygons.Count > 0;
+            RemovePolygonButton.Enabled = selectedPolygon != null;
+            DivideEdgeButton.Enabled = selectedEdge != null;
+            RandomPolygonButton.Enabled = true;
+            RemoveEdgeButton.Enabled = selectedEdge != null && selectedEdge.parent.vertices.Count > 4;
+            RemoveVertexButton.Enabled = selectedVertex != null && selectedVertex.parent.vertices.Count > 3;
+
+            LengthRelationButton.Enabled = false;
+            ParallelityRelationButton.Enabled = false;
+            RemoveRelationButton.Enabled = false;
             if (RelationRadioButton.Checked)
             {
-                LengthRelationButton.Enabled = ParallelityRelationButton.Enabled = selectedEdge != null;
-                RemoveRelationButton.Enabled = false;
                 if (selectedEdge != null)
                 {
+                    LengthRelationButton.Enabled = ParallelityRelationButton.Enabled = true;
                     foreach (var r in relations)
                     {
                         if (r.e1 == selectedEdge || r.e2 == selectedEdge)
@@ -274,43 +266,6 @@ namespace PolyDraw
                     }
                 }
             }
-            else
-            {
-                LengthRelationButton.Enabled = false;
-                ParallelityRelationButton.Enabled = false;
-                RemoveRelationButton.Enabled = false;
-            }
-            if(selectedVertex != null)
-            {
-                foreach(var p in polygons)
-                {
-                    if (p.vertices.Contains(selectedVertex))
-                    {
-                        RemoveVertexButton.Enabled = p.vertices.Count > 3;
-                    }
-                }
-            }
-            else
-            {
-                RemoveVertexButton.Enabled = selectedVertex != null;
-            }
-            if (selectedEdge != null)
-            {
-                foreach (var p in polygons)
-                {
-                    if (p.edges.Contains(selectedEdge))
-                    {
-                        RemoveEdgeButton.Enabled = p.edges.Count > 4;
-                    }
-                }
-            }
-            else
-            {
-                RemoveEdgeButton.Enabled = selectedEdge != null;
-            }
-            RemoveAllButton.Enabled = polygons.Count > 0;
-            RemovePolygonButton.Enabled = selectedPolygon != null;
-            DivideEdgeButton.Enabled = selectedEdge != null;
         }
 
         private void RelationRadioButton_CheckedChanged(object sender, EventArgs e)

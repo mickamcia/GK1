@@ -21,11 +21,11 @@ namespace PolyDraw
             edges = new List<Edge>();
             for (int i = 0; i < count; i++)
             {
-                vertices.Add(new Vertex(random));
+                vertices.Add(new Vertex(random, this));
             }
             for (int i = 0; i < count; i++)
             {
-                edges.Add(new Edge(vertices[i], vertices[(i + 1) % count]));
+                edges.Add(new Edge(vertices[i], vertices[(i + 1) % count], this));
             }
         }
         public void AddVertex(Vertex v)
@@ -33,13 +33,13 @@ namespace PolyDraw
             if (vertices.Count == 0)
             {
                 vertices.Add(v);
-                edges.Add(new Edge(v, v));
+                edges.Add(new Edge(v, v, this));
             }
             else
             {
                 vertices.Add(v);
                 edges[^1].v2 = v;
-                edges.Add(new Edge(v, vertices[0]));
+                edges.Add(new Edge(v, vertices[0], this));
             }
         }
         public void RemoveVertex(Vertex v)
@@ -82,12 +82,14 @@ namespace PolyDraw
     }
     public class Edge
     {
+        public Polygon parent;
         public Vertex v1;
         public Vertex v2;
-        public Edge(Vertex v1, Vertex v2)
+        public Edge(Vertex v1, Vertex v2, Polygon parent)
         {
             this.v1 = v1;
             this.v2 = v2;
+            this.parent = parent;
         }
         public void Draw(Bitmap bitmap, Color color, bool bresenham)
         {
@@ -110,14 +112,17 @@ namespace PolyDraw
     {
         public PointF location;
         public const int radius = 5;
+        public Polygon parent;
 
-        public Vertex(PointF p)
+        public Vertex(PointF p, Polygon parent)
         {
             location = p;
+            this.parent = parent;
         }
-        public Vertex(Random random)
+        public Vertex(Random random, Polygon parent)
         {
             location = new PointF(random.Next(800), random.Next(800));
+            this.parent = parent;
         }
         public void Draw(Bitmap bitmap, Color color)
         {
