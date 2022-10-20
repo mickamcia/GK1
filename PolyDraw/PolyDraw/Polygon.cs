@@ -62,7 +62,7 @@ namespace PolyDraw
             RemoveVertex(e.v1);
             RemoveVertex(e.v2);
         }
-        public void Draw(Bitmap bitmap, Color color)
+        public void Draw(Bitmap bitmap, Color color, bool bresenham)
         {
             foreach(var v in vertices)
             {
@@ -70,7 +70,7 @@ namespace PolyDraw
             }
             foreach(var e in edges)
             {
-                e.Draw(bitmap, color);
+                e.Draw(bitmap, color, bresenham);
             }
             using var g = Graphics.FromImage(bitmap);
             g.FillPolygon(new SolidBrush(Color.FromArgb(100, color)), vertices.Select(v => v.location).ToArray());
@@ -89,11 +89,17 @@ namespace PolyDraw
             this.v1 = v1;
             this.v2 = v2;
         }
-        public void Draw(Bitmap bitmap, Color color)
+        public void Draw(Bitmap bitmap, Color color, bool bresenham)
         {
-            using var g = Graphics.FromImage(bitmap);
-            g.DrawLine(new Pen(color), v1.location, v2.location);
-            //Tools.Bresenham(bitmap, this, Color.Black);
+            if (bresenham)
+            {
+                Tools.Bresenham(bitmap, this, color);
+            }
+            else
+            {
+                using var g = Graphics.FromImage(bitmap);
+                g.DrawLine(new Pen(new SolidBrush(color), 2), v1.location, v2.location);
+            }
         }
         public bool CheckCollision(PointF point)
         {

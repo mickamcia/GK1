@@ -30,6 +30,10 @@
         {
             this.MainPictureBox = new System.Windows.Forms.PictureBox();
             this.ControlsGroupBox = new System.Windows.Forms.GroupBox();
+            this.RelationControls = new System.Windows.Forms.TableLayoutPanel();
+            this.LengthRelationButton = new System.Windows.Forms.Button();
+            this.PerpendicularityRelationButton = new System.Windows.Forms.Button();
+            this.RemoveRelationButton = new System.Windows.Forms.Button();
             this.ButtonControls = new System.Windows.Forms.TableLayoutPanel();
             this.RemoveVertexButton = new System.Windows.Forms.Button();
             this.RemoveEdgeButton = new System.Windows.Forms.Button();
@@ -40,11 +44,14 @@
             this.BasicControls = new System.Windows.Forms.TableLayoutPanel();
             this.CreateRadioButton = new System.Windows.Forms.RadioButton();
             this.MoveRadioButton = new System.Windows.Forms.RadioButton();
+            this.RelationRadioButton = new System.Windows.Forms.RadioButton();
             this.LineControls = new System.Windows.Forms.TableLayoutPanel();
             this.BresenhamLine = new System.Windows.Forms.RadioButton();
             this.BuildInLine = new System.Windows.Forms.RadioButton();
+            this.ClearRelationsButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.ControlsGroupBox.SuspendLayout();
+            this.RelationControls.SuspendLayout();
             this.ButtonControls.SuspendLayout();
             this.BasicControls.SuspendLayout();
             this.LineControls.SuspendLayout();
@@ -64,6 +71,7 @@
             // 
             // ControlsGroupBox
             // 
+            this.ControlsGroupBox.Controls.Add(this.RelationControls);
             this.ControlsGroupBox.Controls.Add(this.ButtonControls);
             this.ControlsGroupBox.Controls.Add(this.BasicControls);
             this.ControlsGroupBox.Controls.Add(this.LineControls);
@@ -74,6 +82,61 @@
             this.ControlsGroupBox.TabIndex = 1;
             this.ControlsGroupBox.TabStop = false;
             this.ControlsGroupBox.Text = "Controls";
+            // 
+            // RelationControls
+            // 
+            this.RelationControls.ColumnCount = 1;
+            this.RelationControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.RelationControls.Controls.Add(this.LengthRelationButton, 0, 0);
+            this.RelationControls.Controls.Add(this.PerpendicularityRelationButton, 0, 1);
+            this.RelationControls.Controls.Add(this.RemoveRelationButton, 0, 2);
+            this.RelationControls.Controls.Add(this.ClearRelationsButton, 0, 3);
+            this.RelationControls.Dock = System.Windows.Forms.DockStyle.Top;
+            this.RelationControls.Location = new System.Drawing.Point(3, 168);
+            this.RelationControls.Name = "RelationControls";
+            this.RelationControls.RowCount = 4;
+            this.RelationControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.RelationControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.RelationControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.RelationControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.RelationControls.Size = new System.Drawing.Size(194, 145);
+            this.RelationControls.TabIndex = 5;
+            // 
+            // LengthRelationButton
+            // 
+            this.LengthRelationButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LengthRelationButton.Enabled = false;
+            this.LengthRelationButton.Location = new System.Drawing.Point(3, 3);
+            this.LengthRelationButton.Name = "LengthRelationButton";
+            this.LengthRelationButton.Size = new System.Drawing.Size(188, 30);
+            this.LengthRelationButton.TabIndex = 0;
+            this.LengthRelationButton.Text = "Add length relation";
+            this.LengthRelationButton.UseVisualStyleBackColor = true;
+            this.LengthRelationButton.Click += new System.EventHandler(this.LengthRelationButton_Click);
+            // 
+            // PerpendicularityRelationButton
+            // 
+            this.PerpendicularityRelationButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PerpendicularityRelationButton.Enabled = false;
+            this.PerpendicularityRelationButton.Location = new System.Drawing.Point(3, 39);
+            this.PerpendicularityRelationButton.Name = "PerpendicularityRelationButton";
+            this.PerpendicularityRelationButton.Size = new System.Drawing.Size(188, 30);
+            this.PerpendicularityRelationButton.TabIndex = 1;
+            this.PerpendicularityRelationButton.Text = "Add perpendicularity relation";
+            this.PerpendicularityRelationButton.UseVisualStyleBackColor = true;
+            this.PerpendicularityRelationButton.Click += new System.EventHandler(this.PerpendicularityRelationButton_Click);
+            // 
+            // RemoveRelationButton
+            // 
+            this.RemoveRelationButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RemoveRelationButton.Enabled = false;
+            this.RemoveRelationButton.Location = new System.Drawing.Point(3, 75);
+            this.RemoveRelationButton.Name = "RemoveRelationButton";
+            this.RemoveRelationButton.Size = new System.Drawing.Size(188, 30);
+            this.RemoveRelationButton.TabIndex = 2;
+            this.RemoveRelationButton.Text = "Remove selected relation";
+            this.RemoveRelationButton.UseVisualStyleBackColor = true;
+            this.RemoveRelationButton.Click += new System.EventHandler(this.RemoveRelationButton_Click);
             // 
             // ButtonControls
             // 
@@ -87,8 +150,8 @@
             this.ButtonControls.Controls.Add(this.RemoveAllButton, 1, 1);
             this.ButtonControls.Controls.Add(this.DivideEdgeButton, 0, 2);
             this.ButtonControls.Controls.Add(this.RandomPolygonButton, 1, 2);
-            this.ButtonControls.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ButtonControls.Location = new System.Drawing.Point(3, 119);
+            this.ButtonControls.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ButtonControls.Location = new System.Drawing.Point(3, 475);
             this.ButtonControls.Name = "ButtonControls";
             this.ButtonControls.RowCount = 3;
             this.ButtonControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -137,7 +200,7 @@
             this.RemoveAllButton.Name = "RemoveAllButton";
             this.RemoveAllButton.Size = new System.Drawing.Size(91, 68);
             this.RemoveAllButton.TabIndex = 3;
-            this.RemoveAllButton.Text = "Clear All";
+            this.RemoveAllButton.Text = "Clear all";
             this.RemoveAllButton.UseVisualStyleBackColor = true;
             this.RemoveAllButton.Click += new System.EventHandler(this.RemoveAllButton_Click);
             // 
@@ -169,38 +232,54 @@
             this.BasicControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.BasicControls.Controls.Add(this.CreateRadioButton, 0, 0);
             this.BasicControls.Controls.Add(this.MoveRadioButton, 0, 1);
+            this.BasicControls.Controls.Add(this.RelationRadioButton, 0, 2);
             this.BasicControls.Dock = System.Windows.Forms.DockStyle.Top;
             this.BasicControls.Location = new System.Drawing.Point(3, 19);
             this.BasicControls.Name = "BasicControls";
-            this.BasicControls.RowCount = 2;
+            this.BasicControls.RowCount = 3;
             this.BasicControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.BasicControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.BasicControls.Size = new System.Drawing.Size(194, 100);
+            this.BasicControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.BasicControls.Size = new System.Drawing.Size(194, 149);
             this.BasicControls.TabIndex = 3;
             // 
             // CreateRadioButton
             // 
             this.CreateRadioButton.AutoSize = true;
-            this.CreateRadioButton.Checked = true;
             this.CreateRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CreateRadioButton.Location = new System.Drawing.Point(3, 3);
             this.CreateRadioButton.Name = "CreateRadioButton";
-            this.CreateRadioButton.Size = new System.Drawing.Size(188, 44);
+            this.CreateRadioButton.Size = new System.Drawing.Size(188, 43);
             this.CreateRadioButton.TabIndex = 0;
-            this.CreateRadioButton.TabStop = true;
             this.CreateRadioButton.Text = "Create new polygons";
             this.CreateRadioButton.UseVisualStyleBackColor = true;
             // 
             // MoveRadioButton
             // 
             this.MoveRadioButton.AutoSize = true;
+            this.MoveRadioButton.Checked = true;
             this.MoveRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MoveRadioButton.Location = new System.Drawing.Point(3, 53);
+            this.MoveRadioButton.Location = new System.Drawing.Point(3, 52);
             this.MoveRadioButton.Name = "MoveRadioButton";
-            this.MoveRadioButton.Size = new System.Drawing.Size(188, 44);
+            this.MoveRadioButton.Size = new System.Drawing.Size(188, 43);
             this.MoveRadioButton.TabIndex = 1;
+            this.MoveRadioButton.TabStop = true;
             this.MoveRadioButton.Text = "Move existing objects";
             this.MoveRadioButton.UseVisualStyleBackColor = true;
+            this.MoveRadioButton.CheckedChanged += new System.EventHandler(this.MoveRadioButton_CheckedChanged);
+            // 
+            // RelationRadioButton
+            // 
+            this.RelationRadioButton.AutoSize = true;
+            this.RelationRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RelationRadioButton.Location = new System.Drawing.Point(3, 101);
+            this.RelationRadioButton.Name = "RelationRadioButton";
+            this.RelationRadioButton.Size = new System.Drawing.Size(188, 45);
+            this.RelationRadioButton.TabIndex = 2;
+            this.RelationRadioButton.TabStop = true;
+            this.RelationRadioButton.Text = "Manage Relations";
+            this.RelationRadioButton.UseVisualStyleBackColor = true;
+            this.RelationRadioButton.CheckedChanged += new System.EventHandler(this.RelationRadioButton_CheckedChanged);
             // 
             // LineControls
             // 
@@ -230,6 +309,7 @@
             this.BresenhamLine.TabStop = true;
             this.BresenhamLine.Text = "Bresenham\'s Line Algorithm";
             this.BresenhamLine.UseVisualStyleBackColor = true;
+            this.BresenhamLine.CheckedChanged += new System.EventHandler(this.BresenhamLine_CheckedChanged);
             // 
             // BuildInLine
             // 
@@ -241,6 +321,18 @@
             this.BuildInLine.TabIndex = 0;
             this.BuildInLine.Text = "Build-In Line Algorithm";
             this.BuildInLine.UseVisualStyleBackColor = true;
+            // 
+            // ClearRelationsButton
+            // 
+            this.ClearRelationsButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClearRelationsButton.Enabled = false;
+            this.ClearRelationsButton.Location = new System.Drawing.Point(3, 111);
+            this.ClearRelationsButton.Name = "ClearRelationsButton";
+            this.ClearRelationsButton.Size = new System.Drawing.Size(188, 31);
+            this.ClearRelationsButton.TabIndex = 3;
+            this.ClearRelationsButton.Text = "Clear all relations";
+            this.ClearRelationsButton.UseVisualStyleBackColor = true;
+            this.ClearRelationsButton.Click += new System.EventHandler(this.ClearRelationsButton_Click);
             // 
             // MainWindowForm
             // 
@@ -256,6 +348,7 @@
             this.Text = "PolyDraw";
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
             this.ControlsGroupBox.ResumeLayout(false);
+            this.RelationControls.ResumeLayout(false);
             this.ButtonControls.ResumeLayout(false);
             this.BasicControls.ResumeLayout(false);
             this.BasicControls.PerformLayout();
@@ -282,5 +375,11 @@
         private Button RemoveAllButton;
         private Button DivideEdgeButton;
         private Button RandomPolygonButton;
+        private RadioButton RelationRadioButton;
+        private TableLayoutPanel RelationControls;
+        private Button LengthRelationButton;
+        private Button PerpendicularityRelationButton;
+        private Button RemoveRelationButton;
+        private Button ClearRelationsButton;
     }
 }
