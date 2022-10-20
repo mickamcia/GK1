@@ -11,8 +11,7 @@ namespace PolyDraw
         public Edge? selectedEdge;
         public Vertex? selectedVertex;
         public PointF mouse;
-        public List<(Vertex v1, Vertex v2)> lengthRelations;
-        public List<(Edge e1, Edge? e2)> perpendicularRelations;
+        public List<Relation> relations;
         public MainWindowForm()
         {
             InitializeComponent();
@@ -20,8 +19,7 @@ namespace PolyDraw
             bitmap = new Bitmap(800, 800);
             random = new(DateTime.Now.Millisecond);
             mouse = new PointF(0, 0);
-            lengthRelations = new List<(Vertex v1, Vertex v2)>();
-            perpendicularRelations = new List<(Edge v1, Edge? v2)>();
+            relations = new List<Relation>();
             for(int i = 0; i < 3; i++)
             {
                 polygons.Add(new Polygon(random, random.Next(3,8)));
@@ -36,29 +34,9 @@ namespace PolyDraw
             {
                 p.Draw(bitmap, Color.Black, BresenhamLine.Checked);
             }
-            RectangleF rect = new();
-            rect.Width = Vertex.radius * 4;
-            rect.Height = Vertex.radius * 4;
-            for (int i = 0; i < lengthRelations.Count; i++)
+            foreach (var r in relations)
             {
-                rect.X = (lengthRelations[i].v1.location.X + lengthRelations[i].v2.location.X) / 2 - Vertex.radius * 2;
-                rect.Y = (lengthRelations[i].v1.location.Y + lengthRelations[i].v2.location.Y) / 2 - Vertex.radius * 2;
-                g.FillEllipse(Brushes.Yellow, rect);
-                g.DrawString(i.ToString(), new Font("Tahoma", 14), Brushes.Black, rect);
-            }
-            for (int i = 0; i < perpendicularRelations.Count; i++)
-            {
-                rect.X = (perpendicularRelations[i].e1.v1.location.X + perpendicularRelations[i].e1.v2.location.X) / 2 - Vertex.radius * 2;
-                rect.Y = (perpendicularRelations[i].e1.v1.location.Y + perpendicularRelations[i].e1.v2.location.Y) / 2 - Vertex.radius * 2;
-                g.FillEllipse(Brushes.Green, rect);
-                g.DrawString(i.ToString(), new Font("Tahoma", 14), Brushes.Black, rect);
-                if(perpendicularRelations[i].e2 != null)
-                {
-                    rect.X = (perpendicularRelations[i].e2.v1.location.X + perpendicularRelations[i].e2.v2.location.X) / 2 - Vertex.radius * 2;
-                    rect.Y = (perpendicularRelations[i].e2.v1.location.Y + perpendicularRelations[i].e2.v2.location.Y) / 2 - Vertex.radius * 2;
-                    g.FillEllipse(Brushes.Green, rect);
-                    g.DrawString(i.ToString(), new Font("Tahoma", 14), Brushes.Black, rect);
-                }
+                r.Draw(bitmap);
             }
             selectedEdge?.Draw(bitmap, Color.Red, BresenhamLine.Checked);
             selectedPolygon?.Draw(bitmap, Color.Red, BresenhamLine.Checked);
@@ -199,8 +177,7 @@ namespace PolyDraw
 
         private void RemoveAllButton_Click(object sender, EventArgs e)
         {
-            lengthRelations.Clear();
-            perpendicularRelations.Clear();
+            relations.Clear();
             polygons.Clear();
             selectedEdge = null;
             selectedEdge = null;
@@ -279,28 +256,19 @@ namespace PolyDraw
         }
         private void UpdateButtons()
         {
-            ClearRelationsButton.Enabled = (lengthRelations.Count > 0 || perpendicularRelations.Count > 0);
+            ClearRelationsButton.Enabled = relations.Count > 0;
             if (RelationRadioButton.Checked)
             {
-                LengthRelationButton.Enabled = PerpendicularityRelationButton.Enabled = selectedEdge != null;
+                LengthRelationButton.Enabled = ParallelityRelationButton.Enabled = selectedEdge != null;
                 RemoveRelationButton.Enabled = false;
                 if (selectedEdge != null)
                 {
-                    foreach (var r in lengthRelations)
-                    {
-                        if (r.v1 == selectedEdge.v1 && r.v2 == selectedEdge.v2)
-                        {
-                            LengthRelationButton.Enabled = false;
-                            PerpendicularityRelationButton.Enabled = false;
-                            RemoveRelationButton.Enabled = true;
-                        }
-                    }
-                    foreach (var r in perpendicularRelations)
+                    foreach (var r in relations)
                     {
                         if (r.e1 == selectedEdge || r.e2 == selectedEdge)
                         {
                             LengthRelationButton.Enabled = false;
-                            PerpendicularityRelationButton.Enabled = false;
+                            ParallelityRelationButton.Enabled = false;
                             RemoveRelationButton.Enabled = true;
                         }
                     }
@@ -309,7 +277,7 @@ namespace PolyDraw
             else
             {
                 LengthRelationButton.Enabled = false;
-                PerpendicularityRelationButton.Enabled = false;
+                ParallelityRelationButton.Enabled = false;
                 RemoveRelationButton.Enabled = false;
             }
             if(selectedVertex != null)
@@ -347,7 +315,7 @@ namespace PolyDraw
 
         private void RelationRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            LengthRelationButton.Enabled = RemoveRelationButton.Enabled = PerpendicularityRelationButton.Enabled = RelationRadioButton.Checked;
+            LengthRelationButton.Enabled = RemoveRelationButton.Enabled = ParallelityRelationButton.Enabled = RelationRadioButton.Checked;
             selectedPolygon = null;
             selectedVertex = null;
             MainPictureBox.Invalidate();
@@ -367,21 +335,14 @@ namespace PolyDraw
             {
                 return;
             }
-            foreach(var r in lengthRelations)
-            {
-                if (r.v1 == selectedEdge.v1 && r.v2 == selectedEdge.v2)
-                {
-                    return;
-                }
-            }
-            foreach (var r in perpendicularRelations)
+            foreach (var r in relations)
             {
                 if (r.e1 == selectedEdge || r.e2 == selectedEdge)
                 {
                     return;
                 }
             }
-            lengthRelations.Add((selectedEdge.v1, selectedEdge.v2));
+            relations.Add(new LengthRelation(selectedEdge, selectedEdge));
             MainPictureBox.Invalidate();
         }
 
@@ -391,28 +352,14 @@ namespace PolyDraw
             {
                 return;
             }
-            foreach (var r in lengthRelations)
-            {
-                if (r.v1 == selectedEdge.v1 && r.v2 == selectedEdge.v2)
-                {
-                    return;
-                }
-            }
-            foreach (var r in perpendicularRelations)
+            foreach (var r in relations)
             {
                 if (r.e1 == selectedEdge || r.e2 == selectedEdge)
                 {
                     return;
                 }
             }
-            if (perpendicularRelations.Count == 0 || perpendicularRelations[^1].e2 != null)
-            {
-                perpendicularRelations.Add((selectedEdge, null));
-            }
-            else
-            {
-                perpendicularRelations[^1] = (perpendicularRelations[^1].e1, selectedEdge);
-            }
+            relations.Add(new ParallelityRelation(selectedEdge, selectedEdge));
             MainPictureBox.Invalidate();
         }
 
@@ -422,28 +369,19 @@ namespace PolyDraw
             {
                 return;
             }
-            for(int i = 0; i < lengthRelations.Count; i++)
+            for (int i = 0; i < relations.Count; i++)
             {
-                if (lengthRelations[i].v1 == selectedEdge.v1 && lengthRelations[i].v2 == selectedEdge.v2)
+                if (relations[i].e1 == selectedEdge || relations[i].e2 == selectedEdge)
                 {
-                    lengthRelations.RemoveAt(i);
-                }
-            }
-            for (int i = 0; i < perpendicularRelations.Count; i++)
-            {
-                if (perpendicularRelations[i].e1 == selectedEdge || perpendicularRelations[i].e2 == selectedEdge)
-                {
-                    perpendicularRelations.RemoveAt(i);
+                    relations.RemoveAt(i);
                 }
             }
             selectedEdge = null;
             MainPictureBox.Invalidate();
         }
-
         private void ClearRelationsButton_Click(object sender, EventArgs e)
         {
-            lengthRelations.Clear();
-            perpendicularRelations.Clear();
+            relations.Clear();
             MainPictureBox.Invalidate();
         }
     }

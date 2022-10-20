@@ -32,8 +32,9 @@
             this.ControlsGroupBox = new System.Windows.Forms.GroupBox();
             this.RelationControls = new System.Windows.Forms.TableLayoutPanel();
             this.LengthRelationButton = new System.Windows.Forms.Button();
-            this.PerpendicularityRelationButton = new System.Windows.Forms.Button();
+            this.ParallelityRelationButton = new System.Windows.Forms.Button();
             this.RemoveRelationButton = new System.Windows.Forms.Button();
+            this.ClearRelationsButton = new System.Windows.Forms.Button();
             this.ButtonControls = new System.Windows.Forms.TableLayoutPanel();
             this.RemoveVertexButton = new System.Windows.Forms.Button();
             this.RemoveEdgeButton = new System.Windows.Forms.Button();
@@ -48,7 +49,6 @@
             this.LineControls = new System.Windows.Forms.TableLayoutPanel();
             this.BresenhamLine = new System.Windows.Forms.RadioButton();
             this.BuildInLine = new System.Windows.Forms.RadioButton();
-            this.ClearRelationsButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.ControlsGroupBox.SuspendLayout();
             this.RelationControls.SuspendLayout();
@@ -88,7 +88,7 @@
             this.RelationControls.ColumnCount = 1;
             this.RelationControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.RelationControls.Controls.Add(this.LengthRelationButton, 0, 0);
-            this.RelationControls.Controls.Add(this.PerpendicularityRelationButton, 0, 1);
+            this.RelationControls.Controls.Add(this.ParallelityRelationButton, 0, 1);
             this.RelationControls.Controls.Add(this.RemoveRelationButton, 0, 2);
             this.RelationControls.Controls.Add(this.ClearRelationsButton, 0, 3);
             this.RelationControls.Dock = System.Windows.Forms.DockStyle.Top;
@@ -114,17 +114,17 @@
             this.LengthRelationButton.UseVisualStyleBackColor = true;
             this.LengthRelationButton.Click += new System.EventHandler(this.LengthRelationButton_Click);
             // 
-            // PerpendicularityRelationButton
+            // ParallelityRelationButton
             // 
-            this.PerpendicularityRelationButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PerpendicularityRelationButton.Enabled = false;
-            this.PerpendicularityRelationButton.Location = new System.Drawing.Point(3, 39);
-            this.PerpendicularityRelationButton.Name = "PerpendicularityRelationButton";
-            this.PerpendicularityRelationButton.Size = new System.Drawing.Size(188, 30);
-            this.PerpendicularityRelationButton.TabIndex = 1;
-            this.PerpendicularityRelationButton.Text = "Add perpendicularity relation";
-            this.PerpendicularityRelationButton.UseVisualStyleBackColor = true;
-            this.PerpendicularityRelationButton.Click += new System.EventHandler(this.PerpendicularityRelationButton_Click);
+            this.ParallelityRelationButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ParallelityRelationButton.Enabled = false;
+            this.ParallelityRelationButton.Location = new System.Drawing.Point(3, 39);
+            this.ParallelityRelationButton.Name = "ParallelityRelationButton";
+            this.ParallelityRelationButton.Size = new System.Drawing.Size(188, 30);
+            this.ParallelityRelationButton.TabIndex = 1;
+            this.ParallelityRelationButton.Text = "Add parallelity relation";
+            this.ParallelityRelationButton.UseVisualStyleBackColor = true;
+            this.ParallelityRelationButton.Click += new System.EventHandler(this.PerpendicularityRelationButton_Click);
             // 
             // RemoveRelationButton
             // 
@@ -137,6 +137,18 @@
             this.RemoveRelationButton.Text = "Remove selected relation";
             this.RemoveRelationButton.UseVisualStyleBackColor = true;
             this.RemoveRelationButton.Click += new System.EventHandler(this.RemoveRelationButton_Click);
+            // 
+            // ClearRelationsButton
+            // 
+            this.ClearRelationsButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClearRelationsButton.Enabled = false;
+            this.ClearRelationsButton.Location = new System.Drawing.Point(3, 111);
+            this.ClearRelationsButton.Name = "ClearRelationsButton";
+            this.ClearRelationsButton.Size = new System.Drawing.Size(188, 31);
+            this.ClearRelationsButton.TabIndex = 3;
+            this.ClearRelationsButton.Text = "Clear all relations";
+            this.ClearRelationsButton.UseVisualStyleBackColor = true;
+            this.ClearRelationsButton.Click += new System.EventHandler(this.ClearRelationsButton_Click);
             // 
             // ButtonControls
             // 
@@ -322,18 +334,6 @@
             this.BuildInLine.Text = "Build-In Line Algorithm";
             this.BuildInLine.UseVisualStyleBackColor = true;
             // 
-            // ClearRelationsButton
-            // 
-            this.ClearRelationsButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClearRelationsButton.Enabled = false;
-            this.ClearRelationsButton.Location = new System.Drawing.Point(3, 111);
-            this.ClearRelationsButton.Name = "ClearRelationsButton";
-            this.ClearRelationsButton.Size = new System.Drawing.Size(188, 31);
-            this.ClearRelationsButton.TabIndex = 3;
-            this.ClearRelationsButton.Text = "Clear all relations";
-            this.ClearRelationsButton.UseVisualStyleBackColor = true;
-            this.ClearRelationsButton.Click += new System.EventHandler(this.ClearRelationsButton_Click);
-            // 
             // MainWindowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -378,7 +378,7 @@
         private RadioButton RelationRadioButton;
         private TableLayoutPanel RelationControls;
         private Button LengthRelationButton;
-        private Button PerpendicularityRelationButton;
+        private Button ParallelityRelationButton;
         private Button RemoveRelationButton;
         private Button ClearRelationsButton;
     }
