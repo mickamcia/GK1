@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -24,6 +25,8 @@ namespace PolyDraw
             index = count++;
             this.e1 = e1;
             this.e2 = e2;
+            e1.relation = this;
+            e2.relation = this;
         }
         public abstract void ForceRelation(Edge selectedEdge);
         public void Draw(Bitmap bitmap)
@@ -35,6 +38,26 @@ namespace PolyDraw
             p = Tools.EdgeMidPoint(e1);
             g.FillEllipse(brush, p.X - radius, p.Y - radius, radius * 2, radius * 2);
             g.DrawString(index.ToString(), new Font("Tahoma", 14), Brushes.Black, p);
+        }
+        public static void ClearNeighbours(List<Relation> relations, Vertex v)
+        {
+            int index = v.parent.vertices.IndexOf(v);
+            int count = v.parent.vertices.Count;
+            var r = v.parent.edges[index].relation;
+            if (r != null && relations.Contains(r))
+            {
+                relations.Remove(r);
+            }
+            r = v.parent.edges[(index + count - 1) % count].relation;
+            if (r != null && relations.Contains(r))
+            {
+                relations.Remove(r);
+            }
+        }
+        public static void ClearNeighbours(List<Relation> relations, Edge e)
+        {
+            ClearNeighbours(relations, e.v1);
+            ClearNeighbours(relations, e.v2);
         }
     }
     public class LengthRelation : Relation

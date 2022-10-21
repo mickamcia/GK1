@@ -82,6 +82,7 @@ namespace PolyDraw
     }
     public class Edge
     {
+        public Relation? relation;
         public Polygon parent;
         public Vertex v1;
         public Vertex v2;
