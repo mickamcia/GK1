@@ -28,6 +28,19 @@ namespace PolyDraw
                 edges.Add(new Edge(vertices[i], vertices[(i + 1) % count], this));
             }
         }
+        public Polygon(PointF mid, float radius, int count)
+        {
+            vertices = new List<Vertex>();
+            edges = new List<Edge>();
+            for (int i = 0; i < count; i++)
+            {
+                vertices.Add(new Vertex(new PointF((float)(mid.X + radius * Math.Cos(i * 2 * Math.PI / count)), (float)(mid.Y + radius * Math.Sin(i * 2 * Math.PI / count))), this));
+            }
+            for (int i = 0; i < count; i++)
+            {
+                edges.Add(new Edge(vertices[i], vertices[(i + 1) % count], this));
+            }
+        }
         public void AddVertex(Vertex v)
         {
             if (vertices.Count == 0)
