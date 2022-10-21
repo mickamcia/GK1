@@ -174,6 +174,10 @@ namespace PolyDraw
                 {
                     selectedVertex.location.X += e.X - mouse.X;
                     selectedVertex.location.Y += e.Y - mouse.Y;
+                    int index = selectedVertex.parent.vertices.IndexOf(selectedVertex);
+                    int count = selectedVertex.parent.edges.Count;
+                    selectedVertex.parent.edges[index].relation?.ForceRelation(selectedVertex);
+                    selectedVertex.parent.edges[(index + count - 1) % count].relation?.ForceRelation(selectedVertex);
                 }
                 if (selectedEdge != null)
                 {
@@ -181,6 +185,10 @@ namespace PolyDraw
                     selectedEdge.v1.location.Y += e.Y - mouse.Y;
                     selectedEdge.v2.location.X += e.X - mouse.X;
                     selectedEdge.v2.location.Y += e.Y - mouse.Y;
+                    int index = selectedEdge.parent.edges.IndexOf(selectedEdge);
+                    int count = selectedEdge.parent.edges.Count;
+                    selectedEdge.parent.edges[(index + 1) % count].relation?.ForceRelation(selectedEdge.parent.vertices[(index + 1) % count]);
+                    selectedEdge.parent.edges[(index + count - 1) % count].relation?.ForceRelation(selectedEdge.parent.vertices[(index + count - 1) % count]);
                 }
                 if (selectedPolygon != null)
                 {
@@ -206,7 +214,7 @@ namespace PolyDraw
             relations.Clear();
             polygons.Clear();
             selectedEdge = null;
-            selectedEdge = null;
+            selectedVertex = null;
             selectedPolygon = null;
             MainPictureBox.Invalidate();
         }
@@ -364,6 +372,7 @@ namespace PolyDraw
             {
                 if (relations[i].e1 == selectedEdge || relations[i].e2 == selectedEdge)
                 {
+                    relations[i].e1.relation = relations[i].e2.relation = null;
                     relations.RemoveAt(i);
                 }
             }
@@ -372,6 +381,11 @@ namespace PolyDraw
         }
         private void ClearRelationsButton_Click(object sender, EventArgs e)
         {
+            foreach (var r in relations)
+            {
+                r.e1.relation = null;
+                r.e2.relation = null;
+            }
             relations.Clear();
             MainPictureBox.Invalidate();
         }

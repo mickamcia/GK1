@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,32 @@ namespace PolyDraw
             e1.relation = this;
             e2.relation = this;
         }
-        public abstract void ForceRelation(Edge selectedEdge);
+        public abstract void ForceRelation(Vertex v);
+        public static void ForceLength(Vertex con, Vertex help, Vertex pivit, Vertex mov)
+        {
+            double scale = Tools.PointDistance(con.location, help.location) / Tools.PointDistance(pivit.location, mov.location);
+            if (scale == 1) return;
+            mov.location.X = (float)((mov.location.X - pivit.location.X) * scale + pivit.location.X);
+            mov.location.Y = (float)((mov.location.Y - pivit.location.Y) * scale + pivit.location.Y);
+        }
+        public static void ForceAngle(Vertex con, Vertex help, Vertex pivit, Vertex mov)
+        {
+            double len = Tools.PointDistance(pivit.location, mov.location);
+            ForceMirror(con, help, pivit, mov);
+            SetDistance(pivit, mov, len);
+        }
+        public static void ForceMirror(Vertex con, Vertex help, Vertex pivit, Vertex mov)
+        {
+            mov.location.X = help.location.X + pivit.location.X - con.location.X;
+            mov.location.Y = help.location.Y + pivit.location.Y - con.location.Y;
+        }
+        public static void SetDistance(Vertex con, Vertex mov, double length)
+        {
+            double scale = length / Tools.PointDistance(con.location, mov.location);
+            if (scale == 1) return;
+            mov.location.X = (float)((mov.location.X - con.location.X) * scale + con.location.X);
+            mov.location.Y = (float)((mov.location.Y - con.location.Y) * scale + con.location.Y);
+        }
         public void Draw(Bitmap bitmap)
         {
             using Graphics g = Graphics.FromImage(bitmap);
@@ -59,6 +85,11 @@ namespace PolyDraw
             ClearNeighbours(relations, e.v1);
             ClearNeighbours(relations, e.v2);
         }
+        public Vertex GetOppositeVertex(Vertex v)
+        {
+            var e = e1.v1 == v || e1.v2 == v ? e2 : e1;
+            return Tools.PointDistance(e.v1.location, v.location) < Tools.PointDistance(e.v2.location, v.location) ? e.v2 : e.v1;
+        }
     }
     public class LengthRelation : Relation
     {
@@ -70,9 +101,34 @@ namespace PolyDraw
 
         public override Brush brush => _brush;
 
-        public override void ForceRelation(Edge selectedEdge)
+        public override void ForceRelation(Vertex con)
         {
-            throw new NotImplementedException();
+            Vertex help, pivit, mov;
+            if (con == e1.v1)
+            {
+                help = e1.v2;
+                pivit = e2.v1;
+                mov = e2.v2;
+            }
+            else if (con == e1.v2)
+            {
+                help = e1.v1;
+                pivit = e2.v2;
+                mov = e2.v1;
+            }
+            else if(con == e2.v1)
+            {
+                help = e2.v2;
+                pivit = e1.v1;
+                mov = e1.v2;
+            }
+            else
+            {
+                help = e2.v1;
+                pivit = e1.v2;
+                mov = e1.v1;
+            }
+            ForceLength(con, help, pivit, mov);
         }
     }
     public class ParallelityRelation : Relation
@@ -85,9 +141,34 @@ namespace PolyDraw
 
         public override Brush brush => _brush;
 
-        public override void ForceRelation(Edge selectedEdge)
+        public override void ForceRelation(Vertex con)
         {
-            throw new NotImplementedException();
+            Vertex help, pivit, mov;
+            if (con == e1.v1)
+            {
+                help = e1.v2;
+                pivit = e2.v1;
+                mov = e2.v2;
+            }
+            else if (con == e1.v2)
+            {
+                help = e1.v1;
+                pivit = e2.v2;
+                mov = e2.v1;
+            }
+            else if (con == e2.v1)
+            {
+                help = e2.v2;
+                pivit = e1.v1;
+                mov = e1.v2;
+            }
+            else
+            {
+                help = e2.v1;
+                pivit = e1.v2;
+                mov = e1.v1;
+            }
+            ForceAngle(con, help, pivit, mov);
         }
     }
 }
