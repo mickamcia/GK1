@@ -73,10 +73,6 @@ namespace PolyDraw
         {
             return Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
         }
-        public static double GetAngle(Edge e)
-        {
-            throw new NotImplementedException();
-        }
         public static PointF EdgeMidPoint(Edge e)
         {
             return new PointF((e.v1.location.X + e.v2.location.X) / 2, (e.v1.location.Y + e.v2.location.Y) / 2);

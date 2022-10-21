@@ -11,12 +11,13 @@ namespace PolyDraw
         public Edge? selectedEdge;
         public Vertex? selectedVertex;
         public PointF mouse;
-        public (Edge? e1, Edge? e2) relationCandidate; 
+        public List<Edge> relationCandidate; 
         public List<Relation> relations;
         public MainWindowForm()
         {
             InitializeComponent();
             polygons = new List<Polygon>();
+            relationCandidate = new List<Edge>();
             bitmap = new Bitmap(800, 800);
             random = new(DateTime.Now.Millisecond);
             mouse = new PointF(0, 0);
@@ -42,8 +43,10 @@ namespace PolyDraw
             selectedEdge?.Draw(bitmap, Color.Red, BresenhamLine.Checked);
             selectedPolygon?.Draw(bitmap, Color.Red, BresenhamLine.Checked);
             selectedVertex?.Draw(bitmap, Color.Red);
-            relationCandidate.e1?.Draw(bitmap, Color.Blue, BresenhamLine.Checked);
-            relationCandidate.e2?.Draw(bitmap, Color.Blue, BresenhamLine.Checked);
+            foreach (var p in relationCandidate)
+            {
+                p.Draw(bitmap, Color.LightBlue, BresenhamLine.Checked);
+            }
             e.Graphics.DrawImage(bitmap, 0, 0);
             UpdateButtons();
         }
@@ -105,22 +108,18 @@ namespace PolyDraw
         private void MouseDownLeftRelate(PointF point)
         {
             Edge? e = SelectEdge(point);
-            if(e == null)
+            if(e == null || relationCandidate.Contains(e) || e.relation != null)
             {
                 return;
             }
-            if (relationCandidate.e1 != null && relationCandidate.e1 != relationCandidate.e2)
-            {
-                relationCandidate.e2 = relationCandidate.e1;
-            }
-            relationCandidate.e1 = e;
+            relationCandidate.Add(e);
         }
         private void MouseDownRightRelate(PointF point)
         {
             SelectObject(point);
             selectedPolygon = null;
             selectedVertex = null;
-            relationCandidate = (null, null);
+            relationCandidate.Clear();
         }
         private void SelectObject(PointF point)
         {
@@ -293,18 +292,8 @@ namespace PolyDraw
             RemoveRelationButton.Enabled = selectedEdge != null && selectedEdge.relation != null;
             if (RelationRadioButton.Checked)
             {
-                if (relationCandidate.e1 != null && relationCandidate.e2 != null)
-                {
-                    LengthRelationButton.Enabled = ParallelityRelationButton.Enabled = true;
-                    foreach (var r in relations)
-                    {
-                        if (r.e1 == relationCandidate.e1 || r.e2 == relationCandidate.e1 || r.e1 == relationCandidate.e2 || r.e2 == relationCandidate.e2)
-                        {
-                            LengthRelationButton.Enabled = false;
-                            ParallelityRelationButton.Enabled = false;
-                        }
-                    }
-                }
+                LengthRelationButton.Enabled = relationCandidate.Count >= 2;
+                ParallelityRelationButton.Enabled = relationCandidate.Count >= 2;
             }
         }
 
@@ -315,7 +304,7 @@ namespace PolyDraw
             selectedVertex = null;
             if(RelationRadioButton.Checked == false)
             {
-                relationCandidate = (null, null);
+                relationCandidate.Clear();
             }
             MainPictureBox.Invalidate();
         }
@@ -330,35 +319,23 @@ namespace PolyDraw
 
         private void LengthRelationButton_Click(object sender, EventArgs e)
         {
-            if(relationCandidate.e1 == null || relationCandidate.e2 == null)
+            if(relationCandidate.Count < 2)
             {
                 return;
             }
-            foreach (var r in relations)
-            {
-                if (r.e1 == relationCandidate.e1 || r.e2 == relationCandidate.e1 || r.e1 == relationCandidate.e2 || r.e2 == relationCandidate.e2)
-                {
-                    return;
-                }
-            }
-            relations.Add(new LengthRelation(relationCandidate.e1, relationCandidate.e2));
+            relations.Add(new LengthRelation(new List<Edge>(relationCandidate)));
+            relationCandidate.Clear();
             MainPictureBox.Invalidate();
         }
 
         private void PerpendicularityRelationButton_Click(object sender, EventArgs e)
         {
-            if (relationCandidate.e1 == null || relationCandidate.e2 == null)
+            if (relationCandidate.Count < 2)
             {
                 return;
             }
-            foreach (var r in relations)
-            {
-                if (r.e1 == relationCandidate.e1 || r.e2 == relationCandidate.e1 || r.e1 == relationCandidate.e2 || r.e2 == relationCandidate.e2)
-                {
-                    return;
-                }
-            }
-            relations.Add(new ParallelityRelation(relationCandidate.e1, relationCandidate.e2));
+            relations.Add(new ParallelityRelation(new List<Edge>(relationCandidate)));
+            relationCandidate.Clear();
             MainPictureBox.Invalidate();
         }
 
@@ -370,9 +347,12 @@ namespace PolyDraw
             }
             for (int i = 0; i < relations.Count; i++)
             {
-                if (relations[i].e1 == selectedEdge || relations[i].e2 == selectedEdge)
+                if (relations[i].edges.Contains(selectedEdge))
                 {
-                    relations[i].e1.relation = relations[i].e2.relation = null;
+                    foreach(var edge in relations[i].edges)
+                    {
+                        edge.relation = null;
+                    }
                     relations.RemoveAt(i);
                 }
             }
@@ -383,8 +363,10 @@ namespace PolyDraw
         {
             foreach (var r in relations)
             {
-                r.e1.relation = null;
-                r.e2.relation = null;
+                foreach (var edge in r.edges)
+                {
+                    edge.relation = null;
+                }
             }
             relations.Clear();
             MainPictureBox.Invalidate();

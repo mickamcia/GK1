@@ -18,16 +18,16 @@ namespace PolyDraw
         }
         public const int radius = 10;
         private static int count = 0;
-        public Edge e1;
-        public Edge e2;
+        public List<Edge> edges;
         public int index;
-        public Relation(Edge e1, Edge e2)
+        public Relation(List<Edge> edges)
         {
             index = count++;
-            this.e1 = e1;
-            this.e2 = e2;
-            e1.relation = this;
-            e2.relation = this;
+            this.edges = edges;
+            foreach(Edge e in edges)
+            {
+                e.relation = this;
+            }
         }
         public abstract void ForceRelation(Vertex v);
         public static void ForceLength(Vertex con, Vertex help, Vertex pivit, Vertex mov)
@@ -58,12 +58,13 @@ namespace PolyDraw
         public void Draw(Bitmap bitmap)
         {
             using Graphics g = Graphics.FromImage(bitmap);
-            PointF p = Tools.EdgeMidPoint(e2);
-            g.FillEllipse(brush, p.X - radius, p.Y - radius, radius * 2, radius * 2);
-            g.DrawString(index.ToString(), new Font("Tahoma", 14), Brushes.Black, p);
-            p = Tools.EdgeMidPoint(e1);
-            g.FillEllipse(brush, p.X - radius, p.Y - radius, radius * 2, radius * 2);
-            g.DrawString(index.ToString(), new Font("Tahoma", 14), Brushes.Black, p);
+            PointF p;
+            foreach(var e in edges)
+            {
+                p = Tools.EdgeMidPoint(e);
+                g.FillEllipse(brush, p.X - radius, p.Y - radius, radius * 2, radius * 2);
+                g.DrawString(index.ToString(), new Font("Tahoma", 14), Brushes.Black, p);
+            }
         }
         public static void ClearNeighbours(List<Relation> relations, Vertex v)
         {
@@ -85,16 +86,11 @@ namespace PolyDraw
             ClearNeighbours(relations, e.v1);
             ClearNeighbours(relations, e.v2);
         }
-        public Vertex GetOppositeVertex(Vertex v)
-        {
-            var e = e1.v1 == v || e1.v2 == v ? e2 : e1;
-            return Tools.PointDistance(e.v1.location, v.location) < Tools.PointDistance(e.v2.location, v.location) ? e.v2 : e.v1;
-        }
     }
     public class LengthRelation : Relation
     {
         public Brush _brush;
-        public LengthRelation(Edge e1, Edge e2) : base(e1, e2)
+        public LengthRelation(List<Edge> edges) : base(edges)
         {
             _brush = new SolidBrush(Color.FromArgb(100, Color.Green));
         }
@@ -103,38 +99,42 @@ namespace PolyDraw
 
         public override void ForceRelation(Vertex con)
         {
-            Vertex help, pivit, mov;
-            if (con == e1.v1)
+            Vertex? help = null;
+            List<Vertex> pivit = new();
+            List<Vertex> mov = new();
+            foreach (Edge e in edges)
             {
-                help = e1.v2;
-                pivit = e2.v1;
-                mov = e2.v2;
+                if (con == e.v1)
+                {
+                    help = e.v2;
+                    pivit = edges.Select(e => e.v1).ToList();
+                    mov = edges.Select(e => e.v2).ToList();
+                    pivit.Remove(con);
+                    mov.Remove(help);
+                }
+                else if (con == e.v2)
+                {
+                    help = e.v1;
+                    pivit = edges.Select(e => e.v2).ToList();
+                    mov = edges.Select(e => e.v1).ToList();
+                    pivit.Remove(con);
+                    mov.Remove(help);
+                }
             }
-            else if (con == e1.v2)
+            if(help == null || pivit.Count != mov.Count)
             {
-                help = e1.v1;
-                pivit = e2.v2;
-                mov = e2.v1;
+                return;
             }
-            else if(con == e2.v1)
+            for (int i = 0; i < pivit.Count; i++)
             {
-                help = e2.v2;
-                pivit = e1.v1;
-                mov = e1.v2;
+                ForceLength(con, help, pivit[i], mov[i]);
             }
-            else
-            {
-                help = e2.v1;
-                pivit = e1.v2;
-                mov = e1.v1;
-            }
-            ForceLength(con, help, pivit, mov);
         }
     }
     public class ParallelityRelation : Relation
     {
         public Brush _brush;
-        public ParallelityRelation(Edge e1, Edge e2) : base(e1, e2)
+        public ParallelityRelation(List<Edge> edges) : base(edges)
         {
             _brush = new SolidBrush(Color.FromArgb(100, Color.Yellow));
         }
@@ -143,32 +143,36 @@ namespace PolyDraw
 
         public override void ForceRelation(Vertex con)
         {
-            Vertex help, pivit, mov;
-            if (con == e1.v1)
+            Vertex? help = null;
+            List<Vertex> pivit = new();
+            List<Vertex> mov = new();
+            foreach (Edge e in edges)
             {
-                help = e1.v2;
-                pivit = e2.v1;
-                mov = e2.v2;
+                if (con == e.v1)
+                {
+                    help = e.v2;
+                    pivit = edges.Select(e => e.v1).ToList();
+                    mov = edges.Select(e => e.v2).ToList();
+                    pivit.Remove(con);
+                    mov.Remove(help);
+                }
+                else if (con == e.v2)
+                {
+                    help = e.v1;
+                    pivit = edges.Select(e => e.v2).ToList();
+                    mov = edges.Select(e => e.v1).ToList();
+                    pivit.Remove(con);
+                    mov.Remove(help);
+                }
             }
-            else if (con == e1.v2)
+            if (help == null || pivit.Count != mov.Count)
             {
-                help = e1.v1;
-                pivit = e2.v2;
-                mov = e2.v1;
+                return;
             }
-            else if (con == e2.v1)
+            for (int i = 0; i < pivit.Count; i++)
             {
-                help = e2.v2;
-                pivit = e1.v1;
-                mov = e1.v2;
+                ForceAngle(con, help, pivit[i], mov[i]);
             }
-            else
-            {
-                help = e2.v1;
-                pivit = e1.v2;
-                mov = e1.v1;
-            }
-            ForceAngle(con, help, pivit, mov);
         }
     }
 }
