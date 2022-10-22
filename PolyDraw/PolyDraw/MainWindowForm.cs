@@ -186,7 +186,6 @@ namespace PolyDraw
                 {
                     selectedVertex.location.X += e.X - mouse.X;
                     selectedVertex.location.Y += e.Y - mouse.Y;
-                    selectedVertex.fix = true;
                     int index = selectedVertex.parent.vertices.IndexOf(selectedVertex);
                     int count = selectedVertex.parent.edges.Count;
                     selectedVertex.parent.edges[index].relation?.ForceRelation(selectedVertex);
@@ -198,8 +197,6 @@ namespace PolyDraw
                     selectedEdge.v1.location.Y += e.Y - mouse.Y;
                     selectedEdge.v2.location.X += e.X - mouse.X;
                     selectedEdge.v2.location.Y += e.Y - mouse.Y;
-                    selectedEdge.v1.fix = true;
-                    selectedEdge.v2.fix = true;
                     int index = selectedEdge.parent.edges.IndexOf(selectedEdge);
                     int count = selectedEdge.parent.edges.Count;
                     selectedEdge.parent.edges[(index + 1) % count].relation?.ForceRelation(selectedEdge.parent.vertices[(index + 1) % count]);
