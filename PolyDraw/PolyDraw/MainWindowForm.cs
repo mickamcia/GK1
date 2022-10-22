@@ -22,23 +22,7 @@ namespace PolyDraw
             random = new(DateTime.Now.Millisecond);
             mouse = new PointF(0, 0);
             relations = new List<Relation>();
-            for(int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    polygons.Add(new Polygon(new PointF(100 + 200 * i, 100 + 200 * j), 80, 6));
-                }
-            }
-            var e1 = new List<Edge>();
-            var e2 = new List<Edge>();
-            foreach (var p in polygons)
-            {
-                e1.Add(p.edges[0]);
-                e1.Add(p.edges[3]);
-                e2.Add(p.edges[2]);
-            }
-            relations.Add(new LengthRelation(e1));
-            relations.Add(new ParallelityRelation(e2));
+            StandardInitialLayout();
         }
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
@@ -307,6 +291,7 @@ namespace PolyDraw
             {
                 LengthRelationButton.Enabled = relationCandidate.Count >= 2;
                 ParallelityRelationButton.Enabled = relationCandidate.Count >= 2;
+                CompleteRelationButton.Enabled = relationCandidate.Count >= 2;
             }
         }
 
@@ -341,13 +326,24 @@ namespace PolyDraw
             MainPictureBox.Invalidate();
         }
 
-        private void PerpendicularityRelationButton_Click(object sender, EventArgs e)
+        private void ParallelityRelationButton_Click(object sender, EventArgs e)
         {
             if (relationCandidate.Count < 2)
             {
                 return;
             }
             relations.Add(new ParallelityRelation(new List<Edge>(relationCandidate)));
+            relationCandidate.Clear();
+            MainPictureBox.Invalidate();
+        }
+
+        private void CompleteRelationButton_Click(object sender, EventArgs e)
+        {
+            if (relationCandidate.Count < 2)
+            {
+                return;
+            }
+            relations.Add(new CompleteRelation(new List<Edge>(relationCandidate)));
             relationCandidate.Clear();
             MainPictureBox.Invalidate();
         }
@@ -383,6 +379,28 @@ namespace PolyDraw
             }
             relations.Clear();
             MainPictureBox.Invalidate();
+        }
+        private void StandardInitialLayout()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    polygons.Add(new Polygon(new PointF(100 + 200 * i, 100 + 200 * j), 80, 6));
+                }
+            }
+            var e1 = new List<Edge>();
+            var e2 = new List<Edge>();
+            var e3 = new List<Edge>();
+            foreach (var p in polygons)
+            {
+                e1.Add(p.edges[0]);
+                e2.Add(p.edges[2]);
+                e3.Add(p.edges[4]);
+            }
+            relations.Add(new LengthRelation(e1));
+            relations.Add(new ParallelityRelation(e2));
+            relations.Add(new CompleteRelation(e3));
         }
     }
 }

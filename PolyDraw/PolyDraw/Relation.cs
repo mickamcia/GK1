@@ -29,7 +29,7 @@ namespace PolyDraw
                 e.relation = this;
             }
         }
-        public abstract void ForceRelation(Vertex v);
+        public abstract void ForceRelation(Vertex con);
         public static void ForceLength(Vertex con, Vertex help, Vertex pivit, Vertex mov)
         {
             double scale = Tools.PointDistance(con.location, help.location) / Tools.PointDistance(pivit.location, mov.location);
@@ -172,6 +172,50 @@ namespace PolyDraw
             for (int i = 0; i < pivit.Count; i++)
             {
                 ForceAngle(con, help, pivit[i], mov[i]);
+            }
+        }
+    }
+    public class CompleteRelation : Relation
+    {
+        public Brush _brush;
+        public CompleteRelation(List<Edge> edges) : base(edges)
+        {
+            _brush = new SolidBrush(Color.FromArgb(100, Color.Red));
+        }
+
+        public override Brush brush => _brush;
+
+        public override void ForceRelation(Vertex con)
+        {
+            Vertex? help = null;
+            List<Vertex> pivit = new();
+            List<Vertex> mov = new();
+            foreach (Edge e in edges)
+            {
+                if (con == e.v1)
+                {
+                    help = e.v2;
+                    pivit = edges.Select(e => e.v1).ToList();
+                    mov = edges.Select(e => e.v2).ToList();
+                    pivit.Remove(con);
+                    mov.Remove(help);
+                }
+                else if (con == e.v2)
+                {
+                    help = e.v1;
+                    pivit = edges.Select(e => e.v2).ToList();
+                    mov = edges.Select(e => e.v1).ToList();
+                    pivit.Remove(con);
+                    mov.Remove(help);
+                }
+            }
+            if (help == null || pivit.Count != mov.Count)
+            {
+                return;
+            }
+            for (int i = 0; i < pivit.Count; i++)
+            {
+                ForceMirror(con, help, pivit[i], mov[i]);
             }
         }
     }
