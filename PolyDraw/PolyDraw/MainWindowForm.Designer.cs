@@ -30,6 +30,7 @@
         {
             this.MainPictureBox = new System.Windows.Forms.PictureBox();
             this.ControlsGroupBox = new System.Windows.Forms.GroupBox();
+            this.LineThicknessTrackBar = new System.Windows.Forms.TrackBar();
             this.RelationControls = new System.Windows.Forms.TableLayoutPanel();
             this.LengthRelationButton = new System.Windows.Forms.Button();
             this.ParallelityRelationButton = new System.Windows.Forms.Button();
@@ -50,8 +51,10 @@
             this.LineControls = new System.Windows.Forms.TableLayoutPanel();
             this.BresenhamLine = new System.Windows.Forms.RadioButton();
             this.BuildInLine = new System.Windows.Forms.RadioButton();
+            this.WuLine = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.ControlsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LineThicknessTrackBar)).BeginInit();
             this.RelationControls.SuspendLayout();
             this.ButtonControls.SuspendLayout();
             this.BasicControls.SuspendLayout();
@@ -66,12 +69,14 @@
             this.MainPictureBox.Size = new System.Drawing.Size(800, 800);
             this.MainPictureBox.TabIndex = 0;
             this.MainPictureBox.TabStop = false;
+            this.MainPictureBox.Click += new System.EventHandler(this.MainPictureBox_Click);
             this.MainPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.MainPictureBox_Paint);
             this.MainPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainPictureBox_MouseDown);
             this.MainPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainPictureBox_MouseMove);
             // 
             // ControlsGroupBox
             // 
+            this.ControlsGroupBox.Controls.Add(this.LineThicknessTrackBar);
             this.ControlsGroupBox.Controls.Add(this.RelationControls);
             this.ControlsGroupBox.Controls.Add(this.ButtonControls);
             this.ControlsGroupBox.Controls.Add(this.BasicControls);
@@ -83,6 +88,20 @@
             this.ControlsGroupBox.TabIndex = 1;
             this.ControlsGroupBox.TabStop = false;
             this.ControlsGroupBox.Text = "Controls";
+            // 
+            // LineThicknessTrackBar
+            // 
+            this.LineThicknessTrackBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.LineThicknessTrackBar.LargeChange = 2;
+            this.LineThicknessTrackBar.Location = new System.Drawing.Point(3, 398);
+            this.LineThicknessTrackBar.Maximum = 13;
+            this.LineThicknessTrackBar.Minimum = 1;
+            this.LineThicknessTrackBar.Name = "LineThicknessTrackBar";
+            this.LineThicknessTrackBar.Size = new System.Drawing.Size(194, 45);
+            this.LineThicknessTrackBar.SmallChange = 2;
+            this.LineThicknessTrackBar.TabIndex = 6;
+            this.LineThicknessTrackBar.Value = 1;
+            this.LineThicknessTrackBar.Scroll += new System.EventHandler(this.LineThicknessTrackBar_Scroll);
             // 
             // RelationControls
             // 
@@ -178,7 +197,7 @@
             this.ButtonControls.Controls.Add(this.DivideEdgeButton, 0, 2);
             this.ButtonControls.Controls.Add(this.RandomPolygonButton, 1, 2);
             this.ButtonControls.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonControls.Location = new System.Drawing.Point(3, 475);
+            this.ButtonControls.Location = new System.Drawing.Point(3, 443);
             this.ButtonControls.Name = "ButtonControls";
             this.ButtonControls.RowCount = 3;
             this.ButtonControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -315,13 +334,15 @@
             this.LineControls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.LineControls.Controls.Add(this.BresenhamLine, 0, 0);
             this.LineControls.Controls.Add(this.BuildInLine, 0, 1);
+            this.LineControls.Controls.Add(this.WuLine, 0, 2);
             this.LineControls.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.LineControls.Location = new System.Drawing.Point(3, 697);
+            this.LineControls.Location = new System.Drawing.Point(3, 665);
             this.LineControls.Name = "LineControls";
-            this.LineControls.RowCount = 2;
+            this.LineControls.RowCount = 3;
             this.LineControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.LineControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LineControls.Size = new System.Drawing.Size(194, 100);
+            this.LineControls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LineControls.Size = new System.Drawing.Size(194, 132);
             this.LineControls.TabIndex = 2;
             // 
             // BresenhamLine
@@ -330,7 +351,7 @@
             this.BresenhamLine.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BresenhamLine.Location = new System.Drawing.Point(3, 3);
             this.BresenhamLine.Name = "BresenhamLine";
-            this.BresenhamLine.Size = new System.Drawing.Size(188, 44);
+            this.BresenhamLine.Size = new System.Drawing.Size(188, 38);
             this.BresenhamLine.TabIndex = 1;
             this.BresenhamLine.Text = "Bresenham\'s Line Algorithm";
             this.BresenhamLine.UseVisualStyleBackColor = true;
@@ -341,13 +362,26 @@
             this.BuildInLine.AutoSize = true;
             this.BuildInLine.Checked = true;
             this.BuildInLine.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BuildInLine.Location = new System.Drawing.Point(3, 53);
+            this.BuildInLine.Location = new System.Drawing.Point(3, 47);
             this.BuildInLine.Name = "BuildInLine";
-            this.BuildInLine.Size = new System.Drawing.Size(188, 44);
+            this.BuildInLine.Size = new System.Drawing.Size(188, 38);
             this.BuildInLine.TabIndex = 0;
             this.BuildInLine.TabStop = true;
             this.BuildInLine.Text = "Build-In Line Algorithm";
             this.BuildInLine.UseVisualStyleBackColor = true;
+            // 
+            // WuLine
+            // 
+            this.WuLine.AutoSize = true;
+            this.WuLine.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WuLine.Location = new System.Drawing.Point(3, 91);
+            this.WuLine.Name = "WuLine";
+            this.WuLine.Size = new System.Drawing.Size(188, 38);
+            this.WuLine.TabIndex = 2;
+            this.WuLine.TabStop = true;
+            this.WuLine.Text = "Wu Line Algorithm";
+            this.WuLine.UseVisualStyleBackColor = true;
+            this.WuLine.CheckedChanged += new System.EventHandler(this.WuLine_CheckedChanged);
             // 
             // MainWindowForm
             // 
@@ -363,6 +397,8 @@
             this.Text = "PolyDraw";
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
             this.ControlsGroupBox.ResumeLayout(false);
+            this.ControlsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LineThicknessTrackBar)).EndInit();
             this.RelationControls.ResumeLayout(false);
             this.ButtonControls.ResumeLayout(false);
             this.BasicControls.ResumeLayout(false);
@@ -397,5 +433,7 @@
         private Button RemoveRelationButton;
         private Button ClearRelationsButton;
         private Button CompleteRelationButton;
+        private RadioButton WuLine;
+        private TrackBar LineThicknessTrackBar;
     }
 }

@@ -2,6 +2,12 @@ using System.Drawing;
 
 namespace PolyDraw
 {
+    public enum LineType
+    {
+        Standard,
+        Bresenham,
+        Wu
+    }
     public partial class MainWindowForm : Form
     {
         public Random random;
@@ -24,6 +30,16 @@ namespace PolyDraw
             relations = new List<Relation>();
             StandardInitialLayout();
         }
+        private LineType GetLineType()
+        {
+            if (BresenhamLine.Checked) return LineType.Bresenham;
+            if (WuLine.Checked) return LineType.Wu;
+            return LineType.Standard;
+        }
+        private int GetLineThickness()
+        {
+            return LineThicknessTrackBar.Value;
+        }
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
         {
@@ -31,18 +47,18 @@ namespace PolyDraw
             g.Clear(Color.White);
             foreach (var p in polygons)
             {
-                p.Draw(bitmap, Color.Black, BresenhamLine.Checked);
+                p.Draw(bitmap, Color.Black, GetLineType(), GetLineThickness());
             }
             foreach (var r in relations)
             {
                 r.Draw(bitmap);
             }
-            selectedEdge?.Draw(bitmap, Color.Red, BresenhamLine.Checked);
-            selectedPolygon?.Draw(bitmap, Color.Red, BresenhamLine.Checked);
+            selectedEdge?.Draw(bitmap, Color.Red, GetLineType(), GetLineThickness());
+            selectedPolygon?.Draw(bitmap, Color.Red, GetLineType(), GetLineThickness());
             selectedVertex?.Draw(bitmap, Color.Red);
             foreach (var p in relationCandidate)
             {
-                p.Draw(bitmap, Color.LightBlue, BresenhamLine.Checked);
+                p.Draw(bitmap, Color.LightBlue, GetLineType(), GetLineThickness());
             }
             e.Graphics.DrawImage(bitmap, 0, 0);
             UpdateButtons();
@@ -401,6 +417,21 @@ namespace PolyDraw
             relations.Add(new LengthRelation(e1));
             relations.Add(new ParallelityRelation(e2));
             relations.Add(new CompleteRelation(e3));
+        }
+
+        private void MainPictureBox_Click(object sender, EventArgs e)
+        {
+            MainPictureBox.Invalidate();
+        }
+
+        private void LineThicknessTrackBar_Scroll(object sender, EventArgs e)
+        {
+            MainPictureBox.Invalidate();
+        }
+
+        private void WuLine_CheckedChanged(object sender, EventArgs e)
+        {
+            MainPictureBox.Invalidate();
         }
     }
 }
