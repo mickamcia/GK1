@@ -1,0 +1,16 @@
+instrukcja
+	create new polygon:
+	LPM: dodawanie nowego wierzchołka do tworzonego wielokąta
+	PPM: zakończenie tworzenia wielokąta
+	move existing objects:
+	PPM: zaznaczenie/odznaczenie wierzchołka/krawędzi/wielokąta
+	LPM: przyciśnięcie i przeciągnięcie: przesunięcie zaznaczonego obiektu
+	manage relations:
+	LPM: wybieranie zbioru prostych do relacji
+	PPM: zaznaczenie/odznaczenie prostej i wyczyszczenie zbioru krawędzi wybieranych jak wyżej
+	
+relacje:
+	parallelity: zachowuje równoległość(kąt nachylenia) dla każdej prostej wewnątrz danej relacji
+	length: zachowuje długość dla każdej prostej wewnątrz danej relacji
+	length and parallelity: połączenie
+	
