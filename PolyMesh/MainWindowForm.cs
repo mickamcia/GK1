@@ -9,7 +9,7 @@ namespace PolyMesh
         public Bitmap bits;
         const int size = 800;
         const int scale = 400;
-        public static Vertex source = new Vertex(0,0,0);
+        public static Vertex source = new Vertex(size / 2, size / 2, size / 2);
         public static Random rnd = new();
         public MainWindowForm()
         {
@@ -59,19 +59,19 @@ namespace PolyMesh
 
         private void LightSourceXTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.x = LightSourceXTrackBar.Value;
+            source.x = LightSourceXTrackBar.Value + size / 2;
             MainPictureBox.Invalidate();
         }
 
         private void LightSourceYTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.y = LightSourceYTrackBar.Value;
+            source.y = LightSourceYTrackBar.Value + size / 2;
             MainPictureBox.Invalidate();
         }
 
         private void LightSourceZTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.z = LightSourceZTrackBar.Value;
+            source.z = LightSourceZTrackBar.Value + size / 2;
             MainPictureBox.Invalidate();
         }
     }
