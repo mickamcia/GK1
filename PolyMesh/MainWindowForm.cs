@@ -1,38 +1,35 @@
 using System.Drawing;
+using System.Numerics;
 
 namespace PolyMesh
 {
     public partial class MainWindowForm : Form
     {
-        const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphere.obj";
+        //const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphere.obj";
+        const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         public readonly Model model;
         public Bitmap bits;
-        const int size = 800;
-        const int scale = 400;
-        public static Vertex source = new Vertex(size / 2, size / 2, size / 2);
+        public const int size = 800;
+        public const int scale = 300;
+        public static Vector3 source = new Vector3(size / 2, size / 2, size / 2);
         public static Random rnd = new();
         public MainWindowForm()
         {
             InitializeComponent();
 
             model = Parser.ParseModel(path);
-            foreach (var v in model.vertices)
-            {
-                v.x = v.x * scale + size / 2;
-                v.y = v.y * scale + size / 2;
-                v.z = v.z * scale + size / 2;
-            }
             bits = new(size, size);
             MainPictureBox.Invalidate();
         }
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
         {
+            _ = model;
             using var g = Graphics.FromImage(bits);
             g.Clear(Color.White);
             foreach (var v in model.vertices)
             {
-                bits.SetPixel((int)v.x, (int)v.y, Color.Black);
+                bits.SetPixel((int)v.X, (int)v.Y, Color.Black);
             }
             /*
             foreach (var t in model.triangles)
@@ -59,19 +56,19 @@ namespace PolyMesh
 
         private void LightSourceXTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.x = LightSourceXTrackBar.Value + size / 2;
+            source.X = LightSourceXTrackBar.Value + size / 2;
             MainPictureBox.Invalidate();
         }
 
         private void LightSourceYTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.y = LightSourceYTrackBar.Value + size / 2;
+            source.Y = LightSourceYTrackBar.Value + size / 2;
             MainPictureBox.Invalidate();
         }
 
         private void LightSourceZTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.z = LightSourceZTrackBar.Value + size / 2;
+            source.Z = LightSourceZTrackBar.Value + size / 2;
             MainPictureBox.Invalidate();
         }
     }
