@@ -34,6 +34,7 @@
             this.LightSourceZTrackBar = new System.Windows.Forms.TrackBar();
             this.LightSourceYTrackBar = new System.Windows.Forms.TrackBar();
             this.LightSourceXTrackBar = new System.Windows.Forms.TrackBar();
+            this.DrawEdgesCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.MainGroupBox.SuspendLayout();
             this.LightSourceControlGroupBox.SuspendLayout();
@@ -54,6 +55,7 @@
             // 
             // MainGroupBox
             // 
+            this.MainGroupBox.Controls.Add(this.DrawEdgesCheckBox);
             this.MainGroupBox.Controls.Add(this.LightSourceControlGroupBox);
             this.MainGroupBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.MainGroupBox.Location = new System.Drawing.Point(806, 0);
@@ -112,6 +114,18 @@
             this.LightSourceXTrackBar.TabIndex = 0;
             this.LightSourceXTrackBar.Scroll += new System.EventHandler(this.LightSourceXTrackBar_Scroll);
             // 
+            // DrawEdgesCheckBox
+            // 
+            this.DrawEdgesCheckBox.AutoSize = true;
+            this.DrawEdgesCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DrawEdgesCheckBox.Location = new System.Drawing.Point(3, 284);
+            this.DrawEdgesCheckBox.Name = "DrawEdgesCheckBox";
+            this.DrawEdgesCheckBox.Size = new System.Drawing.Size(194, 19);
+            this.DrawEdgesCheckBox.TabIndex = 1;
+            this.DrawEdgesCheckBox.Text = "Draw Edges";
+            this.DrawEdgesCheckBox.UseVisualStyleBackColor = true;
+            this.DrawEdgesCheckBox.CheckedChanged += new System.EventHandler(this.DrawEdgesCheckBox_CheckedChanged);
+            // 
             // MainWindowForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -126,6 +140,7 @@
             this.Text = "PolyMesh";
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
             this.MainGroupBox.ResumeLayout(false);
+            this.MainGroupBox.PerformLayout();
             this.LightSourceControlGroupBox.ResumeLayout(false);
             this.LightSourceControlGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LightSourceZTrackBar)).EndInit();
@@ -143,5 +158,6 @@
         private TrackBar LightSourceZTrackBar;
         private TrackBar LightSourceYTrackBar;
         private TrackBar LightSourceXTrackBar;
+        private CheckBox DrawEdgesCheckBox;
     }
 }

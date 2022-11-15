@@ -5,20 +5,20 @@ namespace PolyMesh
 {
     public partial class MainWindowForm : Form
     {
-        //const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphere.obj";
-        const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphere.obj";
+        //const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         public readonly Model model;
-        public Bitmap bits;
-        public const int size = 800;
-        public const int scale = 300;
-        public static Vector3 source = new Vector3(size / 2, size / 2, size / 2);
+        public readonly Bitmap bits;
+        public const int bitmapSize = 800;
+        public const int modelScale = 300;
+        public static Vector3 LightSource = new Vector3(bitmapSize / 2, bitmapSize / 2, bitmapSize / 2);
         public static Random rnd = new();
         public MainWindowForm()
         {
             InitializeComponent();
 
             model = Parser.ParseModel(path);
-            bits = new(size, size);
+            bits = new(bitmapSize, bitmapSize);
             MainPictureBox.Invalidate();
         }
 
@@ -27,48 +27,44 @@ namespace PolyMesh
             _ = model;
             using var g = Graphics.FromImage(bits);
             g.Clear(Color.White);
-            foreach (var v in model.vertices)
-            {
-                bits.SetPixel((int)v.X, (int)v.Y, Color.Black);
-            }
-            /*
             foreach (var t in model.triangles)
             {
-                g.DrawLine(Pens.Black, (int)t.vertices[0].x, (int)t.vertices[0].y, (int)t.vertices[1].x, (int)t.vertices[1].y);
-                g.DrawLine(Pens.Black, (int)t.vertices[1].x, (int)t.vertices[1].y, (int)t.vertices[2].x, (int)t.vertices[2].y);
-                g.DrawLine(Pens.Black, (int)t.vertices[2].x, (int)t.vertices[2].y, (int)t.vertices[0].x, (int)t.vertices[0].y);
-            }
-            */
-            foreach (var t in model.triangles)
-            {
-                var color = Geometry.GetColor(source, t.vertices[0], t.normals[0],source);
+                var color = Geometry.GetColor(LightSource - t.vertices[0], t.normals[0]);
+                //color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                 t.PaintOld(bits, color);
             }
-            /*
-            var t = model.triangles[40];
-            t.Paint(bits);
-            g.DrawLine(Pens.Black, (int)t.vertices[0].x, (int)t.vertices[0].y, (int)t.vertices[1].x, (int)t.vertices[1].y);
-            g.DrawLine(Pens.Black, (int)t.vertices[1].x, (int)t.vertices[1].y, (int)t.vertices[2].x, (int)t.vertices[2].y);
-            g.DrawLine(Pens.Black, (int)t.vertices[2].x, (int)t.vertices[2].y, (int)t.vertices[0].x, (int)t.vertices[0].y);
-            */
+            if (DrawEdgesCheckBox.Checked)
+            {
+                foreach (var t in model.triangles)
+                {
+                    g.DrawLine(Pens.Black, (int)t.vertices[0].X, (int)t.vertices[0].Y, (int)t.vertices[1].X, (int)t.vertices[1].Y);
+                    g.DrawLine(Pens.Black, (int)t.vertices[1].X, (int)t.vertices[1].Y, (int)t.vertices[2].X, (int)t.vertices[2].Y);
+                    g.DrawLine(Pens.Black, (int)t.vertices[2].X, (int)t.vertices[2].Y, (int)t.vertices[0].X, (int)t.vertices[0].Y);
+                }
+            }
             e.Graphics.DrawImage(bits, 0, 0);
         }
 
         private void LightSourceXTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.X = LightSourceXTrackBar.Value + size / 2;
+            LightSource.X = LightSourceXTrackBar.Value + bitmapSize / 2;
             MainPictureBox.Invalidate();
         }
 
         private void LightSourceYTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.Y = LightSourceYTrackBar.Value + size / 2;
+            LightSource.Y = LightSourceYTrackBar.Value + bitmapSize / 2;
             MainPictureBox.Invalidate();
         }
 
         private void LightSourceZTrackBar_Scroll(object sender, EventArgs e)
         {
-            source.Z = LightSourceZTrackBar.Value + size / 2;
+            LightSource.Z = LightSourceZTrackBar.Value + bitmapSize / 2;
+            MainPictureBox.Invalidate();
+        }
+
+        private void DrawEdgesCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
             MainPictureBox.Invalidate();
         }
     }

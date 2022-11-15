@@ -20,10 +20,11 @@ namespace PolyMesh
             while ((line = streamReader.ReadLine()) != null)
             {
                 string[] parts = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 0) continue;
                 switch (parts[0])
                 {
                     case "v":
-                        model.vertices.Add(new Vector3((float)Convert.ToDouble(parts[1]) * MainWindowForm.scale + MainWindowForm.size / 2, (float)Convert.ToDouble(parts[2]) * MainWindowForm.scale + MainWindowForm.size / 2, (float)Convert.ToDouble(parts[3]) * MainWindowForm.scale + MainWindowForm.size / 2));
+                        model.vertices.Add(new Vector3((float)Convert.ToDouble(parts[1]) * MainWindowForm.modelScale + MainWindowForm.bitmapSize / 2, (float)Convert.ToDouble(parts[2]) * MainWindowForm.modelScale + MainWindowForm.bitmapSize / 2, (float)Convert.ToDouble(parts[3]) * MainWindowForm.modelScale + MainWindowForm.bitmapSize / 2));
                         break;
                     case "vn":
                         model.normals.Add(new Vector3((float)Convert.ToDouble(parts[1]), (float)Convert.ToDouble(parts[2]), (float)Convert.ToDouble(parts[3])));
