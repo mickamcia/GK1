@@ -1,25 +1,41 @@
+using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
+using System.Timers;
 
 namespace PolyMesh
 {
     public partial class MainWindowForm : Form
     {
-        const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphere.obj";
-        //const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         public readonly Model model;
         public readonly Bitmap bits;
-        public const int bitmapSize = 800;
-        public const int modelScale = 300;
-        public static Vector3 LightSource = new Vector3(bitmapSize / 2, bitmapSize / 2, bitmapSize / 2);
-        public static Random rnd = new();
+        private Thread thread;
+        private static ManualResetEvent mre = new ManualResetEvent(false);
+
+
         public MainWindowForm()
         {
             InitializeComponent();
 
-            model = Parser.ParseModel(path);
-            bits = new(bitmapSize, bitmapSize);
+            model = Parser.ParseModel(Settings.path);
+            bits = new(Settings.bitmapSize, Settings.bitmapSize);
             MainPictureBox.Invalidate();
+            thread = new Thread(MainLoop);
+            thread.Start();
+        }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            thread.Interrupt();
+            base.OnFormClosing(e);
+        }
+        private void MainLoop()
+        {
+            while (true)
+            {
+                mre.WaitOne();
+                System.Threading.Thread.Sleep(10);
+                MainPictureBox.Invalidate();
+            }
         }
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
@@ -29,9 +45,9 @@ namespace PolyMesh
             g.Clear(Color.White);
             foreach (var t in model.triangles)
             {
-                var color = Geometry.GetColor(LightSource - t.vertices[0], t.normals[0]);
-                //color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-                t.PaintOld(bits, color);
+                var ls = Geometry.GetLightVector((float)Settings.stopwatch.ElapsedMilliseconds / 1000);
+                var color = Geometry.GetColor(ls - t.vertices[0], t.normals[0]);
+                t.Paint(bits, color);
             }
             if (DrawEdgesCheckBox.Checked)
             {
@@ -45,26 +61,58 @@ namespace PolyMesh
             e.Graphics.DrawImage(bits, 0, 0);
         }
 
-        private void LightSourceXTrackBar_Scroll(object sender, EventArgs e)
-        {
-            LightSource.X = LightSourceXTrackBar.Value + bitmapSize / 2;
-            MainPictureBox.Invalidate();
-        }
-
-        private void LightSourceYTrackBar_Scroll(object sender, EventArgs e)
-        {
-            LightSource.Y = LightSourceYTrackBar.Value + bitmapSize / 2;
-            MainPictureBox.Invalidate();
-        }
-
         private void LightSourceZTrackBar_Scroll(object sender, EventArgs e)
         {
-            LightSource.Z = LightSourceZTrackBar.Value + bitmapSize / 2;
+            Geometry.Z = LightSourceZTrackBar.Value + Settings.bitmapSize / 2;
             MainPictureBox.Invalidate();
         }
 
         private void DrawEdgesCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            MainPictureBox.Invalidate();
+        }
+
+        private void LightSourceColorButton_Click(object sender, EventArgs e)
+        {
+            LightSourceStopCheckBox.Checked = true;
+            LightSourceColorDialog.ShowDialog();
+            Geometry.il = LightSourceColorDialog.Color;
+            colorLabel.BackColor = LightSourceColorDialog.Color;
+            MainPictureBox.Invalidate();
+        }
+
+        private void mTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            Geometry.m = mTrackBar.Value;
+            mLabel.Text = "m = " + mTrackBar.Value.ToString();
+            MainPictureBox.Invalidate();
+        }
+
+        private void ksTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            Geometry.ks = (double)ksTrackBar.Value / ksTrackBar.Maximum;
+            ksLabel.Text = "ks = " + ((double)ksTrackBar.Value / ksTrackBar.Maximum).ToString();
+            MainPictureBox.Invalidate();
+        }
+
+        private void kdTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            Geometry.kd = (double)kdTrackBar.Value / kdTrackBar.Maximum;
+            kdLabel.Text = "kd = " + ((double)kdTrackBar.Value / kdTrackBar.Maximum).ToString();
+            MainPictureBox.Invalidate();
+        }
+        private void LightSourceStopTextBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LightSourceStopCheckBox.Checked)
+            {
+                Settings.stopwatch.Stop();
+                mre.Reset();
+            }
+            else
+            {
+                Settings.stopwatch.Start();
+                mre.Set();
+            }
             MainPictureBox.Invalidate();
         }
     }

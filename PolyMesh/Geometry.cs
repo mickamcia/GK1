@@ -13,8 +13,14 @@ namespace PolyMesh
         public static double kd = 1;
         public static double ks = 1;
         public static Color il = Color.FromArgb(255,255,255);
-        public static Color io = Color.Red;
-        public static int m = 10;
+        public static Color io = Color.Blue;
+        public static int m = 20;
+        public static float Z = 500 + Settings.bitmapSize / 2;
+        private static Vector3 startLight = new Vector3(Settings.bitmapSize / 2, Settings.bitmapSize / 2, Settings.bitmapSize / 2);
+        public static Vector3 GetLightVector(float span)
+        {
+            return new Vector3(startLight.X * ((float)Math.Sin(span) + 1), startLight.X * ((float)Math.Cos(span) + 1), Z);
+        }
         public static Color GetColor(Vector3 source, Vector3 normal)
         {
             var R = normal * (float)ScalarProductNormalised(source, normal) * 2 - source;
