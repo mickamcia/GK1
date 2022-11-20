@@ -19,7 +19,7 @@ namespace PolyMesh
         private static Vector3 startLight = new Vector3(Settings.bitmapSize / 2, Settings.bitmapSize / 2, Settings.bitmapSize / 2);
         public static Vector3 GetLightVector(float span)
         {
-            return new Vector3(startLight.X * ((float)Math.Sin(span) + 1), startLight.X * ((float)Math.Cos(span) + 1), Z);
+            return new Vector3(startLight.X + (float)(Math.Sin(span) * Math.Sin(span / 5) * startLight.X), startLight.X + (float)(Math.Cos(span) * Math.Sin(span / 5) * startLight.X), Z);
         }
         public static Color GetColor(Vector3 source, Vector3 normal)
         {

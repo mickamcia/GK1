@@ -45,17 +45,15 @@ namespace PolyMesh
             g.Clear(Color.White);
             foreach (var t in model.triangles)
             {
-                var ls = Geometry.GetLightVector((float)Settings.stopwatch.ElapsedMilliseconds / 1000);
-                var color = Geometry.GetColor(ls - t.vertices[0], t.normals[0]);
-                t.Paint(bits, color);
+                t.Paint(bits);
             }
             if (DrawEdgesCheckBox.Checked)
             {
                 foreach (var t in model.triangles)
                 {
-                    g.DrawLine(Pens.Black, (int)t.vertices[0].X, (int)t.vertices[0].Y, (int)t.vertices[1].X, (int)t.vertices[1].Y);
-                    g.DrawLine(Pens.Black, (int)t.vertices[1].X, (int)t.vertices[1].Y, (int)t.vertices[2].X, (int)t.vertices[2].Y);
-                    g.DrawLine(Pens.Black, (int)t.vertices[2].X, (int)t.vertices[2].Y, (int)t.vertices[0].X, (int)t.vertices[0].Y);
+                    g.DrawLine(Pens.Black, (int)t.vertices[0].position.X, (int)t.vertices[0].position.Y, (int)t.vertices[1].position.X, (int)t.vertices[1].position.Y);
+                    g.DrawLine(Pens.Black, (int)t.vertices[1].position.X, (int)t.vertices[1].position.Y, (int)t.vertices[2].position.X, (int)t.vertices[2].position.Y);
+                    g.DrawLine(Pens.Black, (int)t.vertices[2].position.X, (int)t.vertices[2].position.Y, (int)t.vertices[0].position.X, (int)t.vertices[0].position.Y);
                 }
             }
             e.Graphics.DrawImage(bits, 0, 0);
