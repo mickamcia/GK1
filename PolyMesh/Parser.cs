@@ -27,7 +27,14 @@ namespace PolyMesh
                         model.vertices.Add(new Vector3((float)Convert.ToDouble(parts[1]) * Settings.modelScale + Settings.bitmapSize / 2, (float)Convert.ToDouble(parts[2]) * Settings.modelScale + Settings.bitmapSize / 2, (float)Convert.ToDouble(parts[3]) * Settings.modelScale + Settings.bitmapSize / 2));
                         break;
                     case "vn":
-                        model.normals.Add(new Vector3((float)Convert.ToDouble(parts[1]), (float)Convert.ToDouble(parts[2]), (float)Convert.ToDouble(parts[3])));
+                        if ((float)Convert.ToDouble(parts[3]) < 0)
+                        {
+                            model.normals.Add(new Vector3(-(float)Convert.ToDouble(parts[1]), -(float)Convert.ToDouble(parts[2]), -(float)Convert.ToDouble(parts[3])));
+                        }
+                        else
+                        {
+                            model.normals.Add(new Vector3((float)Convert.ToDouble(parts[1]), (float)Convert.ToDouble(parts[2]), (float)Convert.ToDouble(parts[3])));
+                        }
                         break;
                     case "f":
                         if (parts.Length == 7)

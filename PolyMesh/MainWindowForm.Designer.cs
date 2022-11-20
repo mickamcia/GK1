@@ -31,28 +31,35 @@
             this.MainPictureBox = new System.Windows.Forms.PictureBox();
             this.MainGroupBox = new System.Windows.Forms.GroupBox();
             this.ParamsGroupBox = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ParametersLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.LightSourceColorButton = new System.Windows.Forms.Button();
             this.mTrackBar = new System.Windows.Forms.TrackBar();
             this.mLabel = new System.Windows.Forms.Label();
-            this.colorLabel = new System.Windows.Forms.Label();
+            this.LightColorLabel = new System.Windows.Forms.Label();
             this.ksLabel = new System.Windows.Forms.Label();
             this.kdLabel = new System.Windows.Forms.Label();
             this.ksTrackBar = new System.Windows.Forms.TrackBar();
             this.kdTrackBar = new System.Windows.Forms.TrackBar();
-            this.DrawEdgesCheckBox = new System.Windows.Forms.CheckBox();
-            this.LightSourceControlGroupBox = new System.Windows.Forms.GroupBox();
+            this.ObjectColorButton = new System.Windows.Forms.Button();
+            this.ObjectColorLabel = new System.Windows.Forms.Label();
+            this.OptionsGroupBox = new System.Windows.Forms.GroupBox();
+            this.OptionsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.LightSourceStopCheckBox = new System.Windows.Forms.CheckBox();
             this.LightSourceZTrackBar = new System.Windows.Forms.TrackBar();
-            this.LightSourceColorDialog = new System.Windows.Forms.ColorDialog();
+            this.DrawEdgesCheckBox = new System.Windows.Forms.CheckBox();
+            this.NormalInterpolationRadioButton = new System.Windows.Forms.RadioButton();
+            this.ColorInterpolationRadioButton = new System.Windows.Forms.RadioButton();
+            this.zLabel = new System.Windows.Forms.Label();
+            this.MainColorDialog = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.MainGroupBox.SuspendLayout();
             this.ParamsGroupBox.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.ParametersLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ksTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kdTrackBar)).BeginInit();
-            this.LightSourceControlGroupBox.SuspendLayout();
+            this.OptionsGroupBox.SuspendLayout();
+            this.OptionsLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LightSourceZTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,7 +76,7 @@
             // MainGroupBox
             // 
             this.MainGroupBox.Controls.Add(this.ParamsGroupBox);
-            this.MainGroupBox.Controls.Add(this.LightSourceControlGroupBox);
+            this.MainGroupBox.Controls.Add(this.OptionsGroupBox);
             this.MainGroupBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.MainGroupBox.Location = new System.Drawing.Point(806, 0);
             this.MainGroupBox.Name = "MainGroupBox";
@@ -80,7 +87,7 @@
             // 
             // ParamsGroupBox
             // 
-            this.ParamsGroupBox.Controls.Add(this.tableLayoutPanel1);
+            this.ParamsGroupBox.Controls.Add(this.ParametersLayoutPanel);
             this.ParamsGroupBox.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ParamsGroupBox.Location = new System.Drawing.Point(3, 520);
             this.ParamsGroupBox.Name = "ParamsGroupBox";
@@ -89,30 +96,32 @@
             this.ParamsGroupBox.TabStop = false;
             this.ParamsGroupBox.Text = "Parameters";
             // 
-            // tableLayoutPanel1
+            // ParametersLayoutPanel
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
-            this.tableLayoutPanel1.Controls.Add(this.LightSourceColorButton, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.mTrackBar, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.mLabel, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.colorLabel, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.ksLabel, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.kdLabel, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.ksTrackBar, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.kdTrackBar, 0, 3);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 19);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(188, 255);
-            this.tableLayoutPanel1.TabIndex = 5;
+            this.ParametersLayoutPanel.ColumnCount = 2;
+            this.ParametersLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ParametersLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
+            this.ParametersLayoutPanel.Controls.Add(this.LightSourceColorButton, 0, 0);
+            this.ParametersLayoutPanel.Controls.Add(this.mTrackBar, 0, 2);
+            this.ParametersLayoutPanel.Controls.Add(this.mLabel, 1, 2);
+            this.ParametersLayoutPanel.Controls.Add(this.LightColorLabel, 1, 0);
+            this.ParametersLayoutPanel.Controls.Add(this.ksLabel, 1, 3);
+            this.ParametersLayoutPanel.Controls.Add(this.kdLabel, 1, 4);
+            this.ParametersLayoutPanel.Controls.Add(this.ksTrackBar, 0, 3);
+            this.ParametersLayoutPanel.Controls.Add(this.kdTrackBar, 0, 4);
+            this.ParametersLayoutPanel.Controls.Add(this.ObjectColorButton, 0, 1);
+            this.ParametersLayoutPanel.Controls.Add(this.ObjectColorLabel, 1, 1);
+            this.ParametersLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ParametersLayoutPanel.Location = new System.Drawing.Point(3, 19);
+            this.ParametersLayoutPanel.Name = "ParametersLayoutPanel";
+            this.ParametersLayoutPanel.RowCount = 5;
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ParametersLayoutPanel.Size = new System.Drawing.Size(188, 255);
+            this.ParametersLayoutPanel.TabIndex = 5;
             // 
             // LightSourceColorButton
             // 
@@ -121,7 +130,7 @@
             this.LightSourceColorButton.Name = "LightSourceColorButton";
             this.LightSourceColorButton.Size = new System.Drawing.Size(126, 45);
             this.LightSourceColorButton.TabIndex = 2;
-            this.LightSourceColorButton.Text = "Choose Color";
+            this.LightSourceColorButton.Text = "Choose Light Color";
             this.LightSourceColorButton.UseVisualStyleBackColor = true;
             this.LightSourceColorButton.Click += new System.EventHandler(this.LightSourceColorButton_Click);
             // 
@@ -129,7 +138,7 @@
             // 
             this.mTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mTrackBar.LargeChange = 1;
-            this.mTrackBar.Location = new System.Drawing.Point(3, 54);
+            this.mTrackBar.Location = new System.Drawing.Point(3, 105);
             this.mTrackBar.Maximum = 100;
             this.mTrackBar.Minimum = 1;
             this.mTrackBar.Name = "mTrackBar";
@@ -142,7 +151,7 @@
             // 
             this.mLabel.AutoSize = true;
             this.mLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mLabel.Location = new System.Drawing.Point(137, 56);
+            this.mLabel.Location = new System.Drawing.Point(137, 107);
             this.mLabel.Margin = new System.Windows.Forms.Padding(5);
             this.mLabel.Name = "mLabel";
             this.mLabel.Size = new System.Drawing.Size(46, 41);
@@ -150,21 +159,23 @@
             this.mLabel.Text = "m = 20";
             this.mLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // colorLabel
+            // LightColorLabel
             // 
-            this.colorLabel.AutoSize = true;
-            this.colorLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.colorLabel.Location = new System.Drawing.Point(137, 5);
-            this.colorLabel.Margin = new System.Windows.Forms.Padding(5);
-            this.colorLabel.Name = "colorLabel";
-            this.colorLabel.Size = new System.Drawing.Size(46, 41);
-            this.colorLabel.TabIndex = 5;
+            this.LightColorLabel.AutoSize = true;
+            this.LightColorLabel.BackColor = System.Drawing.Color.White;
+            this.LightColorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LightColorLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LightColorLabel.Location = new System.Drawing.Point(137, 5);
+            this.LightColorLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.LightColorLabel.Name = "LightColorLabel";
+            this.LightColorLabel.Size = new System.Drawing.Size(46, 41);
+            this.LightColorLabel.TabIndex = 5;
             // 
             // ksLabel
             // 
             this.ksLabel.AutoSize = true;
             this.ksLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ksLabel.Location = new System.Drawing.Point(137, 107);
+            this.ksLabel.Location = new System.Drawing.Point(137, 158);
             this.ksLabel.Margin = new System.Windows.Forms.Padding(5);
             this.ksLabel.Name = "ksLabel";
             this.ksLabel.Size = new System.Drawing.Size(46, 41);
@@ -176,7 +187,7 @@
             // 
             this.kdLabel.AutoSize = true;
             this.kdLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.kdLabel.Location = new System.Drawing.Point(137, 158);
+            this.kdLabel.Location = new System.Drawing.Point(137, 209);
             this.kdLabel.Margin = new System.Windows.Forms.Padding(5);
             this.kdLabel.Name = "kdLabel";
             this.kdLabel.Size = new System.Drawing.Size(46, 41);
@@ -188,7 +199,7 @@
             // 
             this.ksTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ksTrackBar.LargeChange = 1;
-            this.ksTrackBar.Location = new System.Drawing.Point(3, 105);
+            this.ksTrackBar.Location = new System.Drawing.Point(3, 156);
             this.ksTrackBar.Maximum = 100;
             this.ksTrackBar.Name = "ksTrackBar";
             this.ksTrackBar.Size = new System.Drawing.Size(126, 45);
@@ -200,7 +211,7 @@
             // 
             this.kdTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kdTrackBar.LargeChange = 1;
-            this.kdTrackBar.Location = new System.Drawing.Point(3, 156);
+            this.kdTrackBar.Location = new System.Drawing.Point(3, 207);
             this.kdTrackBar.Maximum = 100;
             this.kdTrackBar.Name = "kdTrackBar";
             this.kdTrackBar.Size = new System.Drawing.Size(126, 45);
@@ -208,41 +219,72 @@
             this.kdTrackBar.Value = 100;
             this.kdTrackBar.ValueChanged += new System.EventHandler(this.kdTrackBar_ValueChanged);
             // 
-            // DrawEdgesCheckBox
+            // ObjectColorButton
             // 
-            this.DrawEdgesCheckBox.AutoSize = true;
-            this.DrawEdgesCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.DrawEdgesCheckBox.Location = new System.Drawing.Point(3, 64);
-            this.DrawEdgesCheckBox.Name = "DrawEdgesCheckBox";
-            this.DrawEdgesCheckBox.Size = new System.Drawing.Size(188, 19);
-            this.DrawEdgesCheckBox.TabIndex = 1;
-            this.DrawEdgesCheckBox.Text = "Draw Edges";
-            this.DrawEdgesCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.DrawEdgesCheckBox.UseVisualStyleBackColor = true;
-            this.DrawEdgesCheckBox.CheckedChanged += new System.EventHandler(this.DrawEdgesCheckBox_CheckedChanged);
+            this.ObjectColorButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ObjectColorButton.Location = new System.Drawing.Point(3, 54);
+            this.ObjectColorButton.Name = "ObjectColorButton";
+            this.ObjectColorButton.Size = new System.Drawing.Size(126, 45);
+            this.ObjectColorButton.TabIndex = 10;
+            this.ObjectColorButton.Text = "Choose Object Color";
+            this.ObjectColorButton.UseVisualStyleBackColor = true;
+            this.ObjectColorButton.Click += new System.EventHandler(this.ObjectColorButton_Click);
             // 
-            // LightSourceControlGroupBox
+            // ObjectColorLabel
             // 
-            this.LightSourceControlGroupBox.Controls.Add(this.LightSourceStopCheckBox);
-            this.LightSourceControlGroupBox.Controls.Add(this.DrawEdgesCheckBox);
-            this.LightSourceControlGroupBox.Controls.Add(this.LightSourceZTrackBar);
-            this.LightSourceControlGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LightSourceControlGroupBox.Location = new System.Drawing.Point(3, 19);
-            this.LightSourceControlGroupBox.Name = "LightSourceControlGroupBox";
-            this.LightSourceControlGroupBox.Size = new System.Drawing.Size(194, 265);
-            this.LightSourceControlGroupBox.TabIndex = 0;
-            this.LightSourceControlGroupBox.TabStop = false;
-            this.LightSourceControlGroupBox.Text = "Light Source";
+            this.ObjectColorLabel.AutoSize = true;
+            this.ObjectColorLabel.BackColor = System.Drawing.Color.Blue;
+            this.ObjectColorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ObjectColorLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ObjectColorLabel.Location = new System.Drawing.Point(137, 56);
+            this.ObjectColorLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.ObjectColorLabel.Name = "ObjectColorLabel";
+            this.ObjectColorLabel.Size = new System.Drawing.Size(46, 41);
+            this.ObjectColorLabel.TabIndex = 11;
+            // 
+            // OptionsGroupBox
+            // 
+            this.OptionsGroupBox.Controls.Add(this.OptionsLayoutPanel);
+            this.OptionsGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.OptionsGroupBox.Location = new System.Drawing.Point(3, 19);
+            this.OptionsGroupBox.Name = "OptionsGroupBox";
+            this.OptionsGroupBox.Size = new System.Drawing.Size(194, 265);
+            this.OptionsGroupBox.TabIndex = 0;
+            this.OptionsGroupBox.TabStop = false;
+            this.OptionsGroupBox.Text = "Options";
+            // 
+            // OptionsLayoutPanel
+            // 
+            this.OptionsLayoutPanel.ColumnCount = 3;
+            this.OptionsLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
+            this.OptionsLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.OptionsLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
+            this.OptionsLayoutPanel.Controls.Add(this.LightSourceStopCheckBox, 0, 1);
+            this.OptionsLayoutPanel.Controls.Add(this.LightSourceZTrackBar, 0, 0);
+            this.OptionsLayoutPanel.Controls.Add(this.DrawEdgesCheckBox, 1, 1);
+            this.OptionsLayoutPanel.Controls.Add(this.NormalInterpolationRadioButton, 0, 2);
+            this.OptionsLayoutPanel.Controls.Add(this.ColorInterpolationRadioButton, 0, 3);
+            this.OptionsLayoutPanel.Controls.Add(this.zLabel, 2, 0);
+            this.OptionsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.OptionsLayoutPanel.Location = new System.Drawing.Point(3, 19);
+            this.OptionsLayoutPanel.Name = "OptionsLayoutPanel";
+            this.OptionsLayoutPanel.RowCount = 4;
+            this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.OptionsLayoutPanel.Size = new System.Drawing.Size(188, 243);
+            this.OptionsLayoutPanel.TabIndex = 4;
             // 
             // LightSourceStopCheckBox
             // 
             this.LightSourceStopCheckBox.AutoSize = true;
             this.LightSourceStopCheckBox.Checked = true;
             this.LightSourceStopCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.LightSourceStopCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LightSourceStopCheckBox.Location = new System.Drawing.Point(3, 83);
+            this.LightSourceStopCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LightSourceStopCheckBox.Location = new System.Drawing.Point(3, 74);
             this.LightSourceStopCheckBox.Name = "LightSourceStopCheckBox";
-            this.LightSourceStopCheckBox.Size = new System.Drawing.Size(188, 19);
+            this.LightSourceStopCheckBox.Size = new System.Drawing.Size(88, 65);
             this.LightSourceStopCheckBox.TabIndex = 3;
             this.LightSourceStopCheckBox.Text = "Stop Light Source";
             this.LightSourceStopCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -251,15 +293,71 @@
             // 
             // LightSourceZTrackBar
             // 
-            this.LightSourceZTrackBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.OptionsLayoutPanel.SetColumnSpan(this.LightSourceZTrackBar, 2);
+            this.LightSourceZTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LightSourceZTrackBar.LargeChange = 100;
-            this.LightSourceZTrackBar.Location = new System.Drawing.Point(3, 19);
+            this.LightSourceZTrackBar.Location = new System.Drawing.Point(3, 3);
             this.LightSourceZTrackBar.Maximum = 1000;
             this.LightSourceZTrackBar.Name = "LightSourceZTrackBar";
-            this.LightSourceZTrackBar.Size = new System.Drawing.Size(188, 45);
+            this.LightSourceZTrackBar.Size = new System.Drawing.Size(126, 65);
             this.LightSourceZTrackBar.TabIndex = 2;
             this.LightSourceZTrackBar.Value = 500;
             this.LightSourceZTrackBar.Scroll += new System.EventHandler(this.LightSourceZTrackBar_Scroll);
+            // 
+            // DrawEdgesCheckBox
+            // 
+            this.DrawEdgesCheckBox.AutoSize = true;
+            this.OptionsLayoutPanel.SetColumnSpan(this.DrawEdgesCheckBox, 2);
+            this.DrawEdgesCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DrawEdgesCheckBox.Location = new System.Drawing.Point(97, 74);
+            this.DrawEdgesCheckBox.Name = "DrawEdgesCheckBox";
+            this.DrawEdgesCheckBox.Size = new System.Drawing.Size(88, 65);
+            this.DrawEdgesCheckBox.TabIndex = 1;
+            this.DrawEdgesCheckBox.Text = "Draw Edges";
+            this.DrawEdgesCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.DrawEdgesCheckBox.UseVisualStyleBackColor = true;
+            this.DrawEdgesCheckBox.CheckedChanged += new System.EventHandler(this.DrawEdgesCheckBox_CheckedChanged);
+            // 
+            // NormalInterpolationRadioButton
+            // 
+            this.NormalInterpolationRadioButton.AutoSize = true;
+            this.NormalInterpolationRadioButton.Checked = true;
+            this.OptionsLayoutPanel.SetColumnSpan(this.NormalInterpolationRadioButton, 3);
+            this.NormalInterpolationRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.NormalInterpolationRadioButton.Location = new System.Drawing.Point(3, 145);
+            this.NormalInterpolationRadioButton.Name = "NormalInterpolationRadioButton";
+            this.NormalInterpolationRadioButton.Size = new System.Drawing.Size(182, 44);
+            this.NormalInterpolationRadioButton.TabIndex = 5;
+            this.NormalInterpolationRadioButton.TabStop = true;
+            this.NormalInterpolationRadioButton.Text = "Normal vector interpolation";
+            this.NormalInterpolationRadioButton.UseVisualStyleBackColor = true;
+            this.NormalInterpolationRadioButton.CheckedChanged += new System.EventHandler(this.NormalInterpolationRadioButton_CheckedChanged);
+            // 
+            // ColorInterpolationRadioButton
+            // 
+            this.ColorInterpolationRadioButton.AutoSize = true;
+            this.OptionsLayoutPanel.SetColumnSpan(this.ColorInterpolationRadioButton, 3);
+            this.ColorInterpolationRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ColorInterpolationRadioButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ColorInterpolationRadioButton.Location = new System.Drawing.Point(3, 195);
+            this.ColorInterpolationRadioButton.Name = "ColorInterpolationRadioButton";
+            this.ColorInterpolationRadioButton.Size = new System.Drawing.Size(182, 45);
+            this.ColorInterpolationRadioButton.TabIndex = 6;
+            this.ColorInterpolationRadioButton.Text = "Color interpolation";
+            this.ColorInterpolationRadioButton.UseVisualStyleBackColor = true;
+            this.ColorInterpolationRadioButton.CheckedChanged += new System.EventHandler(this.ColorInterpolationRadioButton_CheckedChanged);
+            // 
+            // zLabel
+            // 
+            this.zLabel.AutoSize = true;
+            this.zLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.zLabel.Location = new System.Drawing.Point(137, 5);
+            this.zLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.zLabel.Name = "zLabel";
+            this.zLabel.Size = new System.Drawing.Size(46, 61);
+            this.zLabel.TabIndex = 4;
+            this.zLabel.Text = "z = 500";
+            this.zLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainWindowForm
             // 
@@ -276,13 +374,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
             this.MainGroupBox.ResumeLayout(false);
             this.ParamsGroupBox.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.ParametersLayoutPanel.ResumeLayout(false);
+            this.ParametersLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ksTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kdTrackBar)).EndInit();
-            this.LightSourceControlGroupBox.ResumeLayout(false);
-            this.LightSourceControlGroupBox.PerformLayout();
+            this.OptionsGroupBox.ResumeLayout(false);
+            this.OptionsLayoutPanel.ResumeLayout(false);
+            this.OptionsLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LightSourceZTrackBar)).EndInit();
             this.ResumeLayout(false);
 
@@ -292,20 +391,26 @@
 
         private PictureBox MainPictureBox;
         private GroupBox MainGroupBox;
-        private GroupBox LightSourceControlGroupBox;
+        private GroupBox OptionsGroupBox;
         private TrackBar LightSourceZTrackBar;
         private CheckBox DrawEdgesCheckBox;
         private Button LightSourceColorButton;
-        private ColorDialog LightSourceColorDialog;
+        private ColorDialog MainColorDialog;
         private GroupBox ParamsGroupBox;
         private TrackBar mTrackBar;
         private Label mLabel;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Label colorLabel;
+        private TableLayoutPanel ParametersLayoutPanel;
+        private Label LightColorLabel;
         private Label ksLabel;
         private Label kdLabel;
         private TrackBar ksTrackBar;
         private TrackBar kdTrackBar;
         private CheckBox LightSourceStopCheckBox;
+        private TableLayoutPanel OptionsLayoutPanel;
+        private Label zLabel;
+        private RadioButton NormalInterpolationRadioButton;
+        private RadioButton ColorInterpolationRadioButton;
+        private Button ObjectColorButton;
+        private Label ObjectColorLabel;
     }
 }

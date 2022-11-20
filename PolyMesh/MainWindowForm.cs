@@ -33,14 +33,13 @@ namespace PolyMesh
             while (true)
             {
                 mre.WaitOne();
-                System.Threading.Thread.Sleep(10);
+                System.Threading.Thread.Sleep(100);
                 MainPictureBox.Invalidate();
             }
         }
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            _ = model;
             using var g = Graphics.FromImage(bits);
             g.Clear(Color.White);
             foreach (var t in model.triangles)
@@ -61,7 +60,8 @@ namespace PolyMesh
 
         private void LightSourceZTrackBar_Scroll(object sender, EventArgs e)
         {
-            Geometry.Z = LightSourceZTrackBar.Value + Settings.bitmapSize / 2;
+            Geometry.Z = LightSourceZTrackBar.Value;
+            zLabel.Text = "z = " + Geometry.Z.ToString();
             MainPictureBox.Invalidate();
         }
 
@@ -73,12 +73,19 @@ namespace PolyMesh
         private void LightSourceColorButton_Click(object sender, EventArgs e)
         {
             LightSourceStopCheckBox.Checked = true;
-            LightSourceColorDialog.ShowDialog();
-            Geometry.il = LightSourceColorDialog.Color;
-            colorLabel.BackColor = LightSourceColorDialog.Color;
+            MainColorDialog.ShowDialog();
+            Geometry.il = MainColorDialog.Color;
+            LightColorLabel.BackColor = MainColorDialog.Color;
             MainPictureBox.Invalidate();
         }
-
+        private void ObjectColorButton_Click(object sender, EventArgs e)
+        {
+            LightSourceStopCheckBox.Checked = true;
+            MainColorDialog.ShowDialog();
+            Geometry.io = MainColorDialog.Color;
+            ObjectColorLabel.BackColor = MainColorDialog.Color;
+            MainPictureBox.Invalidate();
+        }
         private void mTrackBar_ValueChanged(object sender, EventArgs e)
         {
             Geometry.m = mTrackBar.Value;
@@ -113,5 +120,17 @@ namespace PolyMesh
             }
             MainPictureBox.Invalidate();
         }
+
+        private void NormalInterpolationRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.interpolationType = NormalInterpolationRadioButton.Checked ? Settings.InterpolationType.Normal : Settings.InterpolationType.Color;
+            MainPictureBox.Invalidate();
+        }
+
+        private void ColorInterpolationRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            //Settings.interpolationType = ColorInterpolationRadioButton.Checked ? Settings.InterpolationType.Color : Settings.InterpolationType.Normal;
+        }
+
     }
 }

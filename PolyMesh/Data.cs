@@ -5,12 +5,17 @@ namespace PolyMesh
 {
     public static class Settings
     {
+        public enum InterpolationType{
+            Normal,
+            Color,
+        }
         public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         //const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         public const int bitmapSize = 800;
         public const int modelScale = 300;
         public static Random rnd = new();
         public static Stopwatch stopwatch = new();
+        public static InterpolationType interpolationType = InterpolationType.Normal;
     }
     public class Model
     {
@@ -85,16 +90,6 @@ namespace PolyMesh
             }
             GenerateAETP();
         }
-        public Vector3 GetBarycentricNormalVector(float x, float y)
-        {
-            float div = (vertices[1].position.Y - vertices[2].position.Y) * (vertices[0].position.X - vertices[2].position.X) + (vertices[2].position.X - vertices[1].position.X) * (vertices[0].position.Y - vertices[2].position.Y);
-            float w1 = (vertices[1].position.Y - vertices[2].position.Y) * (x - vertices[2].position.X) + (vertices[2].position.X - vertices[1].position.X) * (y - vertices[2].position.Y);
-            float w2 = (vertices[2].position.Y - vertices[0].position.Y) * (x - vertices[2].position.X) + (vertices[0].position.X - vertices[2].position.X) * (y - vertices[2].position.Y);
-            w1 /= div;
-            w2 /= div;
-            float w3 = 1 - w1 - w2;
-            return vertices[0].normal * w1 + vertices[1].normal * w2 + vertices[2].normal * w3;
-        }
         public void GenerateAETP()
         {
             for(int i = 0; i < vertices.Count; i++)
@@ -121,7 +116,7 @@ namespace PolyMesh
             double ymax = vertices.Max(p => p.position.Y);
             double ymin = vertices.Min(p => p.position.Y);
             List<AETP> AET = new List<AETP>();
-            for (int y = (int)ymin; y <= ymax; y++)
+            for (int y = (int)ymin; y < (int)ymax; y++)
             {
                 foreach(var v in vertices.Where(p => (int)p.position.Y == y))
                 {
@@ -171,10 +166,39 @@ namespace PolyMesh
             {
                 if (x >= bits.Width || y >= bits.Height || x < 0 || y < 0) break;
 
-                var ls = Geometry.GetLightVector((float)Settings.stopwatch.ElapsedMilliseconds / 1000);
-
-                var bar = GetBarycentricNormalVector(x, y);
-                bits.SetPixel(x, y, Geometry.GetColor(ls, bar));
+                var ls = Geometry.GetLightVector((float)Settings.stopwatch.ElapsedMilliseconds / 2000);
+                Color color = Color.White;
+                var positions = vertices.Select(p => p.position).ToArray();
+                var normals = vertices.Select(p => p.normal).ToArray();
+                (float w1, float w2, float w3) bar = Geometry.GetBarycentricNormalVector(positions, x, y);
+                switch (Settings.interpolationType)
+                {
+                    case Settings.InterpolationType.Normal:
+                        var pos = positions[0] * bar.w1 + positions[1] * bar.w2 + positions[2] * bar.w3;
+                        var nor = normals[0] * bar.w1 + normals[1] * bar.w2 + normals[2] * bar.w3;
+                        color = Geometry.GetColor(ls - pos, nor);
+                        break;
+                    case Settings.InterpolationType.Color:
+                        var colors = new Color[3];
+                        for(int i = 0; i < 3; i++)
+                        {
+                            colors[i] = Geometry.GetColor(ls - positions[i], normals[i]);
+                        }
+                        var R = (int)(colors[0].R * bar.w1 + colors[1].R * bar.w2 + colors[2].R * bar.w3);
+                        var G = (int)(colors[0].G * bar.w1 + colors[1].G * bar.w2 + colors[2].G * bar.w3);
+                        var B = (int)(colors[0].B * bar.w1 + colors[1].B * bar.w2 + colors[2].B * bar.w3);
+                        R = R > 255 ? 255 : R;
+                        G = G > 255 ? 255 : G;
+                        B = B > 255 ? 255 : B;
+                        R = R < 0 ? 0 : R;
+                        G = G < 0 ? 0 : G;
+                        B = B < 0 ? 0 : B;
+                        color = Color.FromArgb(R, G, B);
+                        break;
+                    default:
+                        break;
+                }
+                bits.SetPixel(x, y, color);
             }
         }
         public void PaintOld(Bitmap bits, Color color)
