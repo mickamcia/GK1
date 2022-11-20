@@ -170,7 +170,7 @@ namespace PolyMesh
                 Color color = Color.White;
                 var positions = vertices.Select(p => p.position).ToArray();
                 var normals = vertices.Select(p => p.normal).ToArray();
-                (float w1, float w2, float w3) bar = Geometry.GetBarycentricNormalVector(positions, x, y);
+                (float w1, float w2, float w3) bar = Geometry.GetBarycentricWeights(positions, x, y);
                 switch (Settings.interpolationType)
                 {
                     case Settings.InterpolationType.Normal:

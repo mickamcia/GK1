@@ -24,10 +24,10 @@ namespace PolyMesh
         }
         public static Color GetColor(Vector3 source, Vector3 normal)
         {
-            var R = normal * (float)ScalarProduct(normal, source) * 2 - source;
+            var R = normal * Vector3.Dot(normal, source) * 2 - source;
             var V = new Vector3(0, 0, 1);
-            double sp2 = ScalarProduct(Normalise(R), V);
-            double sp1 = ScalarProduct(Normalise(normal), Normalise(source));
+            double sp2 = Vector3.Dot(Vector3.Normalize(R), V);
+            double sp1 = Vector3.Dot(Vector3.Normalize(normal), Vector3.Normalize(source));
             sp1 = sp1 > 0 ? sp1 : 0;
             sp2 = sp2 > 0 ? sp2 : 0;
             int colorR = (int)(kd * il.R * io.R * sp1 + ks * il.R * io.R * Math.Pow(sp2, m)) / 255;
@@ -47,7 +47,7 @@ namespace PolyMesh
             double div = 1 / Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
             return v * (float)div;
         }
-        public static (float w1,float w2,float w3) GetBarycentricNormalVector(Vector3[] positions, float x, float y)
+        public static (float w1,float w2,float w3) GetBarycentricWeights(Vector3[] positions, float x, float y)
         {
             float div = (positions[1].Y - positions[2].Y) * (positions[0].X - positions[2].X) + (positions[2].X - positions[1].X) * (positions[0].Y - positions[2].Y);
             float w1 = (positions[1].Y - positions[2].Y) * (x - positions[2].X) + (positions[2].X - positions[1].X) * (y - positions[2].Y);
