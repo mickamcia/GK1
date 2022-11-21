@@ -30,6 +30,14 @@
         {
             this.MainPictureBox = new System.Windows.Forms.PictureBox();
             this.MainGroupBox = new System.Windows.Forms.GroupBox();
+            this.FileLoadingGroupBox = new System.Windows.Forms.GroupBox();
+            this.FileLoadingTableLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.AddTextureButton = new System.Windows.Forms.Button();
+            this.RevertTextureButton = new System.Windows.Forms.Button();
+            this.AddNormalMapButton = new System.Windows.Forms.Button();
+            this.RevertNormalMapButton = new System.Windows.Forms.Button();
+            this.TextureLabel = new System.Windows.Forms.Label();
+            this.NormalMapLabel = new System.Windows.Forms.Label();
             this.ParamsGroupBox = new System.Windows.Forms.GroupBox();
             this.ParametersLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.LightSourceColorButton = new System.Windows.Forms.Button();
@@ -53,6 +61,8 @@
             this.MainColorDialog = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.MainGroupBox.SuspendLayout();
+            this.FileLoadingGroupBox.SuspendLayout();
+            this.FileLoadingTableLayout.SuspendLayout();
             this.ParamsGroupBox.SuspendLayout();
             this.ParametersLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBar)).BeginInit();
@@ -75,6 +85,7 @@
             // 
             // MainGroupBox
             // 
+            this.MainGroupBox.Controls.Add(this.FileLoadingGroupBox);
             this.MainGroupBox.Controls.Add(this.ParamsGroupBox);
             this.MainGroupBox.Controls.Add(this.OptionsGroupBox);
             this.MainGroupBox.Dock = System.Windows.Forms.DockStyle.Right;
@@ -84,6 +95,105 @@
             this.MainGroupBox.TabIndex = 1;
             this.MainGroupBox.TabStop = false;
             this.MainGroupBox.Text = "Controls";
+            // 
+            // FileLoadingGroupBox
+            // 
+            this.FileLoadingGroupBox.Controls.Add(this.FileLoadingTableLayout);
+            this.FileLoadingGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FileLoadingGroupBox.Location = new System.Drawing.Point(3, 284);
+            this.FileLoadingGroupBox.Name = "FileLoadingGroupBox";
+            this.FileLoadingGroupBox.Size = new System.Drawing.Size(194, 236);
+            this.FileLoadingGroupBox.TabIndex = 4;
+            this.FileLoadingGroupBox.TabStop = false;
+            this.FileLoadingGroupBox.Text = "File Loading";
+            // 
+            // FileLoadingTableLayout
+            // 
+            this.FileLoadingTableLayout.ColumnCount = 2;
+            this.FileLoadingTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.FileLoadingTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.FileLoadingTableLayout.Controls.Add(this.AddTextureButton, 0, 0);
+            this.FileLoadingTableLayout.Controls.Add(this.RevertTextureButton, 1, 0);
+            this.FileLoadingTableLayout.Controls.Add(this.AddNormalMapButton, 0, 2);
+            this.FileLoadingTableLayout.Controls.Add(this.RevertNormalMapButton, 1, 2);
+            this.FileLoadingTableLayout.Controls.Add(this.TextureLabel, 0, 1);
+            this.FileLoadingTableLayout.Controls.Add(this.NormalMapLabel, 0, 3);
+            this.FileLoadingTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FileLoadingTableLayout.Location = new System.Drawing.Point(3, 19);
+            this.FileLoadingTableLayout.Name = "FileLoadingTableLayout";
+            this.FileLoadingTableLayout.RowCount = 4;
+            this.FileLoadingTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.FileLoadingTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.FileLoadingTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.FileLoadingTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.FileLoadingTableLayout.Size = new System.Drawing.Size(188, 214);
+            this.FileLoadingTableLayout.TabIndex = 0;
+            // 
+            // AddTextureButton
+            // 
+            this.AddTextureButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddTextureButton.Location = new System.Drawing.Point(3, 3);
+            this.AddTextureButton.Name = "AddTextureButton";
+            this.AddTextureButton.Size = new System.Drawing.Size(88, 47);
+            this.AddTextureButton.TabIndex = 0;
+            this.AddTextureButton.Text = "Add Texture";
+            this.AddTextureButton.UseVisualStyleBackColor = true;
+            this.AddTextureButton.Click += new System.EventHandler(this.AddTextureButton_Click);
+            // 
+            // RevertTextureButton
+            // 
+            this.RevertTextureButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevertTextureButton.Location = new System.Drawing.Point(97, 3);
+            this.RevertTextureButton.Name = "RevertTextureButton";
+            this.RevertTextureButton.Size = new System.Drawing.Size(88, 47);
+            this.RevertTextureButton.TabIndex = 1;
+            this.RevertTextureButton.Text = "Revert Texture";
+            this.RevertTextureButton.UseVisualStyleBackColor = true;
+            this.RevertTextureButton.Click += new System.EventHandler(this.RevertTextureButton_Click);
+            // 
+            // AddNormalMapButton
+            // 
+            this.AddNormalMapButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddNormalMapButton.Location = new System.Drawing.Point(3, 109);
+            this.AddNormalMapButton.Name = "AddNormalMapButton";
+            this.AddNormalMapButton.Size = new System.Drawing.Size(88, 47);
+            this.AddNormalMapButton.TabIndex = 2;
+            this.AddNormalMapButton.Text = "Add Normal Map";
+            this.AddNormalMapButton.UseVisualStyleBackColor = true;
+            this.AddNormalMapButton.Click += new System.EventHandler(this.AddNormalMapButton_Click);
+            // 
+            // RevertNormalMapButton
+            // 
+            this.RevertNormalMapButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevertNormalMapButton.Location = new System.Drawing.Point(97, 109);
+            this.RevertNormalMapButton.Name = "RevertNormalMapButton";
+            this.RevertNormalMapButton.Size = new System.Drawing.Size(88, 47);
+            this.RevertNormalMapButton.TabIndex = 3;
+            this.RevertNormalMapButton.Text = "Revert Normal Map";
+            this.RevertNormalMapButton.UseVisualStyleBackColor = true;
+            this.RevertNormalMapButton.Click += new System.EventHandler(this.RevertNormalMapButton_Click);
+            // 
+            // TextureLabel
+            // 
+            this.FileLoadingTableLayout.SetColumnSpan(this.TextureLabel, 2);
+            this.TextureLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TextureLabel.Location = new System.Drawing.Point(5, 58);
+            this.TextureLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.TextureLabel.Name = "TextureLabel";
+            this.TextureLabel.Size = new System.Drawing.Size(178, 43);
+            this.TextureLabel.TabIndex = 4;
+            this.TextureLabel.Text = "Texture: None";
+            // 
+            // NormalMapLabel
+            // 
+            this.FileLoadingTableLayout.SetColumnSpan(this.NormalMapLabel, 2);
+            this.NormalMapLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.NormalMapLabel.Location = new System.Drawing.Point(5, 164);
+            this.NormalMapLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.NormalMapLabel.Name = "NormalMapLabel";
+            this.NormalMapLabel.Size = new System.Drawing.Size(178, 45);
+            this.NormalMapLabel.TabIndex = 5;
+            this.NormalMapLabel.Text = "Normal Map: None";
             // 
             // ParamsGroupBox
             // 
@@ -372,6 +482,8 @@
             this.Text = "PolyMesh";
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).EndInit();
             this.MainGroupBox.ResumeLayout(false);
+            this.FileLoadingGroupBox.ResumeLayout(false);
+            this.FileLoadingTableLayout.ResumeLayout(false);
             this.ParamsGroupBox.ResumeLayout(false);
             this.ParametersLayoutPanel.ResumeLayout(false);
             this.ParametersLayoutPanel.PerformLayout();
@@ -411,5 +523,13 @@
         private RadioButton ColorInterpolationRadioButton;
         private Button ObjectColorButton;
         private Label ObjectColorLabel;
+        private GroupBox FileLoadingGroupBox;
+        private TableLayoutPanel FileLoadingTableLayout;
+        private Button AddTextureButton;
+        private Button RevertTextureButton;
+        private Button AddNormalMapButton;
+        private Button RevertNormalMapButton;
+        private Label TextureLabel;
+        private Label NormalMapLabel;
     }
 }

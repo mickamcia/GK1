@@ -9,13 +9,15 @@ namespace PolyMesh
             Normal,
             Color,
         }
-        //public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
-        public const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        //public const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         public const int bitmapSize = 800;
         public const int modelScale = 300;
         public static Random rnd = new();
         public static Stopwatch stopwatch = new();
         public static InterpolationType interpolationType = InterpolationType.Normal;
+        public static DirectBitmap? texture = null;
+        public static DirectBitmap? normalMap = null;
     }
     public class Model
     {
@@ -176,12 +178,20 @@ namespace PolyMesh
                     case Settings.InterpolationType.Normal:
                         var pos = positions[0] * bar.w1 + positions[1] * bar.w2 + positions[2] * bar.w3;
                         var nor = normals[0] * bar.w1 + normals[1] * bar.w2 + normals[2] * bar.w3;
+                        if(Settings.normalMap != null)
+                        {
+                            nor = Geometry.NormalMapMultiplication(nor, Settings.normalMap.GetPixel((int)pos.X, (int)pos.Y));
+                        }
                         color = Geometry.GetColor(ls - pos, nor);
                         break;
                     case Settings.InterpolationType.Color:
                         var colors = new Color[3];
                         for(int i = 0; i < 3; i++)
                         {
+                            if (Settings.normalMap != null)
+                            {
+                                normals[i] = Geometry.NormalMapMultiplication(normals[i], Settings.normalMap.GetPixel((int)positions[i].X, (int)positions[i].Y));
+                            }
                             colors[i] = Geometry.GetColor(ls - positions[i], normals[i]);
                         }
                         var R = (int)(colors[0].R * bar.w1 + colors[1].R * bar.w2 + colors[2].R * bar.w3);
@@ -198,7 +208,15 @@ namespace PolyMesh
                     default:
                         break;
                 }
-                bits.SetPixel(x, y, color);
+                if(Settings.texture != null)
+                {
+                    Color texture = Settings.texture.GetPixel(x,y);
+                    bits.SetPixel(x, y, Color.FromArgb(color.R * texture.R / 255, color.G * texture.G / 255, color.B * texture.B / 255));
+                }
+                else
+                {
+                    bits.SetPixel(x, y, color);
+                }
             }
         }
         public void PaintOld(Bitmap bits, Color color)

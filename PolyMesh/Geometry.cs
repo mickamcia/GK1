@@ -59,5 +59,20 @@ namespace PolyMesh
             float w3 = 1 - w1 - w2;
             return (w1, w2, w3);
         }
+        public static Vector3 NormalMapMultiplication(Vector3 normal, Color color)
+        {
+            Vector3 tex = new Vector3((float)color.R / 128 - 1, (float)color.G / 128 - 1, (float)color.B / 256);
+            Vector3 binormal;
+            if(normal.X == 0 && normal.Y == 0 && normal.Z == 1)
+            {
+                binormal = new Vector3(0f, 1f, 0f);
+            }
+            else
+            {
+                binormal = Vector3.Cross(normal, new Vector3(0f, 0f, 1f));
+            }
+            Vector3 tangent = Vector3.Cross(binormal, normal);
+            return new Vector3(Vector3.Dot(tex, tangent), Vector3.Dot(tex, binormal), Vector3.Dot(tex, normal));
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace PolyMesh
         {
             while (true)
             {
-                System.Threading.Thread.Sleep(250);
+                System.Threading.Thread.Sleep(50);
                 mre.WaitOne();
                 MainPictureBox.Invalidate();
             }
@@ -40,8 +40,9 @@ namespace PolyMesh
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            Parallel.ForEach(model.triangles, t => t.Paint(bits)); 
             using var g = Graphics.FromImage(bits.Bitmap);
+            g.Clear(Color.White);
+            Parallel.ForEach(model.triangles, t => t.Paint(bits)); 
             if (DrawEdgesCheckBox.Checked)
             {
                 foreach (var t in model.triangles)
@@ -120,6 +121,70 @@ namespace PolyMesh
         private void NormalInterpolationRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             Settings.interpolationType = NormalInterpolationRadioButton.Checked ? Settings.InterpolationType.Normal : Settings.InterpolationType.Color;
+            MainPictureBox.Invalidate();
+        }
+
+        private void AddTextureButton_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    TextureLabel.Text = "Texture: " + dlg.FileName.ToString();
+                    var temp = new Bitmap(dlg.FileName);
+                    temp = new Bitmap(temp, Settings.bitmapSize, Settings.bitmapSize);
+                    Settings.texture = new DirectBitmap(Settings.bitmapSize, Settings.bitmapSize);
+                    for (int i = 0; i < Settings.bitmapSize; i++)
+                    {
+                        for (int j = 0; j < Settings.bitmapSize; j++)
+                        {
+                            Settings.texture.SetPixel(i, j, temp.GetPixel(i, j));
+                        }
+                    }
+                }
+            }
+            MainPictureBox.Invalidate();
+        }
+
+        private void AddNormalMapButton_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Title = "Open Image";
+                dlg.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    NormalMapLabel.Text = "Normal Map: " + dlg.FileName.ToString();
+                    var temp = new Bitmap(dlg.FileName);
+                    temp = new Bitmap(temp, Settings.bitmapSize, Settings.bitmapSize);
+                    Settings.normalMap = new DirectBitmap(Settings.bitmapSize, Settings.bitmapSize);
+                    for (int i = 0; i < Settings.bitmapSize; i++)
+                    {
+                        for (int j = 0; j < Settings.bitmapSize; j++)
+                        {
+                            Settings.normalMap.SetPixel(i, j, temp.GetPixel(i, j));
+                        }
+                    }
+                }
+            }
+            MainPictureBox.Invalidate();
+        }
+
+        private void RevertTextureButton_Click(object sender, EventArgs e)
+        {
+            Settings.texture = null;
+            TextureLabel.Text = "Texture: None";
+            MainPictureBox.Invalidate();
+        }
+
+        private void RevertNormalMapButton_Click(object sender, EventArgs e)
+        {
+            Settings.normalMap = null;
+            NormalMapLabel.Text = "Normal Map: None";
             MainPictureBox.Invalidate();
         }
     }
