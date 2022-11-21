@@ -9,12 +9,12 @@ namespace PolyMesh
             Normal,
             Color,
         }
-        public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
-        //public const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        //public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        public const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         public const int bitmapSize = 800;
         public const int modelScale = 300;
         public static Random rnd = new();
-        public static Stopwatch stopwatch = new();
+        public static readonly Stopwatch stopwatch = new();
         public static InterpolationType interpolationType = InterpolationType.Normal;
         public static DirectBitmap? texture = null;
         public static DirectBitmap? normalMap = null;

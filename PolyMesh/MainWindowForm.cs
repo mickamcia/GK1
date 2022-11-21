@@ -9,7 +9,7 @@ namespace PolyMesh
     {
         public readonly Model model;
         public readonly DirectBitmap bits;
-        private Thread thread;
+        private readonly Thread thread;
         private static ManualResetEvent mre = new ManualResetEvent(false);
 
 
@@ -57,7 +57,7 @@ namespace PolyMesh
 
         private void LightSourceZTrackBar_Scroll(object sender, EventArgs e)
         {
-            Geometry.Z = LightSourceZTrackBar.Value;
+            Geometry.Z = LightSourceZTrackBar.Value + Settings.bitmapSize / 2;
             zLabel.Text = "z = " + Geometry.Z.ToString();
             MainPictureBox.Invalidate();
         }

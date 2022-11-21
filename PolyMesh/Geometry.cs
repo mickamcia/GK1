@@ -15,7 +15,7 @@ namespace PolyMesh
         public static Color il = Color.FromArgb(255,255,255);
         public static Color io = Color.Blue;
         public static int m = 20;
-        public static float Z = 500;
+        public static float Z = 500 + Settings.bitmapSize / 2;
         private static Vector3 startLight = new Vector3(Settings.bitmapSize / 2, Settings.bitmapSize / 2, Settings.bitmapSize / 2);
         public static Vector3 GetLightVector(float span)
         {
