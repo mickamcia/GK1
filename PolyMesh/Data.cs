@@ -9,8 +9,8 @@ namespace PolyMesh
             Normal,
             Color,
         }
-        //public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
-        public const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        //public const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         public const int bitmapSize = 800;
         public const int modelScale = 300;
         public static Random rnd = new();
@@ -38,14 +38,6 @@ namespace PolyMesh
         public double currx;
         public int x;
         public double one_m;
-        public AETP(double ymax, double x, double one_m)
-        {
-            this.ymax = ymax;
-            this.startx = x;
-            this.currx = x;
-            this.x = (int)startx;
-            this.one_m = one_m;
-        }
         public AETP()
         {
 
