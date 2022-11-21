@@ -9,8 +9,8 @@ namespace PolyMesh
             Normal,
             Color,
         }
-        public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
-        //const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        //public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        public const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         public const int bitmapSize = 800;
         public const int modelScale = 300;
         public static Random rnd = new();
@@ -110,7 +110,7 @@ namespace PolyMesh
                 v.pointer.reset();
             }
         }
-        public void Paint(Bitmap bits)
+        public void Paint(DirectBitmap bits)
         {
             ResetEdges();
             double ymax = vertices.Max(p => p.position.Y);
@@ -143,7 +143,7 @@ namespace PolyMesh
                 }
             }
         }
-        private void FillAET(Bitmap bits, List<AETP> AET, int y)
+        private void FillAET(DirectBitmap bits, List<AETP> AET, int y)
         {
             AET.Sort(delegate (AETP p1, AETP p2)
             {
@@ -160,9 +160,9 @@ namespace PolyMesh
                 ptr.advance();
             }
         }
-        private void FillLine(Bitmap bits, int x1, int x2, int y)
+        private void FillLine(DirectBitmap bits, int x1, int x2, int y)
         {
-            for (int x = x1; x < x2; x++)
+            for (int x = x1; x <= x2; x++)
             {
                 if (x >= bits.Width || y >= bits.Height || x < 0 || y < 0) break;
 

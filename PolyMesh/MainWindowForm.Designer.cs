@@ -345,7 +345,6 @@
             this.ColorInterpolationRadioButton.TabIndex = 6;
             this.ColorInterpolationRadioButton.Text = "Color interpolation";
             this.ColorInterpolationRadioButton.UseVisualStyleBackColor = true;
-            this.ColorInterpolationRadioButton.CheckedChanged += new System.EventHandler(this.ColorInterpolationRadioButton_CheckedChanged);
             // 
             // zLabel
             // 

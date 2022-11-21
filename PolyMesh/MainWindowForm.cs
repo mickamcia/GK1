@@ -8,7 +8,7 @@ namespace PolyMesh
     public partial class MainWindowForm : Form
     {
         public readonly Model model;
-        public readonly Bitmap bits;
+        public readonly DirectBitmap bits;
         private Thread thread;
         private static ManualResetEvent mre = new ManualResetEvent(false);
 
@@ -17,7 +17,7 @@ namespace PolyMesh
         {
             InitializeComponent();
 
-            model = Parser.ParseModel(Settings.path);
+            model = Utils.ParseModel(Settings.path);
             bits = new(Settings.bitmapSize, Settings.bitmapSize);
             MainPictureBox.Invalidate();
             thread = new Thread(MainLoop);
@@ -32,20 +32,16 @@ namespace PolyMesh
         {
             while (true)
             {
+                System.Threading.Thread.Sleep(250);
                 mre.WaitOne();
-                System.Threading.Thread.Sleep(100);
                 MainPictureBox.Invalidate();
             }
         }
 
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            using var g = Graphics.FromImage(bits);
-            g.Clear(Color.White);
-            foreach (var t in model.triangles)
-            {
-                t.Paint(bits);
-            }
+            Parallel.ForEach(model.triangles, t => t.Paint(bits)); 
+            using var g = Graphics.FromImage(bits.Bitmap);
             if (DrawEdgesCheckBox.Checked)
             {
                 foreach (var t in model.triangles)
@@ -55,7 +51,7 @@ namespace PolyMesh
                     g.DrawLine(Pens.Black, (int)t.vertices[2].position.X, (int)t.vertices[2].position.Y, (int)t.vertices[0].position.X, (int)t.vertices[0].position.Y);
                 }
             }
-            e.Graphics.DrawImage(bits, 0, 0);
+            e.Graphics.DrawImage(bits.Bitmap, 0, 0);
         }
 
         private void LightSourceZTrackBar_Scroll(object sender, EventArgs e)
@@ -95,14 +91,14 @@ namespace PolyMesh
 
         private void ksTrackBar_ValueChanged(object sender, EventArgs e)
         {
-            Geometry.ks = (double)ksTrackBar.Value / ksTrackBar.Maximum;
+            Geometry.ks = (float)ksTrackBar.Value / ksTrackBar.Maximum;
             ksLabel.Text = "ks = " + ((double)ksTrackBar.Value / ksTrackBar.Maximum).ToString();
             MainPictureBox.Invalidate();
         }
 
         private void kdTrackBar_ValueChanged(object sender, EventArgs e)
         {
-            Geometry.kd = (double)kdTrackBar.Value / kdTrackBar.Maximum;
+            Geometry.kd = (float)kdTrackBar.Value / kdTrackBar.Maximum;
             kdLabel.Text = "kd = " + ((double)kdTrackBar.Value / kdTrackBar.Maximum).ToString();
             MainPictureBox.Invalidate();
         }
@@ -126,11 +122,5 @@ namespace PolyMesh
             Settings.interpolationType = NormalInterpolationRadioButton.Checked ? Settings.InterpolationType.Normal : Settings.InterpolationType.Color;
             MainPictureBox.Invalidate();
         }
-
-        private void ColorInterpolationRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            //Settings.interpolationType = ColorInterpolationRadioButton.Checked ? Settings.InterpolationType.Color : Settings.InterpolationType.Normal;
-        }
-
     }
 }

@@ -10,8 +10,8 @@ namespace PolyMesh
 {
     internal static class Geometry
     {
-        public static double kd = 1;
-        public static double ks = 1;
+        public static float kd = 1;
+        public static float ks = 1;
         public static Color il = Color.FromArgb(255,255,255);
         public static Color io = Color.Blue;
         public static int m = 20;
@@ -26,13 +26,15 @@ namespace PolyMesh
         {
             var R = normal * Vector3.Dot(normal, source) * 2 - source;
             var V = new Vector3(0, 0, 1);
-            double sp2 = Vector3.Dot(Vector3.Normalize(R), V);
-            double sp1 = Vector3.Dot(Vector3.Normalize(normal), Vector3.Normalize(source));
+            float sp2 = Vector3.Dot(Vector3.Normalize(R), V);
+            float sp1 = Vector3.Dot(Vector3.Normalize(normal), Vector3.Normalize(source));
             sp1 = sp1 > 0 ? sp1 : 0;
             sp2 = sp2 > 0 ? sp2 : 0;
-            int colorR = (int)(kd * il.R * io.R * sp1 + ks * il.R * io.R * Math.Pow(sp2, m)) / 255;
-            int colorG = (int)(kd * il.G * io.G * sp1 + ks * il.G * io.G * Math.Pow(sp2, m)) / 255;
-            int colorB = (int)(kd * il.B * io.B * sp1 + ks * il.B * io.B * Math.Pow(sp2, m)) / 255;
+            sp1 *= kd/255;
+            sp2 = (float)Math.Pow(sp2, m) * ks/255;
+            int colorR = (int)(il.R * io.R * sp1 + il.R * io.R * sp2);
+            int colorG = (int)(il.G * io.G * sp1 + il.G * io.G * sp2);
+            int colorB = (int)(il.B * io.B * sp1 + il.B * io.B * sp2);
             colorR = colorR > 255 ? 255 : colorR < 0 ? 0 : colorR;
             colorG = colorG > 255 ? 255 : colorG < 0 ? 0 : colorG;
             colorB = colorB > 255 ? 255 : colorB < 0 ? 0 : colorB;
