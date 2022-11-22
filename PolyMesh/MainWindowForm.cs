@@ -12,11 +12,48 @@ namespace PolyMesh
         private readonly Thread thread;
         private static ManualResetEvent mre = new ManualResetEvent(false);
 
-
+        //labowe zmienne
+        public Triangle obstacle;
+        public Triangle shadow;
+        public Vector3[] positions;
+        //koniec
         public MainWindowForm()
         {
             InitializeComponent();
 
+            //***laby start
+            positions = new Vector3[5];
+            positions[0] = new Vector3(300, 300, 100);
+            positions[1] = new Vector3(400, 300, 100);
+            positions[2] = new Vector3(400, 400, 100);
+            positions[3] = new Vector3(100, 400, 100);
+            positions[4] = new Vector3(350, 350, 100);
+            obstacle = new();
+            obstacle.vertices.Add(new Vertex(new Vector3(300, 300, 100), new Vector3(0, 0, 1)));
+            obstacle.vertices.Add(new Vertex(new Vector3(400, 300, 100), new Vector3(0, 0, 1)));
+            obstacle.vertices.Add(new Vertex(new Vector3(400, 400, 100), new Vector3(0, 0, 1)));
+            obstacle.vertices.Add(new Vertex(new Vector3(100, 400, 100), new Vector3(0, 0, 1)));
+            obstacle.vertices.Add(new Vertex(new Vector3(350, 350, 100), new Vector3(0, 0, 1)));
+
+            for (int i = 0; i < obstacle.vertices.Count; i++)
+            {
+                obstacle.vertices[i].next = obstacle.vertices[(i + 1) % obstacle.vertices.Count];
+                obstacle.vertices[i].prev = obstacle.vertices[(i + obstacle.vertices.Count - 1) % obstacle.vertices.Count];
+            }
+            obstacle.GenerateAETP();
+
+            shadow = new();
+            shadow.vertices.Add(new Vertex(new Vector3(300, 300, 0), new Vector3(0, 0, 1)));
+            shadow.vertices.Add(new Vertex(new Vector3(400, 300, 0), new Vector3(0, 0, 1)));
+            shadow.vertices.Add(new Vertex(new Vector3(400, 400, 0), new Vector3(0, 0, 1)));
+            shadow.vertices.Add(new Vertex(new Vector3(100, 400, 0), new Vector3(0, 0, 1)));
+            shadow.vertices.Add(new Vertex(new Vector3(350, 350, 0), new Vector3(0, 0, 1)));
+            for (int i = 0; i < obstacle.vertices.Count; i++)
+            {
+                shadow.vertices[i].next = shadow.vertices[(i + 1) % shadow.vertices.Count];
+                shadow.vertices[i].prev = shadow.vertices[(i + shadow.vertices.Count - 1) % shadow.vertices.Count];
+            }
+            ///***koniec
             model = Utils.ParseModel(Settings.path);
             bits = new(Settings.bitmapSize, Settings.bitmapSize);
             MainPictureBox.Invalidate();
@@ -52,6 +89,33 @@ namespace PolyMesh
                     g.DrawLine(Pens.Black, (int)t.vertices[2].position.X, (int)t.vertices[2].position.Y, (int)t.vertices[0].position.X, (int)t.vertices[0].position.Y);
                 }
             }
+            if (DrawObstacleCheckBox.Checked) ///*** laby
+            {
+                if (AnimateObstacleCheckBox.Checked)
+                {
+                    for(int i = 0; i < positions.Length; i++)
+                    {
+                        obstacle.vertices[i].position.X = positions[i].X + 50*(float)(Math.Sin((float)Settings.stopwatch.ElapsedMilliseconds / 2000) + 1);
+                    }
+                    obstacle.GenerateAETP();
+                }
+                for (int i = 0; i < obstacle.vertices.Count; i++)
+                {
+                    var offset = Settings.bitmapSize / 2;
+                    var scale = (Geometry.Z) / (Geometry.Z - obstacle.vertices[i].position.Z);
+                    var sunScale = (Geometry.Z - obstacle.vertices[i].position.Z) / obstacle.vertices[i].position.Z;
+
+                    var light = Geometry.GetLightVector((float)Settings.stopwatch.ElapsedMilliseconds / 2000);
+                    shadow.vertices[i].position = new Vector3(
+                        (obstacle.vertices[i].position.X - offset - (light.X - offset) / sunScale) * scale + offset,
+                        (obstacle.vertices[i].position.Y - offset - (light.Y - offset) / sunScale) * scale + offset,
+                        0);
+                }
+                shadow.GenerateAETP();
+                shadow.Paint(bits, true);
+                obstacle.Paint(bits);
+
+            }////*** koniec
             e.Graphics.DrawImage(bits.Bitmap, 0, 0);
         }
 
@@ -107,11 +171,14 @@ namespace PolyMesh
         {
             if (LightSourceStopCheckBox.Checked)
             {
+                AnimateObstacleCheckBox.Checked = false;
+                AnimateObstacleCheckBox.Enabled = false;
                 Settings.stopwatch.Stop();
                 mre.Reset();
             }
             else
             {
+                AnimateObstacleCheckBox.Enabled = true;
                 Settings.stopwatch.Start();
                 mre.Set();
             }
@@ -185,6 +252,18 @@ namespace PolyMesh
         {
             Settings.normalMap = null;
             NormalMapLabel.Text = "Normal Map: None";
+            MainPictureBox.Invalidate();
+        }
+
+        private void kaTrackBar_Scroll(object sender, EventArgs e)
+        {
+            Geometry.ka = kaTrackBar.Value;
+            kaLabel.Text = "ka = " + kaTrackBar.Value.ToString();
+            MainPictureBox.Invalidate();
+        }
+
+        private void DrawObstacleCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
             MainPictureBox.Invalidate();
         }
     }

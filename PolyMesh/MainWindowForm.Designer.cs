@@ -50,6 +50,8 @@
             this.kdTrackBar = new System.Windows.Forms.TrackBar();
             this.ObjectColorButton = new System.Windows.Forms.Button();
             this.ObjectColorLabel = new System.Windows.Forms.Label();
+            this.kaLabel = new System.Windows.Forms.Label();
+            this.kaTrackBar = new System.Windows.Forms.TrackBar();
             this.OptionsGroupBox = new System.Windows.Forms.GroupBox();
             this.OptionsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.LightSourceStopCheckBox = new System.Windows.Forms.CheckBox();
@@ -58,6 +60,8 @@
             this.NormalInterpolationRadioButton = new System.Windows.Forms.RadioButton();
             this.ColorInterpolationRadioButton = new System.Windows.Forms.RadioButton();
             this.zLabel = new System.Windows.Forms.Label();
+            this.DrawObstacleCheckBox = new System.Windows.Forms.CheckBox();
+            this.AnimateObstacleCheckBox = new System.Windows.Forms.CheckBox();
             this.MainColorDialog = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MainPictureBox)).BeginInit();
             this.MainGroupBox.SuspendLayout();
@@ -68,6 +72,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ksTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kdTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kaTrackBar)).BeginInit();
             this.OptionsGroupBox.SuspendLayout();
             this.OptionsLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LightSourceZTrackBar)).BeginInit();
@@ -209,7 +214,7 @@
             // ParametersLayoutPanel
             // 
             this.ParametersLayoutPanel.ColumnCount = 2;
-            this.ParametersLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ParametersLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.ParametersLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.ParametersLayoutPanel.Controls.Add(this.LightSourceColorButton, 0, 0);
             this.ParametersLayoutPanel.Controls.Add(this.mTrackBar, 0, 2);
@@ -221,15 +226,18 @@
             this.ParametersLayoutPanel.Controls.Add(this.kdTrackBar, 0, 4);
             this.ParametersLayoutPanel.Controls.Add(this.ObjectColorButton, 0, 1);
             this.ParametersLayoutPanel.Controls.Add(this.ObjectColorLabel, 1, 1);
+            this.ParametersLayoutPanel.Controls.Add(this.kaLabel, 1, 5);
+            this.ParametersLayoutPanel.Controls.Add(this.kaTrackBar, 0, 5);
             this.ParametersLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ParametersLayoutPanel.Location = new System.Drawing.Point(3, 19);
             this.ParametersLayoutPanel.Name = "ParametersLayoutPanel";
-            this.ParametersLayoutPanel.RowCount = 5;
-            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ParametersLayoutPanel.RowCount = 6;
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.ParametersLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.ParametersLayoutPanel.Size = new System.Drawing.Size(188, 255);
             this.ParametersLayoutPanel.TabIndex = 5;
             // 
@@ -238,7 +246,7 @@
             this.LightSourceColorButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LightSourceColorButton.Location = new System.Drawing.Point(3, 3);
             this.LightSourceColorButton.Name = "LightSourceColorButton";
-            this.LightSourceColorButton.Size = new System.Drawing.Size(126, 45);
+            this.LightSourceColorButton.Size = new System.Drawing.Size(126, 36);
             this.LightSourceColorButton.TabIndex = 2;
             this.LightSourceColorButton.Text = "Choose Light Color";
             this.LightSourceColorButton.UseVisualStyleBackColor = true;
@@ -248,11 +256,11 @@
             // 
             this.mTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mTrackBar.LargeChange = 1;
-            this.mTrackBar.Location = new System.Drawing.Point(3, 105);
+            this.mTrackBar.Location = new System.Drawing.Point(3, 87);
             this.mTrackBar.Maximum = 100;
             this.mTrackBar.Minimum = 1;
             this.mTrackBar.Name = "mTrackBar";
-            this.mTrackBar.Size = new System.Drawing.Size(126, 45);
+            this.mTrackBar.Size = new System.Drawing.Size(126, 36);
             this.mTrackBar.TabIndex = 3;
             this.mTrackBar.Value = 20;
             this.mTrackBar.ValueChanged += new System.EventHandler(this.mTrackBar_ValueChanged);
@@ -261,10 +269,10 @@
             // 
             this.mLabel.AutoSize = true;
             this.mLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mLabel.Location = new System.Drawing.Point(137, 107);
+            this.mLabel.Location = new System.Drawing.Point(137, 89);
             this.mLabel.Margin = new System.Windows.Forms.Padding(5);
             this.mLabel.Name = "mLabel";
-            this.mLabel.Size = new System.Drawing.Size(46, 41);
+            this.mLabel.Size = new System.Drawing.Size(46, 32);
             this.mLabel.TabIndex = 4;
             this.mLabel.Text = "m = 20";
             this.mLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -278,17 +286,17 @@
             this.LightColorLabel.Location = new System.Drawing.Point(137, 5);
             this.LightColorLabel.Margin = new System.Windows.Forms.Padding(5);
             this.LightColorLabel.Name = "LightColorLabel";
-            this.LightColorLabel.Size = new System.Drawing.Size(46, 41);
+            this.LightColorLabel.Size = new System.Drawing.Size(46, 32);
             this.LightColorLabel.TabIndex = 5;
             // 
             // ksLabel
             // 
             this.ksLabel.AutoSize = true;
             this.ksLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ksLabel.Location = new System.Drawing.Point(137, 158);
+            this.ksLabel.Location = new System.Drawing.Point(137, 131);
             this.ksLabel.Margin = new System.Windows.Forms.Padding(5);
             this.ksLabel.Name = "ksLabel";
-            this.ksLabel.Size = new System.Drawing.Size(46, 41);
+            this.ksLabel.Size = new System.Drawing.Size(46, 32);
             this.ksLabel.TabIndex = 6;
             this.ksLabel.Text = "ks = 1";
             this.ksLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -297,10 +305,10 @@
             // 
             this.kdLabel.AutoSize = true;
             this.kdLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.kdLabel.Location = new System.Drawing.Point(137, 209);
+            this.kdLabel.Location = new System.Drawing.Point(137, 173);
             this.kdLabel.Margin = new System.Windows.Forms.Padding(5);
             this.kdLabel.Name = "kdLabel";
-            this.kdLabel.Size = new System.Drawing.Size(46, 41);
+            this.kdLabel.Size = new System.Drawing.Size(46, 32);
             this.kdLabel.TabIndex = 7;
             this.kdLabel.Text = "kd = 1";
             this.kdLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -309,10 +317,10 @@
             // 
             this.ksTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ksTrackBar.LargeChange = 1;
-            this.ksTrackBar.Location = new System.Drawing.Point(3, 156);
+            this.ksTrackBar.Location = new System.Drawing.Point(3, 129);
             this.ksTrackBar.Maximum = 100;
             this.ksTrackBar.Name = "ksTrackBar";
-            this.ksTrackBar.Size = new System.Drawing.Size(126, 45);
+            this.ksTrackBar.Size = new System.Drawing.Size(126, 36);
             this.ksTrackBar.TabIndex = 8;
             this.ksTrackBar.Value = 100;
             this.ksTrackBar.ValueChanged += new System.EventHandler(this.ksTrackBar_ValueChanged);
@@ -321,10 +329,10 @@
             // 
             this.kdTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kdTrackBar.LargeChange = 1;
-            this.kdTrackBar.Location = new System.Drawing.Point(3, 207);
+            this.kdTrackBar.Location = new System.Drawing.Point(3, 171);
             this.kdTrackBar.Maximum = 100;
             this.kdTrackBar.Name = "kdTrackBar";
-            this.kdTrackBar.Size = new System.Drawing.Size(126, 45);
+            this.kdTrackBar.Size = new System.Drawing.Size(126, 36);
             this.kdTrackBar.TabIndex = 9;
             this.kdTrackBar.Value = 100;
             this.kdTrackBar.ValueChanged += new System.EventHandler(this.kdTrackBar_ValueChanged);
@@ -332,9 +340,9 @@
             // ObjectColorButton
             // 
             this.ObjectColorButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ObjectColorButton.Location = new System.Drawing.Point(3, 54);
+            this.ObjectColorButton.Location = new System.Drawing.Point(3, 45);
             this.ObjectColorButton.Name = "ObjectColorButton";
-            this.ObjectColorButton.Size = new System.Drawing.Size(126, 45);
+            this.ObjectColorButton.Size = new System.Drawing.Size(126, 36);
             this.ObjectColorButton.TabIndex = 10;
             this.ObjectColorButton.Text = "Choose Object Color";
             this.ObjectColorButton.UseVisualStyleBackColor = true;
@@ -346,11 +354,33 @@
             this.ObjectColorLabel.BackColor = System.Drawing.Color.Blue;
             this.ObjectColorLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ObjectColorLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ObjectColorLabel.Location = new System.Drawing.Point(137, 56);
+            this.ObjectColorLabel.Location = new System.Drawing.Point(137, 47);
             this.ObjectColorLabel.Margin = new System.Windows.Forms.Padding(5);
             this.ObjectColorLabel.Name = "ObjectColorLabel";
-            this.ObjectColorLabel.Size = new System.Drawing.Size(46, 41);
+            this.ObjectColorLabel.Size = new System.Drawing.Size(46, 32);
             this.ObjectColorLabel.TabIndex = 11;
+            // 
+            // kaLabel
+            // 
+            this.kaLabel.AutoSize = true;
+            this.kaLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.kaLabel.Location = new System.Drawing.Point(137, 215);
+            this.kaLabel.Margin = new System.Windows.Forms.Padding(5);
+            this.kaLabel.Name = "kaLabel";
+            this.kaLabel.Size = new System.Drawing.Size(46, 35);
+            this.kaLabel.TabIndex = 12;
+            this.kaLabel.Text = "ka = 0";
+            this.kaLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // kaTrackBar
+            // 
+            this.kaTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.kaTrackBar.Location = new System.Drawing.Point(3, 213);
+            this.kaTrackBar.Maximum = 255;
+            this.kaTrackBar.Name = "kaTrackBar";
+            this.kaTrackBar.Size = new System.Drawing.Size(126, 39);
+            this.kaTrackBar.TabIndex = 13;
+            this.kaTrackBar.Scroll += new System.EventHandler(this.kaTrackBar_Scroll);
             // 
             // OptionsGroupBox
             // 
@@ -375,14 +405,18 @@
             this.OptionsLayoutPanel.Controls.Add(this.NormalInterpolationRadioButton, 0, 2);
             this.OptionsLayoutPanel.Controls.Add(this.ColorInterpolationRadioButton, 0, 3);
             this.OptionsLayoutPanel.Controls.Add(this.zLabel, 2, 0);
+            this.OptionsLayoutPanel.Controls.Add(this.DrawObstacleCheckBox, 0, 4);
+            this.OptionsLayoutPanel.Controls.Add(this.AnimateObstacleCheckBox, 1, 4);
             this.OptionsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OptionsLayoutPanel.Location = new System.Drawing.Point(3, 19);
             this.OptionsLayoutPanel.Name = "OptionsLayoutPanel";
-            this.OptionsLayoutPanel.RowCount = 4;
+            this.OptionsLayoutPanel.RowCount = 5;
             this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.OptionsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.OptionsLayoutPanel.Size = new System.Drawing.Size(188, 243);
             this.OptionsLayoutPanel.TabIndex = 4;
             // 
@@ -392,9 +426,9 @@
             this.LightSourceStopCheckBox.Checked = true;
             this.LightSourceStopCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.LightSourceStopCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LightSourceStopCheckBox.Location = new System.Drawing.Point(3, 74);
+            this.LightSourceStopCheckBox.Location = new System.Drawing.Point(3, 54);
             this.LightSourceStopCheckBox.Name = "LightSourceStopCheckBox";
-            this.LightSourceStopCheckBox.Size = new System.Drawing.Size(88, 65);
+            this.LightSourceStopCheckBox.Size = new System.Drawing.Size(88, 45);
             this.LightSourceStopCheckBox.TabIndex = 3;
             this.LightSourceStopCheckBox.Text = "Stop Light Source";
             this.LightSourceStopCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -409,7 +443,7 @@
             this.LightSourceZTrackBar.Location = new System.Drawing.Point(3, 3);
             this.LightSourceZTrackBar.Maximum = 1000;
             this.LightSourceZTrackBar.Name = "LightSourceZTrackBar";
-            this.LightSourceZTrackBar.Size = new System.Drawing.Size(126, 65);
+            this.LightSourceZTrackBar.Size = new System.Drawing.Size(126, 45);
             this.LightSourceZTrackBar.TabIndex = 2;
             this.LightSourceZTrackBar.Value = 500;
             this.LightSourceZTrackBar.Scroll += new System.EventHandler(this.LightSourceZTrackBar_Scroll);
@@ -419,9 +453,9 @@
             this.DrawEdgesCheckBox.AutoSize = true;
             this.OptionsLayoutPanel.SetColumnSpan(this.DrawEdgesCheckBox, 2);
             this.DrawEdgesCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DrawEdgesCheckBox.Location = new System.Drawing.Point(97, 74);
+            this.DrawEdgesCheckBox.Location = new System.Drawing.Point(97, 54);
             this.DrawEdgesCheckBox.Name = "DrawEdgesCheckBox";
-            this.DrawEdgesCheckBox.Size = new System.Drawing.Size(88, 65);
+            this.DrawEdgesCheckBox.Size = new System.Drawing.Size(88, 45);
             this.DrawEdgesCheckBox.TabIndex = 1;
             this.DrawEdgesCheckBox.Text = "Draw Edges";
             this.DrawEdgesCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -434,7 +468,7 @@
             this.NormalInterpolationRadioButton.Checked = true;
             this.OptionsLayoutPanel.SetColumnSpan(this.NormalInterpolationRadioButton, 3);
             this.NormalInterpolationRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NormalInterpolationRadioButton.Location = new System.Drawing.Point(3, 145);
+            this.NormalInterpolationRadioButton.Location = new System.Drawing.Point(3, 105);
             this.NormalInterpolationRadioButton.Name = "NormalInterpolationRadioButton";
             this.NormalInterpolationRadioButton.Size = new System.Drawing.Size(182, 44);
             this.NormalInterpolationRadioButton.TabIndex = 5;
@@ -449,9 +483,9 @@
             this.OptionsLayoutPanel.SetColumnSpan(this.ColorInterpolationRadioButton, 3);
             this.ColorInterpolationRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ColorInterpolationRadioButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ColorInterpolationRadioButton.Location = new System.Drawing.Point(3, 195);
+            this.ColorInterpolationRadioButton.Location = new System.Drawing.Point(3, 155);
             this.ColorInterpolationRadioButton.Name = "ColorInterpolationRadioButton";
-            this.ColorInterpolationRadioButton.Size = new System.Drawing.Size(182, 45);
+            this.ColorInterpolationRadioButton.Size = new System.Drawing.Size(182, 44);
             this.ColorInterpolationRadioButton.TabIndex = 6;
             this.ColorInterpolationRadioButton.Text = "Color interpolation";
             this.ColorInterpolationRadioButton.UseVisualStyleBackColor = true;
@@ -463,10 +497,35 @@
             this.zLabel.Location = new System.Drawing.Point(137, 5);
             this.zLabel.Margin = new System.Windows.Forms.Padding(5);
             this.zLabel.Name = "zLabel";
-            this.zLabel.Size = new System.Drawing.Size(46, 61);
+            this.zLabel.Size = new System.Drawing.Size(46, 41);
             this.zLabel.TabIndex = 4;
             this.zLabel.Text = "z = 500";
             this.zLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // DrawObstacleCheckBox
+            // 
+            this.DrawObstacleCheckBox.AutoSize = true;
+            this.DrawObstacleCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DrawObstacleCheckBox.Location = new System.Drawing.Point(3, 205);
+            this.DrawObstacleCheckBox.Name = "DrawObstacleCheckBox";
+            this.DrawObstacleCheckBox.Size = new System.Drawing.Size(88, 35);
+            this.DrawObstacleCheckBox.TabIndex = 7;
+            this.DrawObstacleCheckBox.Text = "Draw Obstacle";
+            this.DrawObstacleCheckBox.UseVisualStyleBackColor = true;
+            this.DrawObstacleCheckBox.CheckedChanged += new System.EventHandler(this.DrawObstacleCheckBox_CheckedChanged);
+            // 
+            // AnimateObstacleCheckBox
+            // 
+            this.AnimateObstacleCheckBox.AutoSize = true;
+            this.OptionsLayoutPanel.SetColumnSpan(this.AnimateObstacleCheckBox, 2);
+            this.AnimateObstacleCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AnimateObstacleCheckBox.Enabled = false;
+            this.AnimateObstacleCheckBox.Location = new System.Drawing.Point(97, 205);
+            this.AnimateObstacleCheckBox.Name = "AnimateObstacleCheckBox";
+            this.AnimateObstacleCheckBox.Size = new System.Drawing.Size(88, 35);
+            this.AnimateObstacleCheckBox.TabIndex = 8;
+            this.AnimateObstacleCheckBox.Text = "Animate Obstacle";
+            this.AnimateObstacleCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainWindowForm
             // 
@@ -490,6 +549,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.mTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ksTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kdTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kaTrackBar)).EndInit();
             this.OptionsGroupBox.ResumeLayout(false);
             this.OptionsLayoutPanel.ResumeLayout(false);
             this.OptionsLayoutPanel.PerformLayout();
@@ -531,5 +591,9 @@
         private Button RevertNormalMapButton;
         private Label TextureLabel;
         private Label NormalMapLabel;
+        private Label kaLabel;
+        private TrackBar kaTrackBar;
+        private CheckBox DrawObstacleCheckBox;
+        private CheckBox AnimateObstacleCheckBox;
     }
 }
