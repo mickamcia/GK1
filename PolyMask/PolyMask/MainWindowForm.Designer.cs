@@ -58,13 +58,15 @@
             this.KernelCellNumericUpDown0 = new System.Windows.Forms.NumericUpDown();
             this.ProcessingSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.ProcessingSettingsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.PictureSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.PictureSettingsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.ChooseImageButton = new System.Windows.Forms.Button();
+            this.RevertChangesButton = new System.Windows.Forms.Button();
+            this.ImagePathLabel = new System.Windows.Forms.Label();
             this.BrushTypeGroupBox = new System.Windows.Forms.GroupBox();
             this.BrushTypeTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.RubberRadioButton = new System.Windows.Forms.RadioButton();
             this.BrushRadioButton = new System.Windows.Forms.RadioButton();
-            this.RedHistogramGroupBox = new System.Windows.Forms.GroupBox();
-            this.RedHistogramPictureBox = new System.Windows.Forms.PictureBox();
             this.FillingTypeGroupBox = new System.Windows.Forms.GroupBox();
             this.FillingToolTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.WholeFillRadioButton = new System.Windows.Forms.RadioButton();
@@ -72,10 +74,8 @@
             this.BrushFillRadioButton = new System.Windows.Forms.RadioButton();
             this.BrushSizeTrackBar = new System.Windows.Forms.TrackBar();
             this.BrushSizeLabel = new System.Windows.Forms.Label();
-            this.PictureSettingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.PictureSettingsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.RevertChangesButton = new System.Windows.Forms.Button();
-            this.ImagePathLabel = new System.Windows.Forms.Label();
+            this.RedHistogramGroupBox = new System.Windows.Forms.GroupBox();
+            this.RedHistogramPictureBox = new System.Windows.Forms.PictureBox();
             this.MainTableLayoutPanel.SuspendLayout();
             this.HistogramGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HistogramPictureBox)).BeginInit();
@@ -98,15 +98,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.KernelCellNumericUpDown0)).BeginInit();
             this.ProcessingSettingsGroupBox.SuspendLayout();
             this.ProcessingSettingsTableLayoutPanel.SuspendLayout();
+            this.PictureSettingsGroupBox.SuspendLayout();
+            this.PictureSettingsTableLayoutPanel.SuspendLayout();
             this.BrushTypeGroupBox.SuspendLayout();
             this.BrushTypeTableLayoutPanel.SuspendLayout();
-            this.RedHistogramGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.RedHistogramPictureBox)).BeginInit();
             this.FillingTypeGroupBox.SuspendLayout();
             this.FillingToolTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BrushSizeTrackBar)).BeginInit();
-            this.PictureSettingsGroupBox.SuspendLayout();
-            this.PictureSettingsTableLayoutPanel.SuspendLayout();
+            this.RedHistogramGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RedHistogramPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // MainTableLayoutPanel
@@ -673,6 +673,34 @@
             this.ProcessingSettingsTableLayoutPanel.Size = new System.Drawing.Size(288, 378);
             this.ProcessingSettingsTableLayoutPanel.TabIndex = 0;
             // 
+            // PictureSettingsGroupBox
+            // 
+            this.PictureSettingsGroupBox.Controls.Add(this.PictureSettingsTableLayoutPanel);
+            this.PictureSettingsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PictureSettingsGroupBox.Location = new System.Drawing.Point(3, 281);
+            this.PictureSettingsGroupBox.Name = "PictureSettingsGroupBox";
+            this.PictureSettingsGroupBox.Size = new System.Drawing.Size(282, 94);
+            this.PictureSettingsGroupBox.TabIndex = 1;
+            this.PictureSettingsGroupBox.TabStop = false;
+            this.PictureSettingsGroupBox.Text = "Picture Settings";
+            // 
+            // PictureSettingsTableLayoutPanel
+            // 
+            this.PictureSettingsTableLayoutPanel.ColumnCount = 2;
+            this.PictureSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PictureSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PictureSettingsTableLayoutPanel.Controls.Add(this.ChooseImageButton, 0, 0);
+            this.PictureSettingsTableLayoutPanel.Controls.Add(this.RevertChangesButton, 1, 0);
+            this.PictureSettingsTableLayoutPanel.Controls.Add(this.ImagePathLabel, 0, 1);
+            this.PictureSettingsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PictureSettingsTableLayoutPanel.Location = new System.Drawing.Point(3, 19);
+            this.PictureSettingsTableLayoutPanel.Name = "PictureSettingsTableLayoutPanel";
+            this.PictureSettingsTableLayoutPanel.RowCount = 2;
+            this.PictureSettingsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PictureSettingsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.PictureSettingsTableLayoutPanel.Size = new System.Drawing.Size(276, 72);
+            this.PictureSettingsTableLayoutPanel.TabIndex = 2;
+            // 
             // ChooseImageButton
             // 
             this.ChooseImageButton.Location = new System.Drawing.Point(3, 3);
@@ -682,6 +710,28 @@
             this.ChooseImageButton.Text = "Choose Image";
             this.ChooseImageButton.UseVisualStyleBackColor = true;
             this.ChooseImageButton.Click += new System.EventHandler(this.ChooseImageButton_Click);
+            // 
+            // RevertChangesButton
+            // 
+            this.RevertChangesButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RevertChangesButton.Location = new System.Drawing.Point(141, 3);
+            this.RevertChangesButton.Name = "RevertChangesButton";
+            this.RevertChangesButton.Size = new System.Drawing.Size(132, 30);
+            this.RevertChangesButton.TabIndex = 2;
+            this.RevertChangesButton.Text = "Revert Changes";
+            this.RevertChangesButton.UseVisualStyleBackColor = true;
+            // 
+            // ImagePathLabel
+            // 
+            this.ImagePathLabel.AutoSize = true;
+            this.PictureSettingsTableLayoutPanel.SetColumnSpan(this.ImagePathLabel, 2);
+            this.ImagePathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ImagePathLabel.Location = new System.Drawing.Point(3, 36);
+            this.ImagePathLabel.Name = "ImagePathLabel";
+            this.ImagePathLabel.Padding = new System.Windows.Forms.Padding(3);
+            this.ImagePathLabel.Size = new System.Drawing.Size(270, 36);
+            this.ImagePathLabel.TabIndex = 3;
+            this.ImagePathLabel.Text = "Image Path: ";
             // 
             // BrushTypeGroupBox
             // 
@@ -733,26 +783,6 @@
             this.BrushRadioButton.TabStop = true;
             this.BrushRadioButton.Text = "Brush";
             this.BrushRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // RedHistogramGroupBox
-            // 
-            this.RedHistogramGroupBox.Controls.Add(this.RedHistogramPictureBox);
-            this.RedHistogramGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RedHistogramGroupBox.Location = new System.Drawing.Point(809, 3);
-            this.RedHistogramGroupBox.Name = "RedHistogramGroupBox";
-            this.RedHistogramGroupBox.Size = new System.Drawing.Size(294, 194);
-            this.RedHistogramGroupBox.TabIndex = 5;
-            this.RedHistogramGroupBox.TabStop = false;
-            this.RedHistogramGroupBox.Text = "Red Channel Histogram";
-            // 
-            // RedHistogramPictureBox
-            // 
-            this.RedHistogramPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RedHistogramPictureBox.Location = new System.Drawing.Point(3, 19);
-            this.RedHistogramPictureBox.Name = "RedHistogramPictureBox";
-            this.RedHistogramPictureBox.Size = new System.Drawing.Size(288, 172);
-            this.RedHistogramPictureBox.TabIndex = 0;
-            this.RedHistogramPictureBox.TabStop = false;
             // 
             // FillingTypeGroupBox
             // 
@@ -846,55 +876,25 @@
             this.BrushSizeLabel.Text = "Brush Size: 10";
             this.BrushSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // PictureSettingsGroupBox
+            // RedHistogramGroupBox
             // 
-            this.PictureSettingsGroupBox.Controls.Add(this.PictureSettingsTableLayoutPanel);
-            this.PictureSettingsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PictureSettingsGroupBox.Location = new System.Drawing.Point(3, 281);
-            this.PictureSettingsGroupBox.Name = "PictureSettingsGroupBox";
-            this.PictureSettingsGroupBox.Size = new System.Drawing.Size(282, 94);
-            this.PictureSettingsGroupBox.TabIndex = 1;
-            this.PictureSettingsGroupBox.TabStop = false;
-            this.PictureSettingsGroupBox.Text = "Picture Settings";
+            this.RedHistogramGroupBox.Controls.Add(this.RedHistogramPictureBox);
+            this.RedHistogramGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RedHistogramGroupBox.Location = new System.Drawing.Point(809, 3);
+            this.RedHistogramGroupBox.Name = "RedHistogramGroupBox";
+            this.RedHistogramGroupBox.Size = new System.Drawing.Size(294, 194);
+            this.RedHistogramGroupBox.TabIndex = 5;
+            this.RedHistogramGroupBox.TabStop = false;
+            this.RedHistogramGroupBox.Text = "Red Channel Histogram";
             // 
-            // PictureSettingsTableLayoutPanel
+            // RedHistogramPictureBox
             // 
-            this.PictureSettingsTableLayoutPanel.ColumnCount = 2;
-            this.PictureSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.PictureSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.PictureSettingsTableLayoutPanel.Controls.Add(this.ChooseImageButton, 0, 0);
-            this.PictureSettingsTableLayoutPanel.Controls.Add(this.RevertChangesButton, 1, 0);
-            this.PictureSettingsTableLayoutPanel.Controls.Add(this.ImagePathLabel, 0, 1);
-            this.PictureSettingsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PictureSettingsTableLayoutPanel.Location = new System.Drawing.Point(3, 19);
-            this.PictureSettingsTableLayoutPanel.Name = "PictureSettingsTableLayoutPanel";
-            this.PictureSettingsTableLayoutPanel.RowCount = 2;
-            this.PictureSettingsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.PictureSettingsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.PictureSettingsTableLayoutPanel.Size = new System.Drawing.Size(276, 72);
-            this.PictureSettingsTableLayoutPanel.TabIndex = 2;
-            // 
-            // RevertChangesButton
-            // 
-            this.RevertChangesButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RevertChangesButton.Location = new System.Drawing.Point(141, 3);
-            this.RevertChangesButton.Name = "RevertChangesButton";
-            this.RevertChangesButton.Size = new System.Drawing.Size(132, 30);
-            this.RevertChangesButton.TabIndex = 2;
-            this.RevertChangesButton.Text = "Revert Changes";
-            this.RevertChangesButton.UseVisualStyleBackColor = true;
-            // 
-            // ImagePathLabel
-            // 
-            this.ImagePathLabel.AutoSize = true;
-            this.PictureSettingsTableLayoutPanel.SetColumnSpan(this.ImagePathLabel, 2);
-            this.ImagePathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ImagePathLabel.Location = new System.Drawing.Point(3, 36);
-            this.ImagePathLabel.Name = "ImagePathLabel";
-            this.ImagePathLabel.Padding = new System.Windows.Forms.Padding(3);
-            this.ImagePathLabel.Size = new System.Drawing.Size(270, 36);
-            this.ImagePathLabel.TabIndex = 3;
-            this.ImagePathLabel.Text = "Image Path: ";
+            this.RedHistogramPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RedHistogramPictureBox.Location = new System.Drawing.Point(3, 19);
+            this.RedHistogramPictureBox.Name = "RedHistogramPictureBox";
+            this.RedHistogramPictureBox.Size = new System.Drawing.Size(288, 172);
+            this.RedHistogramPictureBox.TabIndex = 0;
+            this.RedHistogramPictureBox.TabStop = false;
             // 
             // MainWindowForm
             // 
@@ -930,18 +930,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.KernelCellNumericUpDown0)).EndInit();
             this.ProcessingSettingsGroupBox.ResumeLayout(false);
             this.ProcessingSettingsTableLayoutPanel.ResumeLayout(false);
+            this.PictureSettingsGroupBox.ResumeLayout(false);
+            this.PictureSettingsTableLayoutPanel.ResumeLayout(false);
+            this.PictureSettingsTableLayoutPanel.PerformLayout();
             this.BrushTypeGroupBox.ResumeLayout(false);
             this.BrushTypeTableLayoutPanel.ResumeLayout(false);
             this.BrushTypeTableLayoutPanel.PerformLayout();
-            this.RedHistogramGroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.RedHistogramPictureBox)).EndInit();
             this.FillingTypeGroupBox.ResumeLayout(false);
             this.FillingToolTableLayoutPanel.ResumeLayout(false);
             this.FillingToolTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BrushSizeTrackBar)).EndInit();
-            this.PictureSettingsGroupBox.ResumeLayout(false);
-            this.PictureSettingsTableLayoutPanel.ResumeLayout(false);
-            this.PictureSettingsTableLayoutPanel.PerformLayout();
+            this.RedHistogramGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.RedHistogramPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
