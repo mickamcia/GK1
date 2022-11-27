@@ -9,8 +9,9 @@ namespace PolyMesh
             Normal,
             Color,
         }
-        public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        //public const string path = "C:\\Users\\s\\Source\\Repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
         //public const string path = "C:\\Users\\user\\source\\repos\\mickamcia\\GK1\\PolyMesh\\sphereXXL.obj";
+        public const string path = @"C:..\\..\\..\\sphereXXL.obj";
         public const int bitmapSize = 800;
         public const int modelScale = 300;
         public static Random rnd = new();
@@ -84,6 +85,10 @@ namespace PolyMesh
             }
             GenerateAETP();
         }
+        public Triangle()
+        {
+            vertices = new();
+        }
         public void GenerateAETP()
         {
             for(int i = 0; i < vertices.Count; i++)
@@ -104,7 +109,7 @@ namespace PolyMesh
                 v.pointer.reset();
             }
         }
-        public void Paint(DirectBitmap bits)
+        public void Paint(DirectBitmap bits, bool kaOnly = false)
         {
             ResetEdges();
             double ymax = vertices.Max(p => p.position.Y);
@@ -133,11 +138,11 @@ namespace PolyMesh
                 }
                 if (AET.Count > 0)
                 {
-                    FillAET(bits, AET, y);
+                    FillAET(bits, AET, y, kaOnly);
                 }
             }
         }
-        private void FillAET(DirectBitmap bits, List<AETP> AET, int y)
+        private void FillAET(DirectBitmap bits, List<AETP> AET, int y, bool kaOnly = false)
         {
             AET.Sort(delegate (AETP p1, AETP p2)
             {
@@ -147,19 +152,23 @@ namespace PolyMesh
             });
             for (int i = 0; i < AET.Count - 1; i += 2)
             {
-                FillLine(bits, AET[i].x, AET[i + 1].x, y);
+                FillLine(bits, AET[i].x, AET[i + 1].x, y, kaOnly);
             }
             foreach (var ptr in AET)
             {
                 ptr.advance();
             }
         }
-        private void FillLine(DirectBitmap bits, int x1, int x2, int y)
+        private void FillLine(DirectBitmap bits, int x1, int x2, int y, bool kaOnly = false)
         {
             for (int x = x1; x <= x2; x++)
             {
                 if (x >= bits.Width || y >= bits.Height || x < 0 || y < 0) break;
-
+                if (kaOnly)
+                {
+                    bits.SetPixel(x, y, Color.FromArgb((int)(Geometry.ka), (int)(Geometry.ka), (int)(Geometry.ka)));
+                    continue;
+                }
                 var ls = Geometry.GetLightVector((float)Settings.stopwatch.ElapsedMilliseconds / 2000);
                 Color color = Color.White;
                 var positions = vertices.Select(p => p.position).ToArray();

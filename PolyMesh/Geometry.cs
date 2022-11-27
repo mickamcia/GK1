@@ -12,6 +12,7 @@ namespace PolyMesh
     {
         public static float kd = 1;
         public static float ks = 1;
+        public static float ka = 1;
         public static Color il = Color.FromArgb(255,255,255);
         public static Color io = Color.Blue;
         public static int m = 20;
@@ -32,9 +33,9 @@ namespace PolyMesh
             sp2 = sp2 > 0 ? sp2 : 0;
             sp1 *= kd/255;
             sp2 = (float)Math.Pow(sp2, m) * ks/255;
-            int colorR = (int)(il.R * io.R * sp1 + il.R * io.R * sp2);
-            int colorG = (int)(il.G * io.G * sp1 + il.G * io.G * sp2);
-            int colorB = (int)(il.B * io.B * sp1 + il.B * io.B * sp2);
+            int colorR = (int)(ka + il.R * io.R * sp1 + il.R * io.R * sp2);
+            int colorG = (int)(ka + il.G * io.G * sp1 + il.G * io.G * sp2);
+            int colorB = (int)(ka + il.B * io.B * sp1 + il.B * io.B * sp2);
             colorR = colorR > 255 ? 255 : colorR < 0 ? 0 : colorR;
             colorG = colorG > 255 ? 255 : colorG < 0 ? 0 : colorG;
             colorB = colorB > 255 ? 255 : colorB < 0 ? 0 : colorB;
