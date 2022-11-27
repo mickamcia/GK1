@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PolyMask
 {
-    public enum CellType
-    {
-        Visible,
-        Hidden,
-        Unknown,
-    }
-    public static class Settings
-    {
-        public static int PictureWidth = 800;
-        public static int PictureHeigth = 800;
-        public static float[] Kernel = Kernels.Identity;
-    }
     public static class Kernels
     {
         public static readonly float[] Identity = { 0.0f, 0.0f, 0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f };
@@ -32,7 +22,7 @@ namespace PolyMask
     }
     public static class Filter
     {
-        public static void ApplyKernel(int x, int y, Bitmap source, Bitmap output, float[] kernel)
+        public static void ApplyKernel(int x, int y, DirectBitmap source, DirectBitmap output, float[] kernel)
         {
             if(kernel.Length != 9)
             {
@@ -55,7 +45,7 @@ namespace PolyMask
             B = B < 0 ? 0 : B > 255 ? 255 : B;
             output.SetPixel(x, y, Color.FromArgb(255, (int)R, (int)G, (int)B));
         }
-        public static void ClearBitmap(Bitmap bits)
+        public static void ClearBitmap(DirectBitmap bits)
         {
             Color c = Color.FromArgb(0,0,0,0);
             for(int i = 0; i < Settings.PictureHeigth; i++)

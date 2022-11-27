@@ -895,6 +895,7 @@
             this.RedHistogramPictureBox.Size = new System.Drawing.Size(288, 172);
             this.RedHistogramPictureBox.TabIndex = 0;
             this.RedHistogramPictureBox.TabStop = false;
+            this.RedHistogramPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.RedHistogramPictureBox_Paint);
             // 
             // MainWindowForm
             // 

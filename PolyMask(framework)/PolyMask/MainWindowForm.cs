@@ -1,41 +1,49 @@
+﻿using PolyMask.Properties;
+using System;
 using System.Diagnostics.Tracing;
+using System.Drawing;
 using System.Reflection;
+using System.Windows.Forms.VisualStyles;
+using System.Windows.Forms;
 
 namespace PolyMask
 {
     public partial class MainWindowForm : Form
     {
-        public Bitmap source;
-        public Bitmap output;
+        public DirectBitmap source;
+        public DirectBitmap output;
         public CellType[,] orders;
         public CellType[,] current;
+        public Histograms histograms;
         public MainWindowForm()
         {
+            histograms = new Histograms();
             orders = new CellType[Settings.PictureHeigth, Settings.PictureWidth];
             current = new CellType[Settings.PictureHeigth, Settings.PictureWidth];
-            source = new Bitmap(Settings.PictureWidth, Settings.PictureHeigth);
-            output = new Bitmap(Settings.PictureWidth, Settings.PictureHeigth);
+            source = new DirectBitmap(Settings.PictureWidth, Settings.PictureHeigth);
+            output = new DirectBitmap(Settings.PictureWidth, Settings.PictureHeigth);
             FillMask(orders, CellType.Visible);
             FillMask(current, CellType.Unknown);
             Filter.ClearBitmap(output);
+            RedChannelChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            RedChannelChart.Series.Add(new System.Windows.Forms.DataVisualization.Charting.Series("a", 1));
+            RedChannelChart.Series.Add(new System.Windows.Forms.DataVisualization.Charting.Series("b", 2));
             InitializeComponent();
         }
-
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            Filter.ClearBitmap(output);
             for (int i = 0; i < Settings.PictureHeigth; i++)
             {
                 for (int j = 0; j < Settings.PictureWidth; j++)
                 {
-                    switch (current[i,j])
+                    switch (current[i, j])
                     {
                         case CellType.Visible:
-                            switch (orders[i,j])
+                            switch (orders[i, j])
                             {
                                 case CellType.Hidden:
                                     output.SetPixel(i, j, Color.FromArgb(0, output.GetPixel(i, j)));
-                                    current[i,j] = CellType.Visible;
+                                    current[i, j] = CellType.Visible;
                                     break;
                                 case CellType.Unknown:
                                     output.SetPixel(i, j, Color.FromArgb(0, 0, 0, 0));
@@ -73,21 +81,28 @@ namespace PolyMask
                     }
                 }
             }
-            e.Graphics.DrawImage(source, 0, 0);
-            e.Graphics.DrawImage(output, 0, 0);
+            e.Graphics.DrawImage(source.Bitmap, 0, 0);
+            e.Graphics.DrawImage(output.Bitmap, 0, 0);
         }
 
         private void ChooseImageButton_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog dlg = new())
+            using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Open Image";
                 dlg.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG";
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    source = new Bitmap(dlg.FileName);
-                    source = new Bitmap(source, Settings.PictureWidth, Settings.PictureHeigth);
+                    var temp = new Bitmap(dlg.FileName);
+                    temp = new Bitmap(temp, Settings.PictureWidth, Settings.PictureHeigth);
+                    for (int i = 0; i < Settings.PictureHeigth; i++)
+                    {
+                        for (int j = 0; j < Settings.PictureWidth; j++)
+                        {
+                            source.SetPixel(i, j, temp.GetPixel(i, j));
+                        }
+                    }
                     FillMask(orders, CellType.Visible);
                     FillMask(current, CellType.Unknown);
                 }
@@ -97,7 +112,7 @@ namespace PolyMask
 
         private void IdentityRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if(IdentityRadioButton.Checked)
+            if (IdentityRadioButton.Checked)
             {
                 Settings.Kernel = Kernels.Identity;
                 UpdateKernelCellValues(Kernels.Identity);
@@ -186,7 +201,7 @@ namespace PolyMask
         private void KernelCellNumericUpDown0_ValueChanged(object sender, EventArgs e)
         {
             Kernels.Custom[0] = (float)KernelCellNumericUpDown0.Value;
-            if(CustomKernelTableLayoutPanel.Enabled)
+            if (CustomKernelTableLayoutPanel.Enabled)
             {
                 FillMask(current, CellType.Unknown);
                 MainPictureBox.Invalidate();
@@ -294,6 +309,11 @@ namespace PolyMask
                     mask[i, j] = type;
                 }
             }
+        }
+
+        private void RedHistogramPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
