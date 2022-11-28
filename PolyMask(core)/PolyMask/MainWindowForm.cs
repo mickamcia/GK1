@@ -1,5 +1,6 @@
 using System.Diagnostics.Tracing;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace PolyMask
 {
@@ -9,73 +10,198 @@ namespace PolyMask
         public DirectBitmap output;
         public CellType[,] orders;
         public CellType[,] current;
-        public Histograms histograms; 
+        public Histogram[] histograms;
         public MainWindowForm()
         {
-            histograms = new Histograms();
+            histograms = new Histogram[4];
+            histograms[0] = new Histogram((Color c) => c.R, Color.Red);
+            histograms[1] = new Histogram((Color c) => c.G, Color.Green);
+            histograms[2] = new Histogram((Color c) => c.B, Color.Blue);
+            histograms[3] = new Histogram((Color c) => (c.R + c.G + c.B) / 3, Color.Black);
             orders = new CellType[Settings.PictureHeigth, Settings.PictureWidth];
             current = new CellType[Settings.PictureHeigth, Settings.PictureWidth];
-            source = new DirectBitmap(Settings.PictureWidth, Settings.PictureHeigth);
-            output = new DirectBitmap(Settings.PictureWidth, Settings.PictureHeigth);
-            FillMask(orders, CellType.Visible);
+            source = new DirectBitmap(Settings.PictureHeigth, Settings.PictureWidth);
+            output = new DirectBitmap(Settings.PictureHeigth, Settings.PictureWidth);
+            FillMask(orders, CellType.Unknown);
             FillMask(current, CellType.Unknown);
             Filter.ClearBitmap(output);
             InitializeComponent();
         }
+        private void RefreshAll()
+        {
+            MainPictureUpdate();
+            HistogramsUpdate();
+            InvalidateAll();
+        }
+        private void InvalidateAll()
+        {
+            MainPictureBox.Invalidate();
+            RedHistogramPictureBox.Invalidate();
+            GreenHistogramPictureBox.Invalidate();
+            BlueHistogramPictureBox.Invalidate();
+            HistogramPictureBox.Invalidate();
+        }
+        private void HistogramsUpdate()
+        {
+            foreach (var histogram in histograms)
+            {
+                histogram.Update(source, output, current);
+            }
+        }
 
-        private void MainPictureBox_Paint(object sender, PaintEventArgs e)
+        private void MainPictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+            if (!BrushFillRadioButton.Checked)
+            {
+                return;
+            }
+            for (int i = 0; i < Settings.PictureHeigth; i++)
+            {
+                for (int j = 0; j < Settings.PictureWidth; j++)
+                {
+                    if ((i - e.Y) * (i - e.Y) + (j - e.X) * (j - e.X) <= Settings.BrushSize * Settings.BrushSize)
+                    {
+                        orders[j, i] = BrushType.Filler == Settings.BrushType ? CellType.Applied : CellType.Calculated;
+                        current[j, i] = CellType.Other;
+                    }
+                }
+            }
+            RefreshAll();
+        }
+        private void MainPictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            switch (Settings.FillType)
+            {
+                case FillType.Whole:
+                    switch (Settings.BrushType)
+                    {
+                        case BrushType.Filler:
+                            FillMask(orders, CellType.Applied);
+                            FillMask(current, CellType.Other);
+                            RefreshAll();
+                            break;
+                        case BrushType.Eraser:
+                            FillMask(orders, CellType.Calculated);
+                            FillMask(current, CellType.Other);
+                            RefreshAll();
+                            break;
+                    }
+                    break;
+                case FillType.Polygon:
+                    break;
+                case FillType.Brush:
+                    for (int i = 0; i < Settings.PictureHeigth; i++)
+                    {
+                        for (int j = 0; j < Settings.PictureWidth; j++)
+                        {
+                            if ((i - e.Y) * (i - e.Y) + (j - e.X) * (j - e.X) <= Settings.BrushSize * Settings.BrushSize)
+                            {
+                                orders[j, i] = BrushType.Filler == Settings.BrushType ? CellType.Applied : CellType.Calculated;
+                                current[j, i] = CellType.Other;
+                            }
+                        }
+                    }
+                    RefreshAll();
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void MainPictureUpdate()
         {
             for (int i = 0; i < Settings.PictureHeigth; i++)
             {
                 for (int j = 0; j < Settings.PictureWidth; j++)
                 {
-                    switch (current[i,j])
+                    switch (current[i, j])
                     {
-                        case CellType.Visible:
-                            switch (orders[i,j])
+                        case CellType.Applied:
+                            switch (orders[i, j])
                             {
-                                case CellType.Hidden:
+                                case CellType.Calculated:
                                     output.SetPixel(i, j, Color.FromArgb(0, output.GetPixel(i, j)));
-                                    current[i,j] = CellType.Visible;
+                                    current[i, j] = CellType.Calculated;
                                     break;
                                 case CellType.Unknown:
                                     output.SetPixel(i, j, Color.FromArgb(0, 0, 0, 0));
-                                    current[i, j] = CellType.Visible;
+                                    current[i, j] = CellType.Unknown;
                                     break;
                             }
                             break;
-                        case CellType.Hidden:
+                        case CellType.Calculated:
                             switch (orders[i, j])
                             {
-                                case CellType.Visible:
+                                case CellType.Applied:
                                     output.SetPixel(i, j, Color.FromArgb(255, output.GetPixel(i, j)));
-                                    current[i, j] = CellType.Hidden;
+                                    current[i, j] = CellType.Applied;
                                     break;
                                 case CellType.Unknown:
                                     output.SetPixel(i, j, Color.FromArgb(0, 0, 0, 0));
-                                    current[i, j] = CellType.Hidden;
+                                    current[i, j] = CellType.Unknown;
+                                    break;
+                            }
+                            break;
+                        case CellType.Other:
+                            switch (orders[i, j])
+                            {
+                                case CellType.Applied:
+                                    Filter.ApplyKernel(i, j, source, output, Settings.Kernel);
+                                    current[i, j] = CellType.Applied;
+                                    break;
+                                case CellType.Calculated:
+                                    Filter.ApplyKernel(i, j, source, output, Settings.Kernel);
+                                    output.SetPixel(i, j, Color.FromArgb(0, output.GetPixel(i, j)));
+                                    current[i, j] = CellType.Calculated;
+                                    break;
+                                case CellType.Unknown:
+                                    output.SetPixel(i, j, Color.FromArgb(0, 0, 0, 0));
+                                    current[i, j] = CellType.Unknown;
                                     break;
                             }
                             break;
                         case CellType.Unknown:
                             switch (orders[i, j])
                             {
-                                case CellType.Visible:
+                                case CellType.Applied:
                                     Filter.ApplyKernel(i, j, source, output, Settings.Kernel);
-                                    current[i, j] = CellType.Unknown;
+                                    current[i, j] = CellType.Applied;
                                     break;
-                                case CellType.Hidden:
+                                case CellType.Calculated:
                                     Filter.ApplyKernel(i, j, source, output, Settings.Kernel);
                                     output.SetPixel(i, j, Color.FromArgb(0, output.GetPixel(i, j)));
-                                    current[i, j] = CellType.Unknown;
+                                    current[i, j] = CellType.Calculated;
                                     break;
                             }
                             break;
                     }
                 }
             }
+        }
+        private void MainPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            
             e.Graphics.DrawImage(source.Bitmap, 0, 0);
             e.Graphics.DrawImage(output.Bitmap, 0, 0);
+        }
+        private void UpdateChangesButton_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Settings.PictureHeigth; i++)
+            {
+                for (int j = 0; j < Settings.PictureWidth; j++)
+                {
+                    if (current[i,j] == CellType.Applied || current[i,j] == CellType.Other)
+                    {
+                        source.SetPixel(i, j, output.GetPixel(i, j));
+                    }
+                }
+            }
+            FillMask(current, CellType.Unknown);
+            FillMask(orders, CellType.Unknown);
         }
 
         private void ChooseImageButton_Click(object sender, EventArgs e)
@@ -93,14 +219,14 @@ namespace PolyMask
                     {
                         for (int j = 0; j < Settings.PictureWidth; j++)
                         {
-                            source.SetPixel(i, j, temp.GetPixel(i, j));
+                            source.SetPixel(j, i, temp.GetPixel(j, i));
                         }
                     }
-                    FillMask(orders, CellType.Visible);
+                    FillMask(orders, CellType.Unknown);
                     FillMask(current, CellType.Unknown);
                 }
             }
-            MainPictureBox.Invalidate();
+            RefreshAll();
         }
 
         private void IdentityRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -109,8 +235,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.Identity;
                 UpdateKernelCellValues(Kernels.Identity);
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+
+                }
             }
         }
         private void RidgeDetectionRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -119,8 +250,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.RidgeDetection;
                 UpdateKernelCellValues(Kernels.RidgeDetection);
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+
+                }
             }
         }
 
@@ -130,8 +266,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.GaussianBlur;
                 UpdateKernelCellValues(Kernels.GaussianBlur);
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+
+                }
             }
         }
 
@@ -141,8 +282,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.Emboss;
                 UpdateKernelCellValues(Kernels.Emboss);
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+
+                }
             }
         }
 
@@ -152,8 +298,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.Sharpen;
                 UpdateKernelCellValues(Kernels.Sharpen);
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+
+                }
             }
         }
 
@@ -163,8 +314,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.SobelLeft;
                 UpdateKernelCellValues(Kernels.SobelLeft);
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+
+                }
             }
         }
 
@@ -174,8 +330,12 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.BoxBlur;
                 UpdateKernelCellValues(Kernels.BoxBlur);
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -186,8 +346,12 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.Custom;
                 UpdateKernelCellValues(Kernels.Custom);
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -196,8 +360,12 @@ namespace PolyMask
             Kernels.Custom[0] = (float)KernelCellNumericUpDown0.Value;
             if(CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -206,8 +374,12 @@ namespace PolyMask
             Kernels.Custom[1] = (float)KernelCellNumericUpDown1.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -216,8 +388,12 @@ namespace PolyMask
             Kernels.Custom[2] = (float)KernelCellNumericUpDown2.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Other);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -226,8 +402,12 @@ namespace PolyMask
             Kernels.Custom[3] = (float)KernelCellNumericUpDown3.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -236,8 +416,12 @@ namespace PolyMask
             Kernels.Custom[4] = (float)KernelCellNumericUpDown4.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -246,8 +430,12 @@ namespace PolyMask
             Kernels.Custom[5] = (float)KernelCellNumericUpDown5.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -256,8 +444,12 @@ namespace PolyMask
             Kernels.Custom[6] = (float)KernelCellNumericUpDown6.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -266,8 +458,12 @@ namespace PolyMask
             Kernels.Custom[7] = (float)KernelCellNumericUpDown7.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -276,8 +472,12 @@ namespace PolyMask
             Kernels.Custom[8] = (float)KernelCellNumericUpDown8.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                FillMask(current, CellType.Unknown);
-                MainPictureBox.Invalidate();
+                if (ImmediatelyRadioButton.Checked)
+                {
+                    FillMask(current, CellType.Unknown);
+                    MainPictureBox.Invalidate();
+                    HistogramsUpdate();
+                }
             }
         }
 
@@ -295,6 +495,17 @@ namespace PolyMask
         }
         private static void FillMask(CellType[,] mask, CellType type)
         {
+            if(type == CellType.Other)
+            {
+                for (int i = 0; i < Settings.PictureHeigth; i++)
+                {
+                    for (int j = 0; j < Settings.PictureWidth; j++)
+                    {
+                        mask[i, j] = mask[i,j] == CellType.Applied ? CellType.Other : CellType.Unknown;
+                    }
+                }
+                return;
+            }
             for (int i = 0; i < Settings.PictureHeigth; i++)
             {
                 for (int j = 0; j < Settings.PictureWidth; j++)
@@ -306,7 +517,68 @@ namespace PolyMask
 
         private void RedHistogramPictureBox_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.DrawImage(histograms[0].Bits.Bitmap, 0, 0);
+        }
 
+        private void GreenHistogramPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(histograms[1].Bits.Bitmap, 0, 0);
+        }
+
+        private void BlueHistogramPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(histograms[2].Bits.Bitmap, 0, 0);
+        }
+
+        private void HistogramPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(histograms[3].Bits.Bitmap, 0, 0);
+        }
+
+        private void EraserRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (EraserRadioButton.Checked)
+            {
+                Settings.BrushType = BrushType.Eraser;
+            }
+        }
+
+        private void FillerRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FillerRadioButton.Checked)
+            {
+                Settings.BrushType = BrushType.Filler;
+            }
+        }
+
+        private void WholeFillRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (WholeFillRadioButton.Checked)
+            {
+                Settings.FillType = FillType.Whole;
+            }
+        }
+
+        private void PolygonFillRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (PolygonFillRadioButton.Checked)
+            {
+                Settings.FillType = FillType.Polygon;
+            }
+        }
+
+        private void BrushFillRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (BrushFillRadioButton.Checked)
+            {
+                Settings.FillType = FillType.Brush;
+            }
+        }
+
+        private void BrushSizeTrackBar_Scroll(object sender, EventArgs e)
+        {
+            Settings.BrushSize = BrushSizeTrackBar.Value;
+            BrushSizeLabel.Text = "Brush Size: " + BrushSizeTrackBar.Value.ToString();
         }
     }
 }

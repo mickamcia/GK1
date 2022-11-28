@@ -61,12 +61,12 @@
             this.PictureSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.PictureSettingsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.ChooseImageButton = new System.Windows.Forms.Button();
-            this.RevertChangesButton = new System.Windows.Forms.Button();
+            this.UpdateChangesButton = new System.Windows.Forms.Button();
             this.ImagePathLabel = new System.Windows.Forms.Label();
             this.BrushTypeGroupBox = new System.Windows.Forms.GroupBox();
             this.BrushTypeTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.RubberRadioButton = new System.Windows.Forms.RadioButton();
-            this.BrushRadioButton = new System.Windows.Forms.RadioButton();
+            this.EraserRadioButton = new System.Windows.Forms.RadioButton();
+            this.FillerRadioButton = new System.Windows.Forms.RadioButton();
             this.FillingTypeGroupBox = new System.Windows.Forms.GroupBox();
             this.FillingToolTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.WholeFillRadioButton = new System.Windows.Forms.RadioButton();
@@ -74,6 +74,10 @@
             this.BrushFillRadioButton = new System.Windows.Forms.RadioButton();
             this.BrushSizeTrackBar = new System.Windows.Forms.TrackBar();
             this.BrushSizeLabel = new System.Windows.Forms.Label();
+            this.ApplyingSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.ApplyingSettingsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.OnClickRadioButton = new System.Windows.Forms.RadioButton();
+            this.ImmediatelyRadioButton = new System.Windows.Forms.RadioButton();
             this.RedHistogramGroupBox = new System.Windows.Forms.GroupBox();
             this.RedHistogramPictureBox = new System.Windows.Forms.PictureBox();
             this.MainTableLayoutPanel.SuspendLayout();
@@ -105,6 +109,8 @@
             this.FillingTypeGroupBox.SuspendLayout();
             this.FillingToolTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BrushSizeTrackBar)).BeginInit();
+            this.ApplyingSettingsGroupBox.SuspendLayout();
+            this.ApplyingSettingsTableLayoutPanel.SuspendLayout();
             this.RedHistogramGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RedHistogramPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -151,6 +157,7 @@
             this.HistogramPictureBox.Size = new System.Drawing.Size(288, 172);
             this.HistogramPictureBox.TabIndex = 0;
             this.HistogramPictureBox.TabStop = false;
+            this.HistogramPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.HistogramPictureBox_Paint);
             // 
             // BlueHistogramGroupBox
             // 
@@ -171,6 +178,7 @@
             this.BlueHistogramPictureBox.Size = new System.Drawing.Size(288, 172);
             this.BlueHistogramPictureBox.TabIndex = 0;
             this.BlueHistogramPictureBox.TabStop = false;
+            this.BlueHistogramPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.BlueHistogramPictureBox_Paint);
             // 
             // GreenHistogramGroupBox
             // 
@@ -191,9 +199,11 @@
             this.GreenHistogramPictureBox.Size = new System.Drawing.Size(288, 172);
             this.GreenHistogramPictureBox.TabIndex = 0;
             this.GreenHistogramPictureBox.TabStop = false;
+            this.GreenHistogramPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.GreenHistogramPictureBox_Paint);
             // 
             // MainPictureBox
             // 
+            this.MainPictureBox.Cursor = System.Windows.Forms.Cursors.Cross;
             this.MainPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPictureBox.Location = new System.Drawing.Point(3, 3);
             this.MainPictureBox.Name = "MainPictureBox";
@@ -202,6 +212,8 @@
             this.MainPictureBox.TabIndex = 0;
             this.MainPictureBox.TabStop = false;
             this.MainPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.MainPictureBox_Paint);
+            this.MainPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainPictureBox_MouseDown);
+            this.MainPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainPictureBox_MouseMove);
             // 
             // KernelSettingsGroupBox
             // 
@@ -658,11 +670,13 @@
             // 
             // ProcessingSettingsTableLayoutPanel
             // 
-            this.ProcessingSettingsTableLayoutPanel.ColumnCount = 1;
-            this.ProcessingSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.ProcessingSettingsTableLayoutPanel.ColumnCount = 2;
+            this.ProcessingSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ProcessingSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.PictureSettingsGroupBox, 0, 2);
             this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.BrushTypeGroupBox, 0, 0);
             this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.FillingTypeGroupBox, 0, 1);
+            this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.ApplyingSettingsGroupBox, 1, 0);
             this.ProcessingSettingsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProcessingSettingsTableLayoutPanel.Location = new System.Drawing.Point(3, 19);
             this.ProcessingSettingsTableLayoutPanel.Name = "ProcessingSettingsTableLayoutPanel";
@@ -675,6 +689,7 @@
             // 
             // PictureSettingsGroupBox
             // 
+            this.ProcessingSettingsTableLayoutPanel.SetColumnSpan(this.PictureSettingsGroupBox, 2);
             this.PictureSettingsGroupBox.Controls.Add(this.PictureSettingsTableLayoutPanel);
             this.PictureSettingsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureSettingsGroupBox.Location = new System.Drawing.Point(3, 281);
@@ -689,8 +704,8 @@
             this.PictureSettingsTableLayoutPanel.ColumnCount = 2;
             this.PictureSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.PictureSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.PictureSettingsTableLayoutPanel.Controls.Add(this.ChooseImageButton, 0, 0);
-            this.PictureSettingsTableLayoutPanel.Controls.Add(this.RevertChangesButton, 1, 0);
+            this.PictureSettingsTableLayoutPanel.Controls.Add(this.ChooseImageButton, 1, 0);
+            this.PictureSettingsTableLayoutPanel.Controls.Add(this.UpdateChangesButton, 0, 0);
             this.PictureSettingsTableLayoutPanel.Controls.Add(this.ImagePathLabel, 0, 1);
             this.PictureSettingsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureSettingsTableLayoutPanel.Location = new System.Drawing.Point(3, 19);
@@ -703,7 +718,7 @@
             // 
             // ChooseImageButton
             // 
-            this.ChooseImageButton.Location = new System.Drawing.Point(3, 3);
+            this.ChooseImageButton.Location = new System.Drawing.Point(141, 3);
             this.ChooseImageButton.Name = "ChooseImageButton";
             this.ChooseImageButton.Size = new System.Drawing.Size(132, 30);
             this.ChooseImageButton.TabIndex = 1;
@@ -711,15 +726,16 @@
             this.ChooseImageButton.UseVisualStyleBackColor = true;
             this.ChooseImageButton.Click += new System.EventHandler(this.ChooseImageButton_Click);
             // 
-            // RevertChangesButton
+            // UpdateChangesButton
             // 
-            this.RevertChangesButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RevertChangesButton.Location = new System.Drawing.Point(141, 3);
-            this.RevertChangesButton.Name = "RevertChangesButton";
-            this.RevertChangesButton.Size = new System.Drawing.Size(132, 30);
-            this.RevertChangesButton.TabIndex = 2;
-            this.RevertChangesButton.Text = "Revert Changes";
-            this.RevertChangesButton.UseVisualStyleBackColor = true;
+            this.UpdateChangesButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.UpdateChangesButton.Location = new System.Drawing.Point(3, 3);
+            this.UpdateChangesButton.Name = "UpdateChangesButton";
+            this.UpdateChangesButton.Size = new System.Drawing.Size(132, 30);
+            this.UpdateChangesButton.TabIndex = 2;
+            this.UpdateChangesButton.Text = "Update Changes";
+            this.UpdateChangesButton.UseVisualStyleBackColor = true;
+            this.UpdateChangesButton.Click += new System.EventHandler(this.UpdateChangesButton_Click);
             // 
             // ImagePathLabel
             // 
@@ -739,7 +755,7 @@
             this.BrushTypeGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BrushTypeGroupBox.Location = new System.Drawing.Point(3, 3);
             this.BrushTypeGroupBox.Name = "BrushTypeGroupBox";
-            this.BrushTypeGroupBox.Size = new System.Drawing.Size(282, 94);
+            this.BrushTypeGroupBox.Size = new System.Drawing.Size(138, 94);
             this.BrushTypeGroupBox.TabIndex = 2;
             this.BrushTypeGroupBox.TabStop = false;
             this.BrushTypeGroupBox.Text = "Brush Type";
@@ -749,43 +765,46 @@
             this.BrushTypeTableLayoutPanel.ColumnCount = 1;
             this.BrushTypeTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.BrushTypeTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.BrushTypeTableLayoutPanel.Controls.Add(this.RubberRadioButton, 0, 0);
-            this.BrushTypeTableLayoutPanel.Controls.Add(this.BrushRadioButton, 0, 1);
+            this.BrushTypeTableLayoutPanel.Controls.Add(this.EraserRadioButton, 0, 0);
+            this.BrushTypeTableLayoutPanel.Controls.Add(this.FillerRadioButton, 0, 1);
             this.BrushTypeTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BrushTypeTableLayoutPanel.Location = new System.Drawing.Point(3, 19);
             this.BrushTypeTableLayoutPanel.Name = "BrushTypeTableLayoutPanel";
             this.BrushTypeTableLayoutPanel.RowCount = 2;
             this.BrushTypeTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.BrushTypeTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.BrushTypeTableLayoutPanel.Size = new System.Drawing.Size(276, 72);
+            this.BrushTypeTableLayoutPanel.Size = new System.Drawing.Size(132, 72);
             this.BrushTypeTableLayoutPanel.TabIndex = 0;
             // 
-            // RubberRadioButton
+            // EraserRadioButton
             // 
-            this.RubberRadioButton.AutoSize = true;
-            this.RubberRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RubberRadioButton.Location = new System.Drawing.Point(3, 3);
-            this.RubberRadioButton.Name = "RubberRadioButton";
-            this.RubberRadioButton.Size = new System.Drawing.Size(270, 30);
-            this.RubberRadioButton.TabIndex = 0;
-            this.RubberRadioButton.Text = "Rubber";
-            this.RubberRadioButton.UseVisualStyleBackColor = true;
+            this.EraserRadioButton.AutoSize = true;
+            this.EraserRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.EraserRadioButton.Location = new System.Drawing.Point(3, 3);
+            this.EraserRadioButton.Name = "EraserRadioButton";
+            this.EraserRadioButton.Size = new System.Drawing.Size(126, 30);
+            this.EraserRadioButton.TabIndex = 0;
+            this.EraserRadioButton.Text = "Eraser";
+            this.EraserRadioButton.UseVisualStyleBackColor = true;
+            this.EraserRadioButton.CheckedChanged += new System.EventHandler(this.EraserRadioButton_CheckedChanged);
             // 
-            // BrushRadioButton
+            // FillerRadioButton
             // 
-            this.BrushRadioButton.AutoSize = true;
-            this.BrushRadioButton.Checked = true;
-            this.BrushRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BrushRadioButton.Location = new System.Drawing.Point(3, 39);
-            this.BrushRadioButton.Name = "BrushRadioButton";
-            this.BrushRadioButton.Size = new System.Drawing.Size(270, 30);
-            this.BrushRadioButton.TabIndex = 1;
-            this.BrushRadioButton.TabStop = true;
-            this.BrushRadioButton.Text = "Brush";
-            this.BrushRadioButton.UseVisualStyleBackColor = true;
+            this.FillerRadioButton.AutoSize = true;
+            this.FillerRadioButton.Checked = true;
+            this.FillerRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FillerRadioButton.Location = new System.Drawing.Point(3, 39);
+            this.FillerRadioButton.Name = "FillerRadioButton";
+            this.FillerRadioButton.Size = new System.Drawing.Size(126, 30);
+            this.FillerRadioButton.TabIndex = 1;
+            this.FillerRadioButton.TabStop = true;
+            this.FillerRadioButton.Text = "Filler";
+            this.FillerRadioButton.UseVisualStyleBackColor = true;
+            this.FillerRadioButton.CheckedChanged += new System.EventHandler(this.FillerRadioButton_CheckedChanged);
             // 
             // FillingTypeGroupBox
             // 
+            this.ProcessingSettingsTableLayoutPanel.SetColumnSpan(this.FillingTypeGroupBox, 2);
             this.FillingTypeGroupBox.Controls.Add(this.FillingToolTableLayoutPanel);
             this.FillingTypeGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FillingTypeGroupBox.Location = new System.Drawing.Point(3, 103);
@@ -827,6 +846,7 @@
             this.WholeFillRadioButton.TabIndex = 0;
             this.WholeFillRadioButton.Text = "Whole Picture";
             this.WholeFillRadioButton.UseVisualStyleBackColor = true;
+            this.WholeFillRadioButton.CheckedChanged += new System.EventHandler(this.WholeFillRadioButton_CheckedChanged);
             // 
             // PolygonFillRadioButton
             // 
@@ -838,6 +858,7 @@
             this.PolygonFillRadioButton.TabIndex = 1;
             this.PolygonFillRadioButton.Text = "Polygon";
             this.PolygonFillRadioButton.UseVisualStyleBackColor = true;
+            this.PolygonFillRadioButton.CheckedChanged += new System.EventHandler(this.PolygonFillRadioButton_CheckedChanged);
             // 
             // BrushFillRadioButton
             // 
@@ -851,6 +872,7 @@
             this.BrushFillRadioButton.TabStop = true;
             this.BrushFillRadioButton.Text = "Circular Brush";
             this.BrushFillRadioButton.UseVisualStyleBackColor = true;
+            this.BrushFillRadioButton.CheckedChanged += new System.EventHandler(this.BrushFillRadioButton_CheckedChanged);
             // 
             // BrushSizeTrackBar
             // 
@@ -862,6 +884,7 @@
             this.BrushSizeTrackBar.Size = new System.Drawing.Size(270, 34);
             this.BrushSizeTrackBar.TabIndex = 3;
             this.BrushSizeTrackBar.Value = 10;
+            this.BrushSizeTrackBar.Scroll += new System.EventHandler(this.BrushSizeTrackBar_Scroll);
             // 
             // BrushSizeLabel
             // 
@@ -875,6 +898,55 @@
             this.BrushSizeLabel.TabIndex = 4;
             this.BrushSizeLabel.Text = "Brush Size: 10";
             this.BrushSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // ApplyingSettingsGroupBox
+            // 
+            this.ApplyingSettingsGroupBox.Controls.Add(this.ApplyingSettingsTableLayoutPanel);
+            this.ApplyingSettingsGroupBox.Location = new System.Drawing.Point(147, 3);
+            this.ApplyingSettingsGroupBox.Name = "ApplyingSettingsGroupBox";
+            this.ApplyingSettingsGroupBox.Size = new System.Drawing.Size(138, 94);
+            this.ApplyingSettingsGroupBox.TabIndex = 4;
+            this.ApplyingSettingsGroupBox.TabStop = false;
+            this.ApplyingSettingsGroupBox.Text = "Applying Settings";
+            // 
+            // ApplyingSettingsTableLayoutPanel
+            // 
+            this.ApplyingSettingsTableLayoutPanel.ColumnCount = 1;
+            this.ApplyingSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ApplyingSettingsTableLayoutPanel.Controls.Add(this.OnClickRadioButton, 0, 0);
+            this.ApplyingSettingsTableLayoutPanel.Controls.Add(this.ImmediatelyRadioButton, 0, 1);
+            this.ApplyingSettingsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ApplyingSettingsTableLayoutPanel.Location = new System.Drawing.Point(3, 19);
+            this.ApplyingSettingsTableLayoutPanel.Name = "ApplyingSettingsTableLayoutPanel";
+            this.ApplyingSettingsTableLayoutPanel.RowCount = 2;
+            this.ApplyingSettingsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ApplyingSettingsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ApplyingSettingsTableLayoutPanel.Size = new System.Drawing.Size(132, 72);
+            this.ApplyingSettingsTableLayoutPanel.TabIndex = 0;
+            // 
+            // OnClickRadioButton
+            // 
+            this.OnClickRadioButton.AutoSize = true;
+            this.OnClickRadioButton.Checked = true;
+            this.OnClickRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.OnClickRadioButton.Location = new System.Drawing.Point(3, 3);
+            this.OnClickRadioButton.Name = "OnClickRadioButton";
+            this.OnClickRadioButton.Size = new System.Drawing.Size(126, 30);
+            this.OnClickRadioButton.TabIndex = 0;
+            this.OnClickRadioButton.TabStop = true;
+            this.OnClickRadioButton.Text = "On Click";
+            this.OnClickRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // ImmediatelyRadioButton
+            // 
+            this.ImmediatelyRadioButton.AutoSize = true;
+            this.ImmediatelyRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ImmediatelyRadioButton.Location = new System.Drawing.Point(3, 39);
+            this.ImmediatelyRadioButton.Name = "ImmediatelyRadioButton";
+            this.ImmediatelyRadioButton.Size = new System.Drawing.Size(126, 30);
+            this.ImmediatelyRadioButton.TabIndex = 1;
+            this.ImmediatelyRadioButton.Text = "Immediately";
+            this.ImmediatelyRadioButton.UseVisualStyleBackColor = true;
             // 
             // RedHistogramGroupBox
             // 
@@ -941,6 +1013,9 @@
             this.FillingToolTableLayoutPanel.ResumeLayout(false);
             this.FillingToolTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BrushSizeTrackBar)).EndInit();
+            this.ApplyingSettingsGroupBox.ResumeLayout(false);
+            this.ApplyingSettingsTableLayoutPanel.ResumeLayout(false);
+            this.ApplyingSettingsTableLayoutPanel.PerformLayout();
             this.RedHistogramGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RedHistogramPictureBox)).EndInit();
             this.ResumeLayout(false);
@@ -984,11 +1059,11 @@
         private Button ChooseImageButton;
         private GroupBox BrushTypeGroupBox;
         private TableLayoutPanel BrushTypeTableLayoutPanel;
-        private RadioButton RubberRadioButton;
-        private RadioButton BrushRadioButton;
+        private RadioButton EraserRadioButton;
+        private RadioButton FillerRadioButton;
         private GroupBox PictureSettingsGroupBox;
         private TableLayoutPanel PictureSettingsTableLayoutPanel;
-        private Button RevertChangesButton;
+        private Button UpdateChangesButton;
         private Label ImagePathLabel;
         private GroupBox FillingTypeGroupBox;
         private TableLayoutPanel FillingToolTableLayoutPanel;
@@ -997,5 +1072,9 @@
         private RadioButton BrushFillRadioButton;
         private TrackBar BrushSizeTrackBar;
         private Label BrushSizeLabel;
+        private GroupBox ApplyingSettingsGroupBox;
+        private TableLayoutPanel ApplyingSettingsTableLayoutPanel;
+        private RadioButton OnClickRadioButton;
+        private RadioButton ImmediatelyRadioButton;
     }
 }

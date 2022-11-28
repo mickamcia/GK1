@@ -11,9 +11,21 @@ namespace PolyMask
 {
     public enum CellType
     {
-        Visible,
-        Hidden,
+        Applied,
+        Calculated,
         Unknown,
+        Other,
+    }
+    public enum BrushType
+    {
+        Filler,
+        Eraser,
+    }
+    public enum FillType
+    {
+        Whole,
+        Polygon,
+        Brush,
     }
     public static class Settings
     {
@@ -21,7 +33,11 @@ namespace PolyMask
         public const int PictureHeigth = 800;
         public const int HistogramWidth = 288;
         public const int HistogramHeight = 172;
+        public const int HistogramMargin = 16;
         public static float[] Kernel = Kernels.Identity;
+        public static BrushType BrushType = BrushType.Filler;
+        public static FillType FillType = FillType.Brush;
+        public static int BrushSize = 10;
     }
     public class DirectBitmap : IDisposable
     {

@@ -1,65 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PolyMask
 {
-    public class Histograms
+    public class Histogram
     {
-        private DirectBitmap redBits;
-        private DirectBitmap greenBits;
-        private DirectBitmap blueBits;
-        private DirectBitmap combBits;
-        private int[] redVals;
-        private int[] greenVals;
-        private int[] blueVals;
-        private int[] combVals;
-        public Histograms()
+        private Color c;
+        private readonly Func<Color,int> f;
+        public DirectBitmap Bits;
+        private readonly int[] Vals;
+        public Histogram(Func<Color, int> f, Color c)
         {
-            redBits = new DirectBitmap(Settings.HistogramWidth, Settings.HistogramHeight);
-            greenBits = new DirectBitmap(Settings.HistogramWidth, Settings.HistogramHeight);
-            blueBits = new DirectBitmap(Settings.HistogramWidth, Settings.HistogramHeight);
-            combBits = new DirectBitmap(Settings.HistogramWidth, Settings.HistogramHeight);
-            redVals = new int[256];
-            greenVals = new int[256];
-            blueVals = new int[256];
-            combVals = new int[256];
+            this.c = c;
+            this.f = f;
+            Bits = new DirectBitmap(Settings.HistogramWidth, Settings.HistogramHeight);
+            Vals = new int[256];
             for (int i = 0; i < 256; i++)
             {
-                redVals[i] = 0;
-                greenVals[i] = 0;
-                blueVals[i] = 0;
-                combVals[i] = 0;
+                Vals[i] = 0;
             }
         }
-        public void CalculateHistogramValues(DirectBitmap source, DirectBitmap output, CellType[,] current)
+        public void Update(DirectBitmap source, DirectBitmap output, CellType[,] current)
+        {
+            CalculateHistogramValues(source, output, current);
+            UpdateHistogramBitmap();
+        }
+        private void CalculateHistogramValues(DirectBitmap source, DirectBitmap output, CellType[,] current)
         {
             for (int i = 0; i < 256; i++)
             {
-                redVals[i] = 0;
-                greenVals[i] = 0;
-                blueVals[i] = 0;
-                combVals[i] = 0;
+                Vals[i] = 0;
             }
             for (int i = 0; i < Settings.PictureHeigth; i++)
             {
                 for (int j = 0; j < Settings.PictureWidth; j++)
                 {
-                    if (current[i,j] == CellType.Visible)
+                    if (current[i, j] == CellType.Applied || current[i, j] == CellType.Other)
                     {
-                        redVals[output.GetPixel(i, j).R]++;
-                        greenVals[output.GetPixel(i, j).G]++;
-                        blueVals[output.GetPixel(i, j).B]++;
-                        
+                        Vals[f(output.GetPixel(i, j))]++;
                     }
                     else
                     {
-                        redVals[source.GetPixel(i, j).R]++;
-                        greenVals[source.GetPixel(i, j).G]++;
-                        blueVals[source.GetPixel(i, j).B]++;
+                        Vals[f(source.GetPixel(i, j))]++;
                     }
+                }
+            }
+        }
+        private void UpdateHistogramBitmap()
+        {
+            int max = Vals.Max();
+            for(int i = 0; i < Settings.HistogramHeight; i++)
+            {
+                for(int j = 0; j < 256; j++)
+                {
+                    Color c = Vals[j] * Settings.HistogramHeight <= i * max ? Color.White : this.c;
+                    Bits.SetPixel(j + Settings.HistogramMargin, Settings.HistogramHeight - i - 1, c);
                 }
             }
         }
