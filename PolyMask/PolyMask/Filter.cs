@@ -40,6 +40,9 @@ namespace PolyMask
                 G += c.G * kernel[k];
                 B += c.B * kernel[k];
             }
+            R = Settings.Brightness * R / 255;
+            G = Settings.Brightness * G / 255;
+            B = Settings.Brightness * B / 255;
             R = R < 0 ? 0 : R > 255 ? 255 : R;
             G = G < 0 ? 0 : G > 255 ? 255 : G;
             B = B < 0 ? 0 : B > 255 ? 255 : B;
@@ -53,6 +56,18 @@ namespace PolyMask
                 for(int j = 0; j < Settings.PictureWidth; j++)
                 {
                     bits.SetPixel(i, j, c);
+                }
+            }
+        }
+        public static void ChangeBrightness(DirectBitmap bits)
+        {
+            for (int i = 0; i < Settings.PictureHeigth; i++)
+            {
+                for (int j = 0; j < Settings.PictureWidth; j++)
+                {
+                    Color c = bits.GetPixel(i, j);
+                    Color d = Color.FromArgb(Settings.Brightness * c.R / 255, Settings.Brightness * c.G / 255, Settings.Brightness * c.B / 255);
+                    bits.SetPixel(i, j, d);
                 }
             }
         }

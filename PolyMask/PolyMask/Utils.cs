@@ -54,6 +54,7 @@ namespace PolyMask
     }
     public static class Settings
     {
+        public static int Brightness = 255;
         public const int PictureWidth = 800;
         public const int PictureHeigth = 800;
         public const int HistogramWidth = 288;

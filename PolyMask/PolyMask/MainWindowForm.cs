@@ -1,5 +1,7 @@
 using System.Diagnostics.Tracing;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 namespace PolyMask
@@ -54,26 +56,26 @@ namespace PolyMask
         private void MainPictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             return;
-            if (e.Button != MouseButtons.Left)
-            {
-                return;
-            }
-            if (!BrushFillRadioButton.Checked)
-            {
-                return;
-            }
-            for (int i = 0; i < Settings.PictureHeigth; i++)
-            {
-                for (int j = 0; j < Settings.PictureWidth; j++)
-                {
-                    if ((i - e.Y) * (i - e.Y) + (j - e.X) * (j - e.X) <= Settings.BrushSize * Settings.BrushSize)
-                    {
-                        orders[j, i] = BrushType.Filler == Settings.BrushType ? CellType.Applied : CellType.Calculated;
-                        current[j, i] = CellType.Other;
-                    }
-                }
-            }
-            RefreshAll();
+            //if (e.Button != MouseButtons.Left)
+            //{
+            //    return;
+            //}
+            //if (!BrushFillRadioButton.Checked)
+            //{
+            //    return;
+            //}
+            //for (int i = 0; i < Settings.PictureHeigth; i++)
+            //{
+            //    for (int j = 0; j < Settings.PictureWidth; j++)
+            //    {
+            //        if ((i - e.Y) * (i - e.Y) + (j - e.X) * (j - e.X) <= Settings.BrushSize * Settings.BrushSize)
+            //        {
+            //            orders[j, i] = BrushType.Filler == Settings.BrushType ? CellType.Applied : CellType.Calculated;
+            //            current[j, i] = CellType.Other;
+            //        }
+            //    }
+            //}
+            //RefreshAll();
         }
         private void MainPictureBox_MouseDown(object sender, MouseEventArgs e)
         {
@@ -267,13 +269,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.Identity;
                 UpdateKernelCellValues(Kernels.Identity);
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
 
-                }
+                //}
             }
         }
         private void RidgeDetectionRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -282,13 +284,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.RidgeDetection;
                 UpdateKernelCellValues(Kernels.RidgeDetection);
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
 
-                }
+                //}
             }
         }
 
@@ -298,13 +300,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.GaussianBlur;
                 UpdateKernelCellValues(Kernels.GaussianBlur);
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
 
-                }
+                //}
             }
         }
 
@@ -314,13 +316,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.Emboss;
                 UpdateKernelCellValues(Kernels.Emboss);
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
 
-                }
+                //}
             }
         }
 
@@ -330,13 +332,13 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.Sharpen;
                 UpdateKernelCellValues(Kernels.Sharpen);
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
 
-                }
+                //}
             }
         }
 
@@ -346,13 +348,14 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.SobelLeft;
                 UpdateKernelCellValues(Kernels.SobelLeft);
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
 
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+
+                //}
             }
         }
 
@@ -362,12 +365,12 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.BoxBlur;
                 UpdateKernelCellValues(Kernels.BoxBlur);
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //{
+                //    if (false)
+                //        FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -378,12 +381,12 @@ namespace PolyMask
             {
                 Settings.Kernel = Kernels.Custom;
                 UpdateKernelCellValues(Kernels.Custom);
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //{
+                //    if (false)
+                //        FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -392,12 +395,12 @@ namespace PolyMask
             Kernels.Custom[0] = (float)KernelCellNumericUpDown0.Value;
             if(CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -406,12 +409,12 @@ namespace PolyMask
             Kernels.Custom[1] = (float)KernelCellNumericUpDown1.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -420,12 +423,12 @@ namespace PolyMask
             Kernels.Custom[2] = (float)KernelCellNumericUpDown2.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Other);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Other);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -434,12 +437,12 @@ namespace PolyMask
             Kernels.Custom[3] = (float)KernelCellNumericUpDown3.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -448,12 +451,12 @@ namespace PolyMask
             Kernels.Custom[4] = (float)KernelCellNumericUpDown4.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -462,12 +465,12 @@ namespace PolyMask
             Kernels.Custom[5] = (float)KernelCellNumericUpDown5.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -476,12 +479,12 @@ namespace PolyMask
             Kernels.Custom[6] = (float)KernelCellNumericUpDown6.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -490,12 +493,12 @@ namespace PolyMask
             Kernels.Custom[7] = (float)KernelCellNumericUpDown7.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if (false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -504,12 +507,12 @@ namespace PolyMask
             Kernels.Custom[8] = (float)KernelCellNumericUpDown8.Value;
             if (CustomKernelTableLayoutPanel.Enabled)
             {
-                if (ImmediatelyRadioButton.Checked)
-                {
-                    FillMask(current, CellType.Unknown);
-                    MainPictureBox.Invalidate();
-                    HistogramsUpdate();
-                }
+                //if(false)
+                //{
+                //    FillMask(current, CellType.Unknown);
+                //    MainPictureBox.Invalidate();
+                //    HistogramsUpdate();
+                //}
             }
         }
 
@@ -614,6 +617,90 @@ namespace PolyMask
         {
             Settings.BrushSize = BrushSizeTrackBar.Value;
             BrushSizeLabel.Text = "Brush Size: " + BrushSizeTrackBar.Value.ToString();
+        }
+
+        private void Brightness_Scroll(object sender, EventArgs e)
+        {
+            Settings.Brightness = BrightnessTrackBar.Value;
+        }
+
+        private void HSVModelButton_Click(object sender, EventArgs e)
+        {
+            Filter.ClearBitmap(output);
+            Filter.ClearBitmap(source);
+            FillMask(current, CellType.Unknown);
+            FillMask(orders, CellType.Unknown);
+            ImagePathLabel.Text = "HSV Model";
+            for (int i = 0; i < Settings.PictureHeigth; i++)
+            {
+                for (int j = 0; j < Settings.PictureWidth; j++)
+                {
+                    var sv = GetSaturationAt(i, j);
+                    if(sv > 1)
+                    {
+                        source.SetPixel(i, j, Color.FromArgb(255, 255, 255));
+                        continue;
+                    }
+                    var v = (float)Settings.Brightness / 255;
+                    var h = Math.Atan2(i - Settings.PictureHeigth / 2, j - Settings.PictureWidth / 2);
+                    while (h < 0)
+                    {
+                        h += Math.PI * 2;
+                    }
+                    var hprim = h / Math.PI * 180 / 60;
+                    var c = v * sv;
+                    var x = (float)(c * (1 - Math.Abs(hprim % 2 - 1)));
+                    float r1 = 0, g1 = 0, b1 = 0;
+                    if (0 <= hprim && hprim < 1)
+                    {
+                        r1 = c;
+                        g1 = x;
+                        b1 = 0;
+                    }
+                    else if (1 <= hprim && hprim < 2)
+                    {
+                        r1 = x;
+                        g1 = c;
+                        b1 = 0;
+                    }
+                    else if (2 <= hprim && hprim < 3)
+                    {
+                        r1 = 0;
+                        g1 = c;
+                        b1 = x;
+                    }
+                    else if (3 <= hprim && hprim < 4)
+                    {
+                        r1 = 0;
+                        g1 = x;
+                        b1 = c;
+                    }
+                    else if (4 <= hprim && hprim < 5)
+                    {
+                        r1 = x;
+                        g1 = 0;
+                        b1 = c;
+                    }
+                    else if (5 <= hprim && hprim < 6)
+                    {
+                        r1 = c;
+                        g1 = 0;
+                        b1 = x;
+                    }
+                    var m = v - c;
+                    var R = (int)((r1 + m) * 255);
+                    var G = (int)((g1 + m) * 255);
+                    var B = (int)((b1 + m) * 255);
+                    R = R < 0 ? 0 : R > 255 ? 255 : R;
+                    G = G < 0 ? 0 : G > 255 ? 255 : G;
+                    B = B < 0 ? 0 : B > 255 ? 255 : B;
+                    source.SetPixel(i, j, Color.FromArgb(R,G,B));
+                }
+            }
+        }
+        private float GetSaturationAt(int i, int j)
+        {
+            return (float)(Math.Sqrt((i - Settings.PictureHeigth / 2) * (i - Settings.PictureHeigth / 2) + (j - Settings.PictureWidth / 2) * (j - Settings.PictureWidth / 2)) / ((Math.Max(Settings.PictureWidth, Settings.PictureHeigth))) * 3);
         }
     }
 }

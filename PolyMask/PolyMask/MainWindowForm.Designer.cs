@@ -74,10 +74,10 @@
             this.BrushFillRadioButton = new System.Windows.Forms.RadioButton();
             this.BrushSizeTrackBar = new System.Windows.Forms.TrackBar();
             this.BrushSizeLabel = new System.Windows.Forms.Label();
-            this.ApplyingSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.AdditionalsGroupBox = new System.Windows.Forms.GroupBox();
             this.ApplyingSettingsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.OnClickRadioButton = new System.Windows.Forms.RadioButton();
-            this.ImmediatelyRadioButton = new System.Windows.Forms.RadioButton();
+            this.HSVModelButton = new System.Windows.Forms.Button();
+            this.BrightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.RedHistogramGroupBox = new System.Windows.Forms.GroupBox();
             this.RedHistogramPictureBox = new System.Windows.Forms.PictureBox();
             this.MainTableLayoutPanel.SuspendLayout();
@@ -109,8 +109,9 @@
             this.FillingTypeGroupBox.SuspendLayout();
             this.FillingToolTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BrushSizeTrackBar)).BeginInit();
-            this.ApplyingSettingsGroupBox.SuspendLayout();
+            this.AdditionalsGroupBox.SuspendLayout();
             this.ApplyingSettingsTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BrightnessTrackBar)).BeginInit();
             this.RedHistogramGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RedHistogramPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -676,7 +677,7 @@
             this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.PictureSettingsGroupBox, 0, 2);
             this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.BrushTypeGroupBox, 0, 0);
             this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.FillingTypeGroupBox, 0, 1);
-            this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.ApplyingSettingsGroupBox, 1, 0);
+            this.ProcessingSettingsTableLayoutPanel.Controls.Add(this.AdditionalsGroupBox, 1, 0);
             this.ProcessingSettingsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProcessingSettingsTableLayoutPanel.Location = new System.Drawing.Point(3, 19);
             this.ProcessingSettingsTableLayoutPanel.Name = "ProcessingSettingsTableLayoutPanel";
@@ -899,22 +900,22 @@
             this.BrushSizeLabel.Text = "Brush Size: 10";
             this.BrushSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // ApplyingSettingsGroupBox
+            // AdditionalsGroupBox
             // 
-            this.ApplyingSettingsGroupBox.Controls.Add(this.ApplyingSettingsTableLayoutPanel);
-            this.ApplyingSettingsGroupBox.Location = new System.Drawing.Point(147, 3);
-            this.ApplyingSettingsGroupBox.Name = "ApplyingSettingsGroupBox";
-            this.ApplyingSettingsGroupBox.Size = new System.Drawing.Size(138, 94);
-            this.ApplyingSettingsGroupBox.TabIndex = 4;
-            this.ApplyingSettingsGroupBox.TabStop = false;
-            this.ApplyingSettingsGroupBox.Text = "Applying Settings";
+            this.AdditionalsGroupBox.Controls.Add(this.ApplyingSettingsTableLayoutPanel);
+            this.AdditionalsGroupBox.Location = new System.Drawing.Point(147, 3);
+            this.AdditionalsGroupBox.Name = "AdditionalsGroupBox";
+            this.AdditionalsGroupBox.Size = new System.Drawing.Size(138, 94);
+            this.AdditionalsGroupBox.TabIndex = 4;
+            this.AdditionalsGroupBox.TabStop = false;
+            this.AdditionalsGroupBox.Text = "HSV and Brightness";
             // 
             // ApplyingSettingsTableLayoutPanel
             // 
             this.ApplyingSettingsTableLayoutPanel.ColumnCount = 1;
             this.ApplyingSettingsTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.ApplyingSettingsTableLayoutPanel.Controls.Add(this.OnClickRadioButton, 0, 0);
-            this.ApplyingSettingsTableLayoutPanel.Controls.Add(this.ImmediatelyRadioButton, 0, 1);
+            this.ApplyingSettingsTableLayoutPanel.Controls.Add(this.HSVModelButton, 0, 0);
+            this.ApplyingSettingsTableLayoutPanel.Controls.Add(this.BrightnessTrackBar, 0, 1);
             this.ApplyingSettingsTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ApplyingSettingsTableLayoutPanel.Location = new System.Drawing.Point(3, 19);
             this.ApplyingSettingsTableLayoutPanel.Name = "ApplyingSettingsTableLayoutPanel";
@@ -924,30 +925,27 @@
             this.ApplyingSettingsTableLayoutPanel.Size = new System.Drawing.Size(132, 72);
             this.ApplyingSettingsTableLayoutPanel.TabIndex = 0;
             // 
-            // OnClickRadioButton
+            // HSVModelButton
             // 
-            this.OnClickRadioButton.AutoSize = true;
-            this.OnClickRadioButton.Checked = true;
-            this.OnClickRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.OnClickRadioButton.Location = new System.Drawing.Point(3, 3);
-            this.OnClickRadioButton.Name = "OnClickRadioButton";
-            this.OnClickRadioButton.Size = new System.Drawing.Size(126, 30);
-            this.OnClickRadioButton.TabIndex = 0;
-            this.OnClickRadioButton.TabStop = true;
-            this.OnClickRadioButton.Text = "On Click";
-            this.OnClickRadioButton.UseVisualStyleBackColor = true;
+            this.HSVModelButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HSVModelButton.Location = new System.Drawing.Point(3, 3);
+            this.HSVModelButton.Name = "HSVModelButton";
+            this.HSVModelButton.Size = new System.Drawing.Size(126, 30);
+            this.HSVModelButton.TabIndex = 0;
+            this.HSVModelButton.Text = "HSV model";
+            this.HSVModelButton.UseVisualStyleBackColor = true;
+            this.HSVModelButton.Click += new System.EventHandler(this.HSVModelButton_Click);
             // 
-            // ImmediatelyRadioButton
+            // BrightnessTrackBar
             // 
-            this.ImmediatelyRadioButton.AutoSize = true;
-            this.ImmediatelyRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ImmediatelyRadioButton.Enabled = false;
-            this.ImmediatelyRadioButton.Location = new System.Drawing.Point(3, 39);
-            this.ImmediatelyRadioButton.Name = "ImmediatelyRadioButton";
-            this.ImmediatelyRadioButton.Size = new System.Drawing.Size(126, 30);
-            this.ImmediatelyRadioButton.TabIndex = 1;
-            this.ImmediatelyRadioButton.Text = "Immediately";
-            this.ImmediatelyRadioButton.UseVisualStyleBackColor = true;
+            this.BrightnessTrackBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BrightnessTrackBar.Location = new System.Drawing.Point(3, 39);
+            this.BrightnessTrackBar.Maximum = 255;
+            this.BrightnessTrackBar.Name = "BrightnessTrackBar";
+            this.BrightnessTrackBar.Size = new System.Drawing.Size(126, 30);
+            this.BrightnessTrackBar.TabIndex = 1;
+            this.BrightnessTrackBar.Value = 255;
+            this.BrightnessTrackBar.Scroll += new System.EventHandler(this.Brightness_Scroll);
             // 
             // RedHistogramGroupBox
             // 
@@ -1014,9 +1012,10 @@
             this.FillingToolTableLayoutPanel.ResumeLayout(false);
             this.FillingToolTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BrushSizeTrackBar)).EndInit();
-            this.ApplyingSettingsGroupBox.ResumeLayout(false);
+            this.AdditionalsGroupBox.ResumeLayout(false);
             this.ApplyingSettingsTableLayoutPanel.ResumeLayout(false);
             this.ApplyingSettingsTableLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BrightnessTrackBar)).EndInit();
             this.RedHistogramGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RedHistogramPictureBox)).EndInit();
             this.ResumeLayout(false);
@@ -1072,10 +1071,10 @@
         private RadioButton BrushFillRadioButton;
         private TrackBar BrushSizeTrackBar;
         private Label BrushSizeLabel;
-        private GroupBox ApplyingSettingsGroupBox;
+        private GroupBox AdditionalsGroupBox;
         private TableLayoutPanel ApplyingSettingsTableLayoutPanel;
-        private RadioButton OnClickRadioButton;
-        private RadioButton ImmediatelyRadioButton;
         private Label ImagePathLabel;
+        private Button HSVModelButton;
+        private TrackBar BrightnessTrackBar;
     }
 }
