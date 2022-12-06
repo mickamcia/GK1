@@ -9,6 +9,31 @@ using System.Threading.Tasks;
 
 namespace PolyMask
 {
+    public class Polygon
+    {
+        public List<PointF> points;
+        public Polygon()
+        {
+            points = new();
+        }
+        public bool Contains(float X, float Y)
+        {
+            bool result = false;
+            int j = points.Count - 1;
+            for(int i = 0; i < points.Count; i++)
+            {
+                if (points[i].Y < Y && points[j].Y >= Y || points[j].Y < Y && points[i].Y >= Y)
+                {
+                    if (points[i].X + (Y - points[i].Y) / (points[j].Y - points[i].Y) * (points[j].X - points[i].X) < X)
+                    {
+                        result = !result;
+                    }
+                }
+                j = i;
+            }
+            return result;
+        }
+    }
     public enum CellType
     {
         Applied,

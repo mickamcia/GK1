@@ -11,8 +11,10 @@ namespace PolyMask
         public CellType[,] orders;
         public CellType[,] current;
         public Histogram[] histograms;
+        public Polygon polygon;
         public MainWindowForm()
         {
+            polygon = new();
             histograms = new Histogram[4];
             histograms[0] = new Histogram((Color c) => c.R, Color.Red);
             histograms[1] = new Histogram((Color c) => c.G, Color.Green);
@@ -93,6 +95,30 @@ namespace PolyMask
                     }
                     break;
                 case FillType.Polygon:
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        polygon.points.Add(new PointF(e.Location.X, e.Location.Y));
+                        MainPictureBox.Invalidate();
+                    }
+                    else
+                    {
+                        //if (polygon.points.Count == 0) break;
+                        //polygon.points.Add(new PointF(polygon.points[0].X, polygon.points[0].Y));
+;
+                        for (int i = 0; i < Settings.PictureHeigth; i++)
+                        {
+                            for (int j = 0; j < Settings.PictureWidth; j++)
+                            {
+                                if (polygon.Contains(j, i))
+                                {
+                                    orders[j, i] = BrushType.Filler == Settings.BrushType ? CellType.Applied : CellType.Calculated;
+                                    current[j, i] = CellType.Other;
+                                }
+                            }
+                        }
+                        polygon.points.Clear();
+                        RefreshAll();
+                    }
                     break;
                 case FillType.Brush:
                     for (int i = 0; i < Settings.PictureHeigth; i++)
@@ -184,9 +210,14 @@ namespace PolyMask
         }
         private void MainPictureBox_Paint(object sender, PaintEventArgs e)
         {
-            
+            var pen = new Pen(Brushes.Red, 1);
             e.Graphics.DrawImage(source.Bitmap, 0, 0);
             e.Graphics.DrawImage(output.Bitmap, 0, 0);
+            var g = e.Graphics;
+            for (int i = 0; i < polygon.points.Count; i++)
+            {
+                g.DrawLine(pen, polygon.points[i], polygon.points[(i + 1) % polygon.points.Count]);
+            }
         }
         private void UpdateChangesButton_Click(object sender, EventArgs e)
         {
@@ -213,6 +244,7 @@ namespace PolyMask
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
+                    ImagePathLabel.Text = dlg.FileName;
                     var temp = new Bitmap(dlg.FileName);
                     temp = new Bitmap(temp, Settings.PictureWidth, Settings.PictureHeigth);
                     for (int i = 0; i < Settings.PictureHeigth; i++)
@@ -555,6 +587,7 @@ namespace PolyMask
         {
             if (WholeFillRadioButton.Checked)
             {
+                polygon.points.Clear();
                 Settings.FillType = FillType.Whole;
             }
         }
@@ -563,6 +596,7 @@ namespace PolyMask
         {
             if (PolygonFillRadioButton.Checked)
             {
+                polygon.points.Clear();
                 Settings.FillType = FillType.Polygon;
             }
         }
@@ -571,6 +605,7 @@ namespace PolyMask
         {
             if (BrushFillRadioButton.Checked)
             {
+                polygon.points.Clear();
                 Settings.FillType = FillType.Brush;
             }
         }

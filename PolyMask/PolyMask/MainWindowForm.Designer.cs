@@ -941,6 +941,7 @@
             // 
             this.ImmediatelyRadioButton.AutoSize = true;
             this.ImmediatelyRadioButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ImmediatelyRadioButton.Enabled = false;
             this.ImmediatelyRadioButton.Location = new System.Drawing.Point(3, 39);
             this.ImmediatelyRadioButton.Name = "ImmediatelyRadioButton";
             this.ImmediatelyRadioButton.Size = new System.Drawing.Size(126, 30);
@@ -1064,7 +1065,6 @@
         private GroupBox PictureSettingsGroupBox;
         private TableLayoutPanel PictureSettingsTableLayoutPanel;
         private Button UpdateChangesButton;
-        private Label ImagePathLabel;
         private GroupBox FillingTypeGroupBox;
         private TableLayoutPanel FillingToolTableLayoutPanel;
         private RadioButton WholeFillRadioButton;
@@ -1076,5 +1076,6 @@
         private TableLayoutPanel ApplyingSettingsTableLayoutPanel;
         private RadioButton OnClickRadioButton;
         private RadioButton ImmediatelyRadioButton;
+        private Label ImagePathLabel;
     }
 }
