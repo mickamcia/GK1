@@ -13,7 +13,7 @@ namespace PolyView
         {
             if(Settings.cameraOption == CameraOption.Center)
             {
-                return Matrix4x4.CreateLookAt(new Vector3(1000, 1000, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 1));
+                return Matrix4x4.CreateLookAt(new Vector3(1000, 1000, -300), new Vector3(0, 0, 0), new Vector3(0, 0, 1));
             }
             if (Settings.cameraOption == CameraOption.Stationary)
             {

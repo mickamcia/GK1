@@ -20,11 +20,11 @@ namespace PolyView
             Settings.frameCount++;
             using var g = Graphics.FromImage(bits.Bitmap);
             g.Clear(Color.White);
-            foreach (var model in scene.stationaryModels)
+            foreach (var model in scene.movingModels)
             {
                 model.Paint(bits);
             }
-            foreach (var model in scene.movingModels)
+            foreach (var model in scene.stationaryModels)
             {
                 model.Paint(bits);
             }

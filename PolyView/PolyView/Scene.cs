@@ -16,12 +16,14 @@ namespace PolyView
         public const string pathPlane = @"C:..\\..\\..\\models\\plane.txt";
         public List<Model> movingModels;
         public List<Model> stationaryModels;
+        public List<LightSource> lights;
         public Matrix4x4 projectionMatrix;
         public Matrix4x4 viewMatrix;
         public ZBuffer zBuffer;
 
         public Scene()
         {
+            lights = new List<LightSource>();
             movingModels = new List<Model>();
             stationaryModels = new List<Model>();
             zBuffer = new ZBuffer();

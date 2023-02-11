@@ -7,6 +7,28 @@ using System.Threading.Tasks;
 
 namespace PolyView
 {
+    public class LightSource
+    {
+        public Vector4 model_pos;
+        public Vector4 scene_pos;
+        public Vector4 view_pos;
+
+        public Matrix4x4 modelMatrixScale;
+        public Matrix4x4 modelMatrixTranslation;
+        public Matrix4x4 modelMatrixRotation;
+        public Matrix4x4 modelMatrix;
+
+        public LightSource()
+        {
+            modelMatrixScale = Matrix4x4.Identity;
+            modelMatrixTranslation = Matrix4x4.Identity;
+            modelMatrixRotation = Matrix4x4.Identity;
+            modelMatrix = Matrix4x4.Identity;
+            model_pos = new Vector4(0, 0, 0, 1);
+            scene_pos = new Vector4(0, 0, 0, 1);
+            view_pos = new Vector4(0, 0, 0, 1);
+        }
+    }
     public static class Lighting
     {
         public static float kd = 1;
