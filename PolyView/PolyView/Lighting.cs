@@ -37,6 +37,7 @@ namespace PolyView
         public static Color il = Color.FromArgb(255, 255, 255);
         public static Color io = Color.Blue;
         public static int m = 20;
+        
         public static Color GetColor(Vector3 source, Vector3 normal)
         {
             var R = normal * Vector3.Dot(normal, source) * 2 - source;

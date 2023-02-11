@@ -77,5 +77,23 @@ namespace PolyView
             Settings.LightingFog = LightingFogCheckBox.Checked;
             MainPictureBox.Invalidate();
         }
+
+        private void ShadingConstantRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.shadingType = ShadingType.Constant;
+            MainPictureBox.Invalidate();
+        }
+
+        private void ShadingGouraudRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.shadingType = ShadingType.Gouraud;
+            MainPictureBox.Invalidate();
+        }
+
+        private void ShadingPhongRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.shadingType = ShadingType.Phong;
+            MainPictureBox.Invalidate();
+        }
     }
 }

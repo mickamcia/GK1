@@ -215,6 +215,7 @@
             this.ShadingConstantRadioButton.TabStop = true;
             this.ShadingConstantRadioButton.Text = "Constant";
             this.ShadingConstantRadioButton.UseVisualStyleBackColor = true;
+            this.ShadingConstantRadioButton.CheckedChanged += new System.EventHandler(this.ShadingConstantRadioButton_CheckedChanged);
             // 
             // ShadingGouraudRadioButton
             // 
@@ -226,6 +227,7 @@
             this.ShadingGouraudRadioButton.TabIndex = 1;
             this.ShadingGouraudRadioButton.Text = "Gouraud";
             this.ShadingGouraudRadioButton.UseVisualStyleBackColor = true;
+            this.ShadingGouraudRadioButton.CheckedChanged += new System.EventHandler(this.ShadingGouraudRadioButton_CheckedChanged);
             // 
             // ShadingPhongRadioButton
             // 
@@ -237,6 +239,7 @@
             this.ShadingPhongRadioButton.TabIndex = 2;
             this.ShadingPhongRadioButton.Text = "Phong";
             this.ShadingPhongRadioButton.UseVisualStyleBackColor = true;
+            this.ShadingPhongRadioButton.CheckedChanged += new System.EventHandler(this.ShadingPhongRadioButton_CheckedChanged);
             // 
             // LightingGroupBox
             // 

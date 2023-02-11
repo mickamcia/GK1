@@ -12,6 +12,12 @@ namespace PolyView
         Stationary = 1,
         Moving = 2,
     }
+    public enum ShadingType
+    {
+        Constant = 0,
+        Phong = 1,
+        Gouraud = 2,
+    }
     public static class Settings
     {
         public static int frameCount = 0;
@@ -21,6 +27,7 @@ namespace PolyView
         public const int BitmapWidth = 800;
         public const int BitmapHeight = 800;
         public static CameraOption cameraOption = CameraOption.Center;
+        public static ShadingType shadingType = ShadingType.Constant;
 
         public static bool LightOnMovingObject = false;
         public static bool LightOnStationaryObject = false;
