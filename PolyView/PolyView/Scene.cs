@@ -33,7 +33,21 @@ namespace PolyView
         }
         public void PrepareScene()
         {
-            for(int i = 0; i < 12; i++)
+            var ls0 = new LightSource();
+            ls0.model_pos = new Vector4(10, 0, 10, 1);
+            lights.Add(ls0);
+
+            var ls1 = new LightSource();
+            ls1.model_pos = new Vector4(0, 0, 10, 1);
+            lights.Add(ls1);
+
+            var ls2 = new LightSource();
+            ls2.model_pos = new Vector4(10, 0, 10, 1);
+            ls2.type = LightSource.LightType.SpotLight;
+            ls2.direction = new Vector3(100, 100, 0);
+            lights.Add(ls2);
+
+            for (int i = 0; i < 12; i++)
             {
                 var temp = Parser.ParseModel(pathCar);
                 temp.modelMatrixTranslation = Matrix4x4.CreateTranslation(new Vector3(800, 0, 0));
@@ -56,6 +70,11 @@ namespace PolyView
             {
                 m.modelMatrix = m.modelMatrixScale * Matrix4x4.CreateRotationX(-(float)Math.PI / 2) * m.modelMatrixTranslation * m.modelMatrixRotation * Matrix4x4.CreateRotationZ((float)Settings.frameCount / 100);
                 m.modelNormalRotation = Matrix4x4.CreateRotationX(-(float)Math.PI / 2) * m.modelMatrixRotation * Matrix4x4.CreateRotationZ((float)Settings.frameCount / 100);
+
+                if (Settings.Shivering)
+                {
+                    m.modelMatrix *= Matrix4x4.CreateTranslation(new Vector3(10 * (float)Math.Sin(Settings.frameCount), 10 * (float)Math.Cos(Settings.frameCount), 0));
+                }
             }
         }
         public void CalculateFrame()

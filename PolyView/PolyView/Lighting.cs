@@ -17,6 +17,14 @@ namespace PolyView
         public Matrix4x4 modelMatrixTranslation;
         public Matrix4x4 modelMatrixRotation;
         public Matrix4x4 modelMatrix;
+        public enum LightType
+        {
+            SpotLight = 0,
+            PointLight = 1,
+            Directional = 2,
+        }
+        public LightType type;
+        public Vector3 direction;
 
         public LightSource()
         {
@@ -27,6 +35,8 @@ namespace PolyView
             model_pos = new Vector4(0, 0, 0, 1);
             scene_pos = new Vector4(0, 0, 0, 1);
             view_pos = new Vector4(0, 0, 0, 1);
+            type = LightType.PointLight;
+            direction = new Vector3(0, 0, 1);
         }
     }
     public static class Lighting

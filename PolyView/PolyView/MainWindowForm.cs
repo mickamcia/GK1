@@ -95,5 +95,17 @@ namespace PolyView
             Settings.shadingType = ShadingType.Phong;
             MainPictureBox.Invalidate();
         }
+
+        private void ShiveringCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Shivering = ShiveringCheckBox.Checked;
+            MainPictureBox.Invalidate();
+        }
+
+        private void ReflectorDirectionTrackBar_Scroll(object sender, EventArgs e)
+        {
+            Settings.ReflectorAngle = (float)(ReflectorDirectionTrackBar.Value / Math.PI);
+            MainPictureBox.Invalidate();
+        }
     }
 }

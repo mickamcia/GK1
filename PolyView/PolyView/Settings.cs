@@ -29,9 +29,11 @@ namespace PolyView
         public static CameraOption cameraOption = CameraOption.Center;
         public static ShadingType shadingType = ShadingType.Constant;
 
+        public static float ReflectorAngle = 0f;
         public static bool LightOnMovingObject = false;
         public static bool LightOnStationaryObject = false;
         public static bool LightingDaylight = false;
         public static bool LightingFog = false;
+        public static bool Shivering = false;
     }
 }
