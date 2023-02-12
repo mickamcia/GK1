@@ -17,6 +17,7 @@ namespace PolyView
         public Matrix4x4 modelMatrixTranslation;
         public Matrix4x4 modelMatrixRotation;
         public Matrix4x4 modelMatrix;
+        public Matrix4x4 modelNormalRotation;
         public Model()
         {
             polygons = new List<Polygon>();
@@ -261,15 +262,16 @@ namespace PolyView
             for (int x = x1; x <= x2; x++)
             {
                 if (x >= bits.Width || y >= bits.Height || x < 0 || y < 0) break;
-                var positions = vertices.Select(p => p.view_pos).ToArray();
-                var normals = vertices.Select(p => p.model_norm).ToArray();
-                (float w1, float w2, float w3) bar = Lighting.GetBarycentricWeights(positions, x, y);
+                var positions = vertices.Select(p => p.scene_pos).ToArray();
+                var positions2 = vertices.Select(p => p.view_pos).ToArray();
+                var normals = vertices.Select(p => p.scene_norm).ToArray();
+                (float w1, float w2, float w3) bar = Lighting.GetBarycentricWeights(positions2, x, y);
                 float z = bar.w1 * vertices[0].view_pos.Z + bar.w2 * vertices[1].view_pos.Z + bar.w3 * vertices[2].view_pos.Z;
                 
                 if (z <= MainWindowForm.scene.zBuffer.data[x, y])
                 {
                     MainWindowForm.scene.zBuffer.data[x, y] = z;
-                    var ls = new Vector3(1000, 0, 10);//Lighting.GetLightVector((float)(Settings.frameCount / 100));
+                    var ls = new Vector3((float)Math.Sin((float)Settings.frameCount / 10) * 600, (float)Math.Cos((float)Settings.frameCount / 10) * 600, -400);//Lighting.GetLightVector((float)(Settings.frameCount / 100));
                     Color color = Color.White;
                     
                     var pos = positions[0] * bar.w1 + positions[1] * bar.w2 + positions[2] * bar.w3;

@@ -33,24 +33,28 @@ namespace PolyView
     {
         public static float kd = 1;
         public static float ks = 1;
-        public static float ka = 1;
+        public static float ka = 0.2f;
         public static Color il = Color.FromArgb(255, 255, 255);
         public static Color io = Color.Blue;
         public static int m = 20;
         
         public static Color GetColor(Vector3 source, Vector3 normal)
         {
-            var R = normal * Vector3.Dot(normal, source) * 2 - source;
+            normal = Vector3.Normalize(normal);
+            source = Vector3.Normalize(source);
+            float sp1 = Vector3.Dot(normal, source);
+            sp1 = sp1 > 0 ? sp1 : 0;
+
+            var R = normal * sp1 * 2 - source;
             var V = new Vector3(0, 0, 1);
             float sp2 = Vector3.Dot(Vector3.Normalize(R), V);
-            float sp1 = Vector3.Dot(Vector3.Normalize(normal), Vector3.Normalize(source));
-            sp1 = sp1 > 0 ? sp1 : 0;
+                     
             sp2 = sp2 > 0 ? sp2 : 0;
-            sp1 *= kd / 255;
-            sp2 = (float)Math.Pow(sp2, m) * ks / 255;
-            int colorR = (int)(ka + il.R * io.R * sp1 + il.R * io.R * sp2);
-            int colorG = (int)(ka + il.G * io.G * sp1 + il.G * io.G * sp2);
-            int colorB = (int)(ka + il.B * io.B * sp1 + il.B * io.B * sp2);
+            //sp1 *= kd / 255;
+            sp2 = (float)Math.Pow(sp2, m);// * ks / 255;
+            int colorR = (int)(ka * io.R+ kd * il.R * sp1 + ks * il.R  * sp2);
+            int colorG = (int)(ka * io.G+ kd * il.G * sp1 + ks * il.G  * sp2);
+            int colorB = (int)(ka * io.B+ kd * il.B * sp1 + ks * il.B  * sp2);
             colorR = colorR > 255 ? 255 : colorR < 0 ? 0 : colorR;
             colorG = colorG > 255 ? 255 : colorG < 0 ? 0 : colorG;
             colorB = colorB > 255 ? 255 : colorB < 0 ? 0 : colorB;

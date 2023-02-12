@@ -39,13 +39,15 @@ namespace PolyView
                 temp.modelMatrixTranslation = Matrix4x4.CreateTranslation(new Vector3(800, 0, 0));
                 temp.modelMatrixScale = Matrix4x4.CreateScale(50);
                 temp.modelMatrixRotation = Matrix4x4.CreateRotationZ((float)Math.PI * i / 12 * 2);
+                temp.modelNormalRotation = temp.modelMatrixRotation;
                 movingModels.Add(temp);
             }
             var plane = Parser.ParseModel(pathPlane);
             plane.modelMatrixTranslation = Matrix4x4.CreateTranslation(new Vector3(0, 0, 0));
             plane.modelMatrixScale = Matrix4x4.CreateScale(1000);
-            plane.modelMatrixRotation = Matrix4x4.CreateRotationX((float)Math.PI / 2);
+            plane.modelMatrixRotation = Matrix4x4.CreateRotationX(-(float)Math.PI / 2);
             plane.modelMatrix = plane.modelMatrixScale * plane.modelMatrixTranslation * plane.modelMatrixRotation;
+            plane.modelNormalRotation = plane.modelMatrixRotation;
             stationaryModels.Add(plane);
         }
         public void CalculateAnimation()
@@ -53,6 +55,7 @@ namespace PolyView
             foreach (var m in movingModels)
             {
                 m.modelMatrix = m.modelMatrixScale * Matrix4x4.CreateRotationX(-(float)Math.PI / 2) * m.modelMatrixTranslation * m.modelMatrixRotation * Matrix4x4.CreateRotationZ((float)Settings.frameCount / 100);
+                m.modelNormalRotation = Matrix4x4.CreateRotationX(-(float)Math.PI / 2) * m.modelMatrixRotation * Matrix4x4.CreateRotationZ((float)Settings.frameCount / 100);
             }
         }
         public void CalculateFrame()
@@ -76,10 +79,9 @@ namespace PolyView
                         float z = (float)((v.view_pos.Z) * (Settings.farPlaneDist - Settings.nearPlaneDist) + Settings.nearPlaneDist);
                         v.view_pos = new Vector4(x, y, z, 1);
                         
-                        v.scene_norm = Vector3.TransformNormal(v.model_norm, m.modelMatrix);
-                        v.view_norm = new Vector3(cam.X - v.scene_norm.X,
-                            cam.Y - v.scene_norm.Y,
-                            cam.Z - v.scene_norm.Z);
+                        v.scene_norm = Vector3.TransformNormal(v.model_norm, m.modelNormalRotation);
+                        
+                        //v.view_norm = new Vector3(cam.X - v.scene_norm.X, cam.Y - v.scene_norm.Y, cam.Z - v.scene_norm.Z);
 
                     }
                     p.UpdateAETP();
@@ -99,10 +101,10 @@ namespace PolyView
                         float z = (float)((v.view_pos.Z) * (Settings.farPlaneDist - Settings.nearPlaneDist) + Settings.nearPlaneDist);
                         v.view_pos = new Vector4(x, y, z, 1);
 
-                        v.scene_norm = Vector3.TransformNormal(v.model_norm, m.modelMatrix);
-                        v.view_norm = new Vector3(cam.X - v.scene_norm.X,
-                            cam.Y - v.scene_norm.Y,
-                            cam.Z - v.scene_norm.Z);
+                        v.scene_norm = Vector3.TransformNormal(v.model_norm, m.modelNormalRotation);
+
+                        //v.view_norm = Vector3.TransformNormal(modelMatrixRotation);
+                        //v.view_norm = new Vector3(cam.X - v.scene_norm.X, cam.Y - v.scene_norm.Y, cam.Z - v.scene_norm.Z);
                     }
                     p.UpdateAETP();
                 }
