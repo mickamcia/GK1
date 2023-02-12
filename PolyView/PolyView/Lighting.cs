@@ -21,7 +21,7 @@ namespace PolyView
         {
             SpotLight = 0,
             PointLight = 1,
-            Directional = 2,
+            DayLight = 2,
         }
         public LightType type;
         public Vector3 direction;

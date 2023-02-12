@@ -35,6 +35,7 @@ namespace PolyView
         {
             var ls0 = new LightSource();
             ls0.model_pos = new Vector4(10, 0, 10, 1);
+            ls0.type = LightSource.LightType.DayLight;
             lights.Add(ls0);
 
             var ls1 = new LightSource();
