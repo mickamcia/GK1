@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -59,6 +60,7 @@ namespace PolyMesh
         
         public static Model ParseModel(string path)
         {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             Model model = new();
             const Int32 BufferSize = 128;
             using var fileStream = File.OpenRead(path);

@@ -29,18 +29,7 @@ namespace PolyView
 
         internal void Paint(DirectBitmap bits)
         {
-            foreach(var polygon in polygons)
-            {
-                if(polygon.vertices.Any(p => p.view_pos.X < 0 || p.view_pos.X >= Settings.BitmapHeight || p.view_pos.Y < 0 || p.view_pos.Y >= Settings.BitmapWidth || p.view_pos.Z < Settings.nearPlaneDist || p.view_pos.Z >= Settings.farPlaneDist))
-                //if(polygon.vertices.Any(p => p.view_pos.X < -100 || p.view_pos.X >= Settings.BitmapHeight+100 || p.view_pos.Y < -100 || p.view_pos.Y >= Settings.BitmapWidth+100 || p.view_pos.Z < Settings.nearPlaneDist || p.view_pos.Z >= Settings.farPlaneDist))
-                {
-
-                }
-                else
-                {
-                    polygon.PaintFull(bits, color);
-                }
-            }
+            Parallel.ForEach(polygons, p => p.PaintFull(bits, color));
         }
     }
     public class Vertex
@@ -97,6 +86,7 @@ namespace PolyView
     public class Polygon
     {
         public List<Vertex> vertices;
+        public Color[] gouraudCol;
 
         public Polygon(Vector4 v1, Vector4 v2, Vector4 v3, Vector3 vn1, Vector3 vn2, Vector3 vn3)
         {
@@ -106,6 +96,7 @@ namespace PolyView
                 new Vertex(v2, vn2),
                 new Vertex(v3, vn3)
             };
+            gouraudCol = new Color[vertices.Count];
             for (int i = 0; i < vertices.Count; i++)
             {
                 vertices[i].next = vertices[(i + 1) % vertices.Count];
@@ -116,7 +107,7 @@ namespace PolyView
         public Polygon()
         {
             vertices = new List<Vertex>();
-            
+            gouraudCol = new Color[3];
         }
         public void Finish()
         {
@@ -215,6 +206,33 @@ namespace PolyView
             double ymax = vertices.Max(p => p.view_pos.Y);
             double ymin = vertices.Min(p => p.view_pos.Y);
             List<AETP> AET = new List<AETP>();
+
+            if(Settings.shadingType == ShadingType.Constant)
+            {
+
+                var X = (vertices[0].view_pos.X + vertices[1].view_pos.X + vertices[2].view_pos.X) / 3;
+                var Y = (vertices[0].view_pos.Y + vertices[1].view_pos.Y + vertices[2].view_pos.Y) / 3;
+
+                var positions = vertices.Select(p => p.scene_pos).ToArray();
+                var positions2 = vertices.Select(p => p.view_pos).ToArray();
+                var normals = vertices.Select(p => p.scene_norm).ToArray();
+                (float w1, float w2, float w3) bar = Lighting.GetBarycentricWeights(positions2, X, Y);
+                float z = bar.w1 * vertices[0].view_pos.Z + bar.w2 * vertices[1].view_pos.Z + bar.w3 * vertices[2].view_pos.Z;
+
+                var pos = positions[0] * bar.w1 + positions[1] * bar.w2 + positions[2] * bar.w3;
+                var nor = normals[0] * bar.w1 + normals[1] * bar.w2 + normals[2] * bar.w3;
+                var pos3 = new Vector3(pos.X, pos.Y, pos.Z);
+
+                color = Lighting.GetColor(pos3, nor, color);
+            }
+            else if(Settings.shadingType == ShadingType.Gouraud)
+            {
+                for(int i=0; i<3; i++)
+                {
+                   gouraudCol[i] = Lighting.GetColor(new Vector3(vertices[i].scene_pos.X, vertices[i].scene_pos.Y, vertices[i].scene_pos.Z), vertices[i].scene_norm, color);                    
+                }
+            }
+
             for (int y = (int)ymin; y < (int)ymax; y++)
             {
                 foreach (var v in vertices.Where(p => (int)p.view_pos.Y == y))
@@ -263,7 +281,8 @@ namespace PolyView
         {
             for (int x = x1; x <= x2; x++)
             {
-                if (x >= bits.Width || y >= bits.Height || x < 0 || y < 0) break;
+                if (x >= bits.Width || y >= bits.Height || y < 0) break;
+                if (x < 0) x = 0;
                 var positions = vertices.Select(p => p.scene_pos).ToArray();
                 var positions2 = vertices.Select(p => p.view_pos).ToArray();
                 var normals = vertices.Select(p => p.scene_norm).ToArray();
@@ -287,10 +306,12 @@ namespace PolyView
                             }
                         case ShadingType.Gouraud:
                             {
+                                color = Lighting.interpolateColors(gouraudCol, bar);
                                 break;
                             }
                         case ShadingType.Constant:
                             {
+                                color = org;
                                 break;
                             }
                     }

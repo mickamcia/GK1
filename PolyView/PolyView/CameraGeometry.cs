@@ -38,14 +38,12 @@ namespace PolyView
             }
             if (Settings.cameraOption == CameraOption.Stationary)
             {
-                var m = scene.movingModels[0];
-                var pos = Vector4.Transform(new Vector4(0, 0, 0, 1), m.modelMatrix);
-                return new Vector3(pos.X, pos.Y, pos.Z);
+                return new Vector3(800, 800, -1800);
             }
             if (Settings.cameraOption == CameraOption.Moving)
             {
                 var m = scene.movingModels[0];
-                var pos = Vector4.Transform(new Vector4(0, 2, -4, 1), m.modelMatrix);
+                var pos = Vector4.Transform(new Vector4(1.5f, 2.5f, -1.5f, 1), m.modelMatrix);
                 return new Vector3(pos.X, pos.Y, pos.Z);
             }
             return new Vector3(0, 0, 0);
