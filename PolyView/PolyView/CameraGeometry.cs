@@ -19,12 +19,12 @@ namespace PolyView
             {
                 var m = scene.movingModels[0];
                 var pos = Vector4.Transform(new Vector4(0, 0, 0, 1), m.modelMatrix);
-                return Matrix4x4.CreateLookAt(new Vector3(1000, 1000, -300), new Vector3(pos.X, pos.Y, pos.Z), new Vector3(0, 0, 1));
+                return Matrix4x4.CreateLookAt(new Vector3(800, 800, -1800), new Vector3(pos.X, pos.Y, pos.Z), new Vector3(0, 0, 1));
             }
             if (Settings.cameraOption == CameraOption.Moving)
             {
                 var m = scene.movingModels[0];
-                var pos = Vector4.Transform(new Vector4(0, 2, -4, 1), m.modelMatrix);
+                var pos = Vector4.Transform(new Vector4(1.5f, 2.5f, -1.5f, 1), m.modelMatrix);
                 var target = Vector4.Transform(new Vector4(0, 0, 0, 1), m.modelMatrix);
                 return Matrix4x4.CreateLookAt(new Vector3(pos.X, pos.Y, pos.Z), new Vector3(target.X, target.Y, target.Z), new Vector3(0, 0, 1));
             }

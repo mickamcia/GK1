@@ -23,13 +23,13 @@ namespace PolyView
         public static int frameCount = 0;
         public static float fieldOfView = (float)(90 * Math.PI / 180);
         public static float nearPlaneDist = 10;
-        public static float farPlaneDist = 2000;
+        public static float farPlaneDist = 3000;
         public const int BitmapWidth = 800;
         public const int BitmapHeight = 800;
         public static CameraOption cameraOption = CameraOption.Center;
         public static ShadingType shadingType = ShadingType.Constant;
 
-        public static float ReflectorAngle = 0f;
+        public static float ReflectorVarValue = 0f;
         public static bool LightOnMovingObject = false;
         public static bool LightOnStationaryObject = false;
         public static bool LightingDaylight = false;

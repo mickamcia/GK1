@@ -10,6 +10,7 @@ namespace PolyView
 {
     public class Model
     {
+        public Color color;
         public List<Polygon> polygons;
         public List<Vector4> vertices;
         public List<Vector3> normals;
@@ -20,6 +21,7 @@ namespace PolyView
         public Matrix4x4 modelNormalRotation;
         public Model()
         {
+            color = Color.BlueViolet;
             polygons = new List<Polygon>();
             vertices = new List<Vector4>();
             normals = new List<Vector3>();
@@ -36,7 +38,7 @@ namespace PolyView
                 }
                 else
                 {
-                    polygon.PaintFull(bits);
+                    polygon.PaintFull(bits, color);
                 }
             }
         }
@@ -207,7 +209,7 @@ namespace PolyView
                 }
             }
         }
-        public void PaintFull(DirectBitmap bits)
+        public void PaintFull(DirectBitmap bits, Color color)
         {
             ResetEdges();
             double ymax = vertices.Max(p => p.view_pos.Y);
@@ -236,11 +238,11 @@ namespace PolyView
                 }
                 if (AET.Count > 0)
                 {
-                    FillAET(bits, AET, y);
+                    FillAET(bits, AET, y, color);
                 }
             }
         }
-        private void FillAET(DirectBitmap bits, List<AETP> AET, int y)
+        private void FillAET(DirectBitmap bits, List<AETP> AET, int y, Color color)
         {
             AET.Sort(delegate (AETP p1, AETP p2)
             {
@@ -250,14 +252,14 @@ namespace PolyView
             });
             for (int i = 0; i < AET.Count - 1; i += 2)
             {
-                FillLine(bits, AET[i].x, AET[i + 1].x, y);
+                FillLine(bits, AET[i].x, AET[i + 1].x, y, color);
             }
             foreach (var ptr in AET)
             {
                 ptr.advance();
             }
         }
-        private void FillLine(DirectBitmap bits, int x1, int x2, int y)
+        private void FillLine(DirectBitmap bits, int x1, int x2, int y, Color org)
         {
             for (int x = x1; x <= x2; x++)
             {
@@ -271,13 +273,12 @@ namespace PolyView
                 if (z <= MainWindowForm.scene.zBuffer.data[x, y])
                 {
                     MainWindowForm.scene.zBuffer.data[x, y] = z;
-                    var ls = new Vector3((float)Math.Sin((float)Settings.frameCount / 10) * 600, (float)Math.Cos((float)Settings.frameCount / 10) * 600, -400);//Lighting.GetLightVector((float)(Settings.frameCount / 100));
-                    Color color = Color.White;
+                    //var ls = new Vector3((float)Math.Sin((float)Settings.frameCount / 10) * 600, (float)Math.Cos((float)Settings.frameCount / 10) * 600, -400);//Lighting.GetLightVector((float)(Settings.frameCount / 100));
                     
                     var pos = positions[0] * bar.w1 + positions[1] * bar.w2 + positions[2] * bar.w3;
                     var nor = normals[0] * bar.w1 + normals[1] * bar.w2 + normals[2] * bar.w3;
                     var pos3 = new Vector3(pos.X, pos.Y, pos.Z);
-                    color = Lighting.GetColor(ls - pos3, nor);
+                    Color color = Lighting.GetColor(pos3, nor, org);
                     bits.SetPixel(x, y, color);
                 }
             }

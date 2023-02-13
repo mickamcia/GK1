@@ -39,25 +39,28 @@ namespace PolyView
             lights.Add(ls0);
 
             var ls1 = new LightSource();
-            ls1.model_pos = new Vector4(0, 0, 10, 1);
+            ls1.scene_pos = new Vector4(700, 900, -50, 1);
+            ls1.type = LightSource.LightType.PointLight;
             lights.Add(ls1);
 
             var ls2 = new LightSource();
-            ls2.model_pos = new Vector4(10, 0, 10, 1);
+            ls2.scene_pos = new Vector4(10, 0, 10, 1);
             ls2.type = LightSource.LightType.SpotLight;
             ls2.direction = new Vector3(100, 100, 0);
             lights.Add(ls2);
-
+            var r = new Random();
             for (int i = 0; i < 12; i++)
             {
                 var temp = Parser.ParseModel(pathCar);
+                temp.color = Color.FromArgb(r.Next(255), r.Next(255), r.Next(255));
                 temp.modelMatrixTranslation = Matrix4x4.CreateTranslation(new Vector3(800, 0, 0));
-                temp.modelMatrixScale = Matrix4x4.CreateScale(50);
+                temp.modelMatrixScale = Matrix4x4.CreateScale(100);
                 temp.modelMatrixRotation = Matrix4x4.CreateRotationZ((float)Math.PI * i / 12 * 2);
                 temp.modelNormalRotation = temp.modelMatrixRotation;
                 movingModels.Add(temp);
             }
             var plane = Parser.ParseModel(pathPlane);
+            plane.color = Color.Green;
             plane.modelMatrixTranslation = Matrix4x4.CreateTranslation(new Vector3(0, 0, 0));
             plane.modelMatrixScale = Matrix4x4.CreateScale(1000);
             plane.modelMatrixRotation = Matrix4x4.CreateRotationX(-(float)Math.PI / 2);
@@ -67,6 +70,7 @@ namespace PolyView
         }
         public void CalculateAnimation()
         {
+            lights[0].scene_pos = new Vector4((float)Math.Sin((float)Settings.frameCount / 10) * 600, (float)Math.Cos((float)Settings.frameCount / 10) * 600, -400, 1);//Lighting.GetLightVector((float)(Settings.frameCount / 100));
             foreach (var m in movingModels)
             {
                 m.modelMatrix = m.modelMatrixScale * Matrix4x4.CreateRotationX(-(float)Math.PI / 2) * m.modelMatrixTranslation * m.modelMatrixRotation * Matrix4x4.CreateRotationZ((float)Settings.frameCount / 100);
@@ -77,6 +81,16 @@ namespace PolyView
                     m.modelMatrix *= Matrix4x4.CreateTranslation(new Vector3(10 * (float)Math.Sin(Settings.frameCount), 10 * (float)Math.Cos(Settings.frameCount), 0));
                 }
             }
+            lights[1].scene_pos = Vector4.Transform(new Vector4(0, 0, 0, 1), movingModels[5].modelMatrix);
+            lights[1].scene_pos.Z += -300;
+            lights[2].scene_pos = Vector4.Transform(new Vector4(0, 0, 2, 1), movingModels[0].modelMatrix);
+            var temp = Vector4.Transform(new Vector4(0, 0, 0, 1), movingModels[0].modelMatrix);
+            //temp = Vector4.Transform(temp, Matrix4x4.CreateRotationZ((float)Settings.ReflectorVarValue / 15));
+            lights[2].scene_pos.Z += -100;
+            lights[2].direction = new Vector3(temp.X - lights[2].scene_pos.X, temp.Y - lights[2].scene_pos.Y, temp.Z - lights[2].scene_pos.Z);
+            var v = Vector4.Transform(lights[2].direction, Matrix4x4.CreateRotationZ((float)(Settings.ReflectorVarValue / 30 - Math.PI/2)));
+            lights[2].direction = new Vector3(v.X, v.Y, v.Z);
+
         }
         public void CalculateFrame()
         {

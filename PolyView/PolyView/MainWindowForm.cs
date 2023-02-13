@@ -104,7 +104,7 @@ namespace PolyView
 
         private void ReflectorDirectionTrackBar_Scroll(object sender, EventArgs e)
         {
-            Settings.ReflectorAngle = (float)(ReflectorDirectionTrackBar.Value / Math.PI);
+            Settings.ReflectorVarValue = (float)(ReflectorDirectionTrackBar.Value / Math.PI);
             MainPictureBox.Invalidate();
         }
     }
