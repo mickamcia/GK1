@@ -274,11 +274,27 @@ namespace PolyView
                 {
                     MainWindowForm.scene.zBuffer.data[x, y] = z;
                     //var ls = new Vector3((float)Math.Sin((float)Settings.frameCount / 10) * 600, (float)Math.Cos((float)Settings.frameCount / 10) * 600, -400);//Lighting.GetLightVector((float)(Settings.frameCount / 100));
-                    
-                    var pos = positions[0] * bar.w1 + positions[1] * bar.w2 + positions[2] * bar.w3;
-                    var nor = normals[0] * bar.w1 + normals[1] * bar.w2 + normals[2] * bar.w3;
-                    var pos3 = new Vector3(pos.X, pos.Y, pos.Z);
-                    Color color = Lighting.GetColor(pos3, nor, org);
+                    Color color = Color.White;
+                    switch (Settings.shadingType)
+                    {
+                        case ShadingType.Phong:
+                            {
+                                var pos = positions[0] * bar.w1 + positions[1] * bar.w2 + positions[2] * bar.w3;
+                                var nor = normals[0] * bar.w1 + normals[1] * bar.w2 + normals[2] * bar.w3;
+                                var pos3 = new Vector3(pos.X, pos.Y, pos.Z);
+                                color = Lighting.GetColor(pos3, nor, org);
+                                break;
+                            }
+                        case ShadingType.Gouraud:
+                            {
+                                break;
+                            }
+                        case ShadingType.Constant:
+                            {
+                                break;
+                            }
+                    }
+                   
                     bits.SetPixel(x, y, color);
                 }
             }
